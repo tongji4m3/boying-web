@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+
 // md5加密
 import md5 from 'js-md5'
 Vue.prototype.$md5 = md5

@@ -18,12 +18,12 @@
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item class="navigation-text" id="username-div"></el-dropdown-item>
                         <el-dropdown-item class="navigation-text" @click.native="changePassword">修改密码</el-dropdown-item>
-                        <el-dropdown-item class="navigation-text" @click.native="systemNotice">
-                            <el-badge value="new" class="item">系统公告</el-badge>
-                        </el-dropdown-item>
+                        <el-dropdown-item class="navigation-text" @click.native="systemNotice">系统公告</el-dropdown-item>
                         <el-dropdown-item class="navigation-text" @click.native="goIndex">回到首页</el-dropdown-item>
-                        <el-dropdown-item class="navigation-text" id="exit-div" divided @click.native="logout">退出
-                        </el-dropdown-item>
+                        <router-link to="/login">登录</router-link>
+                        <router-link to="/register">注册</router-link>
+                        <el-dropdown-item class="navigation-text" to="/login">登录</el-dropdown-item>
+                        <el-dropdown-item class="navigation-text" id="exit-div" divided @click.native="logout">退出</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </div>

@@ -49,7 +49,7 @@
 </template>
 
 <script>
-// import ossClient from "../../assets/config/aliyun.oss.client";
+import ossClient from "../assets/config/aliyun.oss.client";
 
 export default {
     name: "Upload",
@@ -268,8 +268,6 @@ body {
     color: #505458;
 }
 
-.upload {
-}
 
 #img-context {
     text-align: center;

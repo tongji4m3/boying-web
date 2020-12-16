@@ -8,6 +8,7 @@
       class="register-container"
       label-position="left"
       label-width="0px"
+      v-loading="loading"
     >
       <h3 class="login_title">注册</h3>
       <el-form-item prop="username">
@@ -108,6 +109,7 @@ export default {
       cb(new Error("输入的手机号不合法!"));
     };
     return {
+      loading: true,
       //上传图片相关
       images: [],
       uploadConf: {
@@ -161,7 +163,9 @@ export default {
   created() {
     //创建后挂载
     let _this = this;
-
+    setTimeout(() => {
+          this.loading = false;
+        }, 500);
     document.onkeydown = function (e) {
       let key = window.event.keyCode;
 
@@ -173,10 +177,10 @@ export default {
   methods: {
     async register() {
       console.log(this.$api.registerUrl);
-          //点击注册先进行表单预验证失败，直接返回不发起请求
-        this.$refs.registerFormRef.validate((valid) => {
-          if (!valid) return;
-        });
+      //点击注册先进行表单预验证失败，直接返回不发起请求
+      this.$refs.registerFormRef.validate((valid) => {
+        if (!valid) return;
+      });
 
       try {
         const res = await axios.post(
@@ -193,7 +197,7 @@ export default {
         console.log(res);
         if (res.data.code == 200) {
           this.$message.success("注册成功，即将跳转登录界面");
-          
+
           this.$router.push("/login");
         } else {
           this.$message.error("注册失败");

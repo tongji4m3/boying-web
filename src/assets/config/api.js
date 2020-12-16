@@ -7,6 +7,8 @@ module.exports = {
 
     SearchShowUrl: APIRootUrl + 'show/search',
     LoginUrl: APIRootUrl + 'user/usernameLogin',
+    LoginTel1Url:APIRootUrl + 'user/telephoneLogin',
+    LoginTel2Url:APIRootUrl + 'user/authCodeLogin',
     getAuthCodeUrl: APIRootUrl + 'user/getAuthCode',
     registerUrl: APIRootUrl + 'user/register',
 

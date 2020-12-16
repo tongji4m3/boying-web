@@ -23,12 +23,21 @@ import axios from 'axios'
 Vue.prototype.$http = axios
 axios.defaults.headers['Content-Type'] = 'application/json';
 
-//拦截器 发送请求前,会发送一个token
-axios.interceptors.request.use(config =>
-{
-  config.headers.authorization = window.sessionStorage.getItem('token');
+//设置axios请求头加入token
+axios.interceptors.request.use(config => {
+  console.log("token token")
+  if (config.push === '/') {
+  } else {
+      if (window.sessionStorage.getItem('token')) {
+          console.log("token here")
+          config.headers.Authorization = `Bearer ${window.sessionStorage.getItem('token')}`;
+      }
+  }
   return config;
-})
+},
+  error => {
+      console.log("axios.interceptors.request", error)
+  });
 
 Vue.config.productionTip = false
 

@@ -10,11 +10,6 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: '#',
-    redirect: 'Login',
-  },
-  {
-    path: '/home',
     name: 'Home',
     component: Home
   },
@@ -41,18 +36,5 @@ const routes = [
 const router = new VueRouter({
   routes
 })
-
-// //挂载路由导航守卫
-// router.beforeEach((to, from, next) => {
-//   if (to.path === '/login') {
-//       window.sessionStorage.clear();
-//       return next();
-//   }
-//   //获取token
-//   const tokenStr = window.sessionStorage.getItem('token');
-//   //无token强制跳转到登录页面
-//   if (!tokenStr) return next('/login');
-//   next();
-// })
 
 export default router

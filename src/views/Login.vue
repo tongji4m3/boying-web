@@ -126,19 +126,15 @@ export default {
       });
 
       try {
-        console.log(this.loginForm.username);
-        const res = await axios.post(
-          this.$api.LoginUrl,
-          JSON.stringify(this.loginForm)
-        );
-
+        const res = await axios.post(this.$api.LoginUrl, {
+          username: this.loginForm.username,
+          password: this.$md5(this.loginForm.password),
+        });
         console.log(res);
-        if (res.data.code == 200) {
+        if (res.status == 200) {
           window.sessionStorage.setItem("token", res.data.data["token"]);
           this.$router.push("/home");
           this.$message.success("登录成功");
-        } else {
-          this.$message.error("登录失败");
         }
       } catch (err) {
         console.log(err);

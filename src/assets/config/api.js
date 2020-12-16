@@ -6,7 +6,5 @@ const APIRootUrl = 'http://localhost:8000/';
 module.exports = {
 
     SearchShowUrl: APIRootUrl + 'show/search',
-    LoginUrl: APIRootUrl + 'user/usernameLogin',
-    getAuthCodeUrl: APIRootUrl + 'user/getAuthCode',
-    registerUrl: APIRootUrl + 'user/register',
+    LoginUrl: APIRootUrl + 'user/usernameLogin'
 }

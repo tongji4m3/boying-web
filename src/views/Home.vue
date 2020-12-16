@@ -20,10 +20,8 @@
                         <el-dropdown-item class="navigation-text" @click.native="changePassword">修改密码</el-dropdown-item>
                         <el-dropdown-item class="navigation-text" @click.native="systemNotice">系统公告</el-dropdown-item>
                         <el-dropdown-item class="navigation-text" @click.native="goIndex">回到首页</el-dropdown-item>
-                        <el-dropdown-item to="/login">登录</el-dropdown-item>
                         <router-link to="/login">登录</router-link>
                         <router-link to="/register">注册</router-link>
-                        <router-link to="/selfinformation">个人信息</router-link>
                         <el-dropdown-item class="navigation-text" to="/login">登录</el-dropdown-item>
                         <el-dropdown-item class="navigation-text" id="exit-div" divided @click.native="logout">退出</el-dropdown-item>
                     </el-dropdown-menu>
@@ -40,20 +38,23 @@
             <!--            种类分类-->
             <el-card shadow="never">
                 <el-row>
-                    <el-col :span="3" v-for="category in categoryList">
+                    <el-col :span="3" v-for="corporation in corporationsList">
+                        <!--                    <el-card class="myCard" :body-style="{ padding: '20px'}" shadow="hover">-->
+                        <!--                        {{corporation}}-->
+                        <!--                    </el-card>-->
                         <div style="text-align: center">
                             <i class="el-icon-share"></i>
                             <br>
-                            {{category}}
+                            {{corporation}}
                         </div>
                     </el-col>
                 </el-row>
             </el-card>
             <br>
             <!--            每个分类-->
-            <div v-for="category in categoryList">
+            <div v-for="corporation in corporationsList">
                 <el-card shadow="never">
-                    {{category}}
+                    {{corporation}}
                     <br><br><br><br><br><br><br><br><br>
                 </el-card>
                 <br>
@@ -70,17 +71,8 @@ export default {
     name: "Home",
     data() {
         return {
-            // categoryList: [],
-            categoryList: ["演唱会","话剧歌剧","体育","展览休闲","音乐会","曲苑杂坛","舞蹈芭蕾","二次元"]
+            corporationsList: ["演唱会","话剧歌剧","体育","展览休闲","音乐会","曲苑杂坛","舞蹈芭蕾","二次元"]
         }
-    },
-    created() {
-        this.getFatherList();
-    },
-    methods: {
-        async getFatherList(){
-            this.categoryList = await this.$http.post(this.$api.CategoryListUrl);
-        },
     }
 }
 </script>

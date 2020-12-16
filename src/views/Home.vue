@@ -52,9 +52,11 @@
             </el-card>
             <br>
             <!--            每个分类-->
-            <div v-for="category in categoryList">
+            <div v-for="childrenList in showList">
                 <el-card shadow="never">
-                    {{category.name}}
+                    <div v-for="show in childrenList">
+                        {{show.name}}
+                    </div>
                     <br><br><br><br><br><br><br><br><br>
                 </el-card>
                 <br>
@@ -74,6 +76,7 @@ export default {
         return {
             categoryCommand: 0,
             categoryList: [],
+            showList: [],
             // categoryList: ["演唱会","话剧歌剧","体育","展览休闲","音乐会","曲苑杂坛","舞蹈芭蕾","二次元"]
 
             categoryForm:{
@@ -82,15 +85,20 @@ export default {
                 name:'',
                 weight:'',
                 description:'',
+            },
+
+            searchForm:{
+                categoryId:'',
+                pageNum: 1,
+                pageSize: 6,
             }
         }
     },
     created() {
-        this.getFatherList();
+        this.getCategoryList();
     },
     methods: {
-
-        async getFatherList(){
+        async getCategoryList(){
             let result = await this.$http.post(
                 this.$api.getCategoryListUrl,
                 JSON.stringify(0)
@@ -98,8 +106,27 @@ export default {
             console.log(result)
             this.categoryList = result.data.data;
             console.log(this.categoryList)
+            for(var i = 0;i<this.categoryList.length;i++){
+                this.showList[i] = await this.getShow(this.categoryList[i].categoryId);
+            }
+        },
+        async getShow(categoryId){
+            let result = await this.$http.post(
+                this.$api.searchUrl,
+                JSON.stringify({
+                    categoryId:categoryId,
+                    city:"上海",
+                    date:"2020-01-22-2021-01-01",
+                    keyword:"",
+                    pageNum: 1,
+                    pageSize: 6,
+                })
+            );
+            console.log(result);
+            return result
         },
     }
+
 }
 </script>
 

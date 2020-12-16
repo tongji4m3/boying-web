@@ -12,4 +12,6 @@ module.exports = {
 
     getCategoryListUrl: APIRootUrl + 'category/categoryList',
     getCategoryMapUrl: APIRootUrl + 'category/categoryMap',
+    searchUrl: APIRootUrl + 'show/search',
+
 }

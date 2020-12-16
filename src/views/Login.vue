@@ -131,7 +131,6 @@ export default {
           this.$api.LoginUrl,
           JSON.stringify(this.loginForm)
         );
-
         console.log(res);
         if (res.data.code == 200) {
           window.sessionStorage.setItem("token", res.data.data["token"]);

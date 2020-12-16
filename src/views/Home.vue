@@ -38,23 +38,23 @@
             <!--            种类分类-->
             <el-card shadow="never">
                 <el-row>
-                    <el-col :span="3" v-for="corporation in corporationsList">
+                    <el-col :span="3" v-for="category in categoryList">
                         <!--                    <el-card class="myCard" :body-style="{ padding: '20px'}" shadow="hover">-->
-                        <!--                        {{corporation}}-->
+                        <!--                        {{category}}-->
                         <!--                    </el-card>-->
                         <div style="text-align: center">
                             <i class="el-icon-share"></i>
                             <br>
-                            {{corporation}}
+                            {{category.name}}
                         </div>
                     </el-col>
                 </el-row>
             </el-card>
             <br>
             <!--            每个分类-->
-            <div v-for="corporation in corporationsList">
+            <div v-for="category in categoryList">
                 <el-card shadow="never">
-                    {{corporation}}
+                    {{category.name}}
                     <br><br><br><br><br><br><br><br><br>
                 </el-card>
                 <br>
@@ -67,12 +67,38 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
     name: "Home",
     data() {
         return {
-            corporationsList: ["演唱会","话剧歌剧","体育","展览休闲","音乐会","曲苑杂坛","舞蹈芭蕾","二次元"]
+            categoryCommand: 0,
+            categoryList: [],
+            // categoryList: ["演唱会","话剧歌剧","体育","展览休闲","音乐会","曲苑杂坛","舞蹈芭蕾","二次元"]
+
+            categoryForm:{
+                categoryId:'',
+                parentId:'',
+                name:'',
+                weight:'',
+                description:'',
+            }
         }
+    },
+    created() {
+        this.getFatherList();
+    },
+    methods: {
+
+        async getFatherList(){
+            let result = await this.$http.post(
+                this.$api.getCategoryListUrl,
+                JSON.stringify(0)
+            );
+            console.log(result)
+            this.categoryList = result.data.data;
+            console.log(this.categoryList)
+        },
     }
 }
 </script>

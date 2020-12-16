@@ -9,4 +9,7 @@ module.exports = {
     LoginUrl: APIRootUrl + 'user/usernameLogin',
     getAuthCodeUrl: APIRootUrl + 'user/getAuthCode',
     registerUrl: APIRootUrl + 'user/register',
+
+    getCategoryListUrl: APIRootUrl + 'category/categoryList',
+    getCategoryMapUrl: APIRootUrl + 'category/categoryMap',
 }

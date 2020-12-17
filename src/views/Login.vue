@@ -12,26 +12,14 @@
       >
         <h3 class="login_title">登录</h3>
         <div class="login_header_title">
-          <a
-            href="javascript:;"
-            rel="external nofollow"
-            :class="{ on: loginType == 0 }"
-            @click="loginType = 0"
-            >账号密码登录</a
+          <span :class="{ on: loginType == 0 }" @click="loginType = 0"
+            >账号密码</span
           >
-          <a
-            href="javascript:;"
-            rel="external nofollow"
-            :class="{ on: loginType == 1 }"
-            @click="loginType = 1"
-            >手机号密码登录</a
+          <span :class="{ on: loginType == 1 }" @click="loginType = 1"
+            >手机号密码</span
           >
-          <a
-            href="javascript:;"
-            rel="external nofollow"
-            :class="{ on: loginType == 2 }"
-            @click="loginType = 2"
-            >手机号验证码登录</a
+          <span :class="{ on: loginType == 2 }" @click="loginType = 2"
+            >手机号验证码</span
           >
         </div>
         <div v-if="loginType == 0">
@@ -166,27 +154,28 @@ export default {
       },
       show: true,
       //表单的验证规则
+      //因为切换登录方式不会切换预验证，暂时不要预验证
       loginFormRules: {
-        //    验证用户名是否合法
-        username: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
-          {
-            min: 3,
-            max: 10,
-            message: "用户名必须在3-10个字符之间",
-            trigger: "blur",
-          },
-        ],
-        //    验证密码是否合法
-        password: [
-          { required: true, message: "请输入密码", trigger: "blur" },
-          {
-            min: 6,
-            max: 50,
-            message: "密码必须在6-15个字符之间",
-            trigger: "blur",
-          },
-        ],
+      //   //    验证用户名是否合法
+      //   username: [
+      //     { required: true, message: "请输入用户名", trigger: "blur" },
+      //     {
+      //       min: 3,
+      //       max: 10,
+      //       message: "用户名必须在3-10个字符之间",
+      //       trigger: "blur",
+      //     },
+      //   ],
+      //   //    验证密码是否合法
+      //   password: [
+      //     { required: true, message: "请输入密码", trigger: "blur" },
+      //     {
+      //       min: 6,
+      //       max: 50,
+      //       message: "密码必须在6-15个字符之间",
+      //       trigger: "blur",
+      //     },
+      //   ],
       },
     };
   },
@@ -202,9 +191,11 @@ export default {
     async login() {
       console.log("login");
       //点击登录先进行表单预验证失败，直接返回不发起请求
-      this.$refs.loginFormRef.validate((valid) => {
-        if (!valid) return;
-      });
+      //因为切换登录方式不会切换预验证，暂时不要预验证
+
+      // this.$refs.loginFormRef.validate((valid) => {
+      //   if (!valid) return;
+      // });
 
       try {
         console.log(this.loginForm.username);
@@ -334,5 +325,22 @@ body {
 
 .authButton {
   margin-left: 45px;
+}
+
+.login_header_title {
+  margin-bottom: 40px;
+}
+
+.login_header_title span {
+  margin-right: 20px;
+  cursor: pointer;
+  color: black;
+  font-size: 16px;
+}
+
+.on {
+  color: #3f7dff;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #3f7dff;
 }
 </style>

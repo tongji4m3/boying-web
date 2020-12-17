@@ -3,7 +3,7 @@
         <el-card>
             <div>
                 城市：
-                <el-radio-group v-model="rcity">
+                <el-radio-group v-model="rcity" @change="getShow()">
                     <el-radio-button label="全国"></el-radio-button>
                     <el-radio-button label="上海"></el-radio-button>
                     <el-radio-button label="北京"></el-radio-button>
@@ -24,7 +24,7 @@
             <div v-if="childrenCategoryVisible">
                 <el-divider></el-divider>
                 子类：
-                <el-radio-group v-model="rchildrencategory">
+                <el-radio-group v-model="rchildrencategory" @change="getShow()">
                     <el-radio-button v-for="category in childrenCategoryList" :label="category.categoryId">
                         {{category.name}}
                     </el-radio-button>
@@ -44,13 +44,14 @@
                     v-model="rtime"
                     type="date"
                     placeholder="选择日期"
+                    @change="getShow()"
                     :picker-options="pickerOptions">
                 </el-date-picker>
             </div>
         </el-card>
         <br>
         <el-card>
-            <el-tabs type="card" v-model="rway">
+            <el-tabs type="card" v-model="rway" @change="getShow()">
                 <el-tab-pane label="相关度排序"></el-tab-pane>
                 <el-tab-pane label="推荐排序"></el-tab-pane>
                 <el-tab-pane label="最近开场"></el-tab-pane>
@@ -151,20 +152,13 @@ export default {
         async getChildren(){
             await this.changeChildrenCategoryVisible(this.rcategory);
             await this.getChildrenCategoryList(this.rcategory);
+            await this.getShow();
         },
         // 展示搜索结果
         async getShow(){
             // console.log(categoryId);
             let result = await this.$http.post(
-                this.$api.searchUrl,
-                JSON.stringify({
-                    city: this.rcity,
-                    date:"2020-01-22-2021-01-01",
-                    keyword:"",
-                    pageNum: 1,
-                    pageSize: 6,
-                })
-            );
+                this.$api.searchUrl+'?city='+this.city+'&date='+this.date+"&keyword="+this.keyword);
             console.log(result);
             return result
         },

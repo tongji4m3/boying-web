@@ -62,9 +62,6 @@
                 <br>
             </div>
         </el-main>
-        <div id="foot">
-            <span id="shineText">石稼晟 1851632 19946254167 1171011192</span>
-        </div>
     </el-container>
 </template>
 
@@ -103,25 +100,27 @@ export default {
                 this.$api.getCategoryListUrl,
                 JSON.stringify(0)
             );
-            console.log(result)
+            // console.log(result)
             this.categoryList = result.data.data;
-            console.log(this.categoryList)
+            // console.log(this.categoryList)
             for(var i = 0;i<this.categoryList.length;i++){
                 this.showList[i] = await this.getShow(this.categoryList[i].categoryId);
             }
         },
         async getShow(categoryId){
             let result = await this.$http.post(
-                this.$api.searchUrl,
-                JSON.stringify({
-                    categoryId:categoryId,
-                    city:"上海",
-                    date:"2020-01-22-2021-01-01",
-                    keyword:"",
-                    pageNum: 1,
-                    pageSize: 6,
-                })
-            );
+                this.$api.searchUrl+'?categoryId'+categoryId+'&city='+this.city+'&date='+this.date+"&keyword="+this.keyword);
+            // let result = await this.$http.post(
+            //     this.$api.searchUrl,
+            //     JSON.stringify({
+            //         categoryId:categoryId,
+            //         city:"上海",
+            //         date:"2020-01-22-2021-01-01",
+            //         keyword:"",
+            //         pageNum: 1,
+            //         pageSize: 6,
+            //     })
+            // );
             console.log(result);
             return result
         },
@@ -170,30 +169,6 @@ export default {
     opacity: 0.75;
     line-height: 300px;
     margin: 0;
-}
-
-#foot {
-    height: 200px;
-    background: rgb(0, 0, 0);
-    position: relative;
-}
-
-#shineText {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 30px 78px;
-    color: #ffffff;
-    background: linear-gradient(to right, #4d4d4d 0, #fff 10%, #4d4d4d 20%);
-    background-position: 0;
-    -webkit-background-clip: text;
-    /*background-clip: text;*/
-    -webkit-text-fill-color: transparent;
-    animation: shine 5.5s linear infinite;
-    font-weight: 500;
-    font-size: 26px;
-    white-space: nowrap;
 }
 
 .el-carousel__item:nth-child(2n) {

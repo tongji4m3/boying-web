@@ -24,7 +24,7 @@
         <!--        主体区域-->
         <el-main>
             <!--            路由占位符-->
-            <router-view style="align-items: center"></router-view>
+            <router-view></router-view>
         </el-main>
         <el-footer>
 <!--            <div id="foot">-->

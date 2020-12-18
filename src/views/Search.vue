@@ -15,8 +15,8 @@
                 <el-divider></el-divider>
                 分类：
                 <el-radio-group v-model="rcategory" @change="getChildren()">
-                    <el-radio-button :label="0">全部</el-radio-button>
-                    <el-radio-button v-for="category in categoryList" :key="category.name" :label="category.categoryId">
+                    <el-radio-button :label=0>全部</el-radio-button>
+                    <el-radio-button v-for="category in categoryList" :key="category.name" :label=category.categoryId>
                         {{category.name}}
                     </el-radio-button>
                 </el-radio-group>
@@ -25,8 +25,8 @@
                 <el-divider></el-divider>
                 子类：
                 <el-radio-group v-model="rchildrencategory" @change="getShow()">
-                    <el-radio-button :label="0">全部</el-radio-button>
-                    <el-radio-button v-for="category in childrenCategoryList" :key="category.name" :label="category.categoryId">
+                    <el-radio-button :label=0>全部</el-radio-button>
+                    <el-radio-button v-for="category in childrenCategoryList" :key="category.name" :label=category.categoryId>
                         {{category.name}}
                     </el-radio-button>
                 </el-radio-group>
@@ -41,23 +41,25 @@
 <!--                    <el-radio-button :label="3">本周末</el-radio-button>-->
 <!--                    <el-radio-button :label="4">一个月内</el-radio-button>-->
 <!--                </el-radio-group>-->
+<!--                <el-radio-button v-model="rtime" :label="0">全部</el-radio-button>-->
                 <el-date-picker
                     v-model="rtime"
                     type="date"
                     placeholder="选择日期"
                     @change="getShow()"
+                    value-format="yyyy-MM-dd HH:mm:ss"
                     :picker-options="pickerOptions">
                 </el-date-picker>
             </div>
         </el-card>
         <br>
         <el-card style="width: 80%">
-            <el-tabs type="card" v-model="rway" @change="getShow()">
-                <el-tab-pane label="相关度排序" name="0"></el-tab-pane>
-                <el-tab-pane label="推荐排序" name="1"></el-tab-pane>
-                <el-tab-pane label="最近开场" name="2"></el-tab-pane>
-                <el-tab-pane label="价格升序" name="3"></el-tab-pane>
-                <el-tab-pane label="价格降序" name="4"></el-tab-pane>
+            <el-tabs type="card" v-model="rsort" @change="getShow()">
+                <el-tab-pane label="相关度排序" name=0></el-tab-pane>
+                <el-tab-pane label="推荐排序" name=1></el-tab-pane>
+                <el-tab-pane label="最近开场" name=2></el-tab-pane>
+                <el-tab-pane label="价格升序" name=3></el-tab-pane>
+                <el-tab-pane label="价格降序" name=4></el-tab-pane>
             </el-tabs>
             <div v-for="show in showList">
                 <el-card>
@@ -108,7 +110,7 @@ export default {
             rcategory: 0,
             rchildrencategory: 0,
             rtime: '',
-            rway: '0',
+            rsort: 0,
             childrenCategoryVisible: false,
             categoryCommand: 0,
             categoryList: [],
@@ -189,20 +191,34 @@ export default {
         // 展示搜索结果
         async getShow(){
             // console.log(categoryId);
-            var id;
-            if(this.rchildrencategory!==0)
-                id = this.rchildrencategory;
-            else
+            var id,city;
+            // 设置category
+            if(this.rcategory===0)
+                id = 0;
+            else if(this.rchildrencategory===0)
                 id = this.rcategory;
-            // console.log(id);
+            else
+                id = this.rchildrencategory;
+            console.log(this.rtime);
+            // if(this.rchildrencategory!==0)
+            //     id = this.rchildrencategory;
+            // else
+            //     id = this.rcategory;
+            // 设置城市
+            if(this.rcity==='全国')
+                city='';
+            else
+                city=this.rcity;
+
             let result = await this.$http.post(
                 this.$api.searchUrl,
                 JSON.stringify({
-                    // categoryId: id,
-                    // date:"2020-01-22-2021-01-01",
+                    categoryId: id,
+                    date: this.rtime,
+                    sort: this.rsort,
                     // pageNum: 1,
                     // pageSize: 6,
-                    // city: this.rcity,
+                    city: city,
                     keyword: ""
                 }));
             this.showList=result.data.data.list;

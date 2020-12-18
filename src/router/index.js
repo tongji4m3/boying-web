@@ -8,6 +8,7 @@ import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Search from '../views/Search.vue'
 import Test from '../views/Test.vue'
+import SelfInformation from '../views/SelfInformation.vue'
 
 Vue.use(VueRouter)
 
@@ -41,6 +42,11 @@ const routes = [
     path: '/test',
     name: 'Test',
     component: Test
+  },
+  {
+    path: '/selfInformation',
+    name: 'SelfInformation',
+    component: SelfInformation
   },
   {
     path: '/about',

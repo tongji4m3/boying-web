@@ -60,6 +60,8 @@
                     <template slot-scope="scope">
                         <el-button type="primary" @click="">查看详情</el-button>
                         <el-button type="danger" @click="">删除</el-button>
+                        <el-button type="info" @click="">编辑</el-button>
+                        <el-button type="danger" @click="">取消默认</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -75,6 +77,7 @@
                     <template slot-scope="scope">
                         <el-button type="primary" @click="">查看详情</el-button>
                         <el-button type="danger" @click="">删除</el-button>
+                        <el-button type="info" @click="">编辑</el-button>
                         <el-button type="success" @click="">设为默认</el-button>
                     </template>
                 </el-table-column>

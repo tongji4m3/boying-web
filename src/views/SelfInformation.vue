@@ -56,6 +56,12 @@
                 <el-table-column prop="region" label="区"></el-table-column>
                 <el-table-column prop="street" label="街道"></el-table-column>
                 <el-table-column prop="details" label="详情"></el-table-column>
+                <el-table-column label="操作">
+                    <template slot-scope="scope">
+                        <el-button type="primary" @click="">查看详情</el-button>
+                        <el-button type="danger" @click="">删除</el-button>
+                    </template>
+                </el-table-column>
             </el-table>
             <br>
             收获地址：
@@ -64,7 +70,14 @@
                 <el-table-column prop="city" label="城市"></el-table-column>
                 <el-table-column prop="region" label="区"></el-table-column>
                 <el-table-column prop="street" label="街道"></el-table-column>
-                <el-table-column prop="details" label="详情" width="180"></el-table-column>
+                <el-table-column prop="details" label="详情"></el-table-column>
+                <el-table-column label="操作" width="400px">
+                    <template slot-scope="scope">
+                        <el-button type="primary" @click="">查看详情</el-button>
+                        <el-button type="danger" @click="">删除</el-button>
+                        <el-button type="success" @click="">设为默认</el-button>
+                    </template>
+                </el-table-column>
             </el-table>
             <el-divider></el-divider>
             <!--            分页区域-->

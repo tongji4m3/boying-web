@@ -2,6 +2,11 @@
     <div style="align-items: center">
         <el-card style="width: 80%">
             <div>
+                搜索：
+                <el-input v-model="rsearch" style="width: 20%" @change="getShow()"></el-input>
+            </div>
+            <div>
+                <el-divider></el-divider>
                 城市：
                 <el-radio-group v-model="rcity" @change="getShow()">
                     <el-radio-button label="全国"></el-radio-button>
@@ -100,6 +105,7 @@ export default {
     name: "Search",
     data() {
         return {
+            rsearch: '',
             rcity: '全国',
             rcategory: 0,
             rchildrencategory: 0,
@@ -203,7 +209,7 @@ export default {
                     pageNum: this.pageNumber,
                     pageSize: this.pageSize,
                     city: city,
-                    keyword: ""
+                    keyword: this.rsearch,
                 }));
             if(result.data.code===200)
             {
@@ -223,6 +229,7 @@ export default {
         async handleSizeChange(newSize)
         {
             this.pageSize = newSize;
+            this.pageNumber = 1;
             // console.log("pageSize:"+this.pageSize);
             await this.getShow();
         },

@@ -69,15 +69,16 @@
             <!--            每个分类-->
             <div v-for="(childrenList,i) in showList" :key="i">
                 <el-card shadow="never">
-                    {{ i }}
+                    {{ translateList[i] }}：
                     <el-row>
-                        <el-col :span="8" v-for="(show,j) in showList[i]" :key="j">
+                        <el-col :span="8" v-for="(show,j) in childrenList" :key="j">
                             <el-card class="myCard" :body-style="{ padding: '20px'}" shadow="hover">
                                 {{ j }}{{ show.name }}
                             </el-card>
                         </el-col>
                     </el-row>
                 </el-card>
+                <br>
             </div>
         </el-main>
     </el-container>
@@ -92,7 +93,8 @@ export default {
             categoryCommand: 0,
             categoryList: [],
             showList: [],
-            translateList: ["演唱会","话剧歌剧","体育","展览休闲","音乐会","曲苑杂坛","舞蹈芭蕾","二次元"],
+            translateList: [],
+            // translateList: ["演唱会","话剧歌剧","体育","展览休闲","音乐会","曲苑杂坛","舞蹈芭蕾","二次元"],
 
             currentUser: {
                 userId: "",
@@ -125,6 +127,14 @@ export default {
             this.$router.push("/login");
             this.$message.success("退出成功")
         },
+        async getCategoryName(id) {
+            let result = await this.$http.post(
+                this.$api.getCategoryNameUrl,
+                JSON.stringify(id+1)
+            );
+            // console.log(result.data.data);
+            return result.data.data;
+        },
         async getCategoryList() {
             let result = await this.$http.post(
                 this.$api.getCategoryListUrl,
@@ -134,11 +144,13 @@ export default {
             this.categoryList = result.data.data;
             // console.log(this.categoryList)
             this.showList.length=this.categoryList.length;
+            this.translateList.length=this.categoryList.length;
             for (var i = 0; i < this.categoryList.length; i++) {
                 this.showList[i] = await this.getShow(this.categoryList[i].categoryId);
+                this.translateList[i] = await this.getCategoryName(this.categoryList[i].categoryId-1);
                 // this.showList[i].name = this.categoryList[i].name;
             }
-            console.log(this.showList);
+            // console.log(this.translateList);
         },
         async getShow(categoryId) {
             let result = await this.$http.post(

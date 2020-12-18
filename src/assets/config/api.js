@@ -15,6 +15,7 @@ module.exports = {
 
     getCategoryListUrl: APIRootUrl + 'category/categoryList',
     getCategoryMapUrl: APIRootUrl + 'category/categoryMap',
+    getCategoryNameUrl: APIRootUrl + 'category/categoryName',
     searchUrl: APIRootUrl + 'show/search',
 
     // 个人信息

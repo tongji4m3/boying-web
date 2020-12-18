@@ -83,7 +83,6 @@ export default {
         onSubmit() {
             console.log('submit!');
         },
-
         // 阿里云OSS上传
         uploadHttp({ file }) {
             this.init();
@@ -123,6 +122,9 @@ export default {
         // 移除图片
         handleRemove(file, fileList) {
             console.log(`移除图片回调`, fileList);
+        },
+        async getUserInfo(){
+            this.form = await this.$http.post(this.$api.getUserInfoUrl);
         },
     },
 };

@@ -18,14 +18,14 @@ module.exports = {
     searchUrl: APIRootUrl + 'show/search',
 
     // 个人信息
-    getUserInfo: APIRootUrl + 'user/info',
-    updateUserInfo: APIRootUrl + 'user/update',
+    getUserInfoUrl: APIRootUrl + 'user/info',
+    updateUserInfoUrl: APIRootUrl + 'user/update',
     // 收货地址
-    getAddressList: APIRootUrl + 'address/list',
-    getAddress: APIRootUrl + 'address',
-    getDefaultAddress: APIRootUrl + 'address/getDefault',
-    addAddress: APIRootUrl + 'address/add',
-    deleteAddress: APIRootUrl + 'address/delete',
-    updateAddress: APIRootUrl + 'address/update',
-    setDefaultAddress: APIRootUrl + 'address/setDefault',
+    getAddressListUrl: APIRootUrl + 'address/list',
+    getAddressUrl: APIRootUrl + 'address',
+    getDefaultAddressUrl: APIRootUrl + 'address/getDefault',
+    addAddressUrl: APIRootUrl + 'address/add',
+    deleteAddressUrl: APIRootUrl + 'address/delete',
+    updateAddressUrl: APIRootUrl + 'address/update',
+    setDefaultAddressUrl: APIRootUrl + 'address/setDefault',
 }

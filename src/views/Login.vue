@@ -304,7 +304,7 @@ body {
 .login-container {
   border-radius: 15px;
   background-clip: padding-box;
-  margin: 150px auto;
+  margin: 70px auto;
   width: 300px;
   padding: 35px 35px 15px 35px;
   background: #fff;

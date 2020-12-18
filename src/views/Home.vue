@@ -38,7 +38,7 @@
             <!--            种类分类-->
             <el-card shadow="never">
                 <el-row>
-                    <el-col :span="3" v-for="category in categoryList">
+                    <el-col :span="3" v-for="category in categoryList" :key="category">
                         <!--                    <el-card class="myCard" :body-style="{ padding: '20px'}" shadow="hover">-->
                         <!--                        {{category}}-->
                         <!--                    </el-card>-->
@@ -52,9 +52,9 @@
             </el-card>
             <br>
             <!--            每个分类-->
-            <div v-for="childrenList in showList">
+            <div v-for="childrenList in showList" :key="childrenList.id">
                 <el-card shadow="never">
-                    <div v-for="show in childrenList">
+                    <div v-for="show in childrenList" :key="show.name">
                         {{show.name}}
                     </div>
                     <br><br><br><br><br><br><br><br><br>

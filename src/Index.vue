@@ -91,7 +91,7 @@ export default {
     display: flex;
     justify-content: space-between;
     margin-left: 0;
-    padding-left: 0;
+    /* padding-left: 0; */
 }
 
 .el-main {

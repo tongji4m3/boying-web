@@ -16,7 +16,7 @@
                 分类：
                 <el-radio-group v-model="rcategory" @change="getChildren()">
                     <el-radio-button :label="0">全部</el-radio-button>
-                    <el-radio-button v-for="category in categoryList" :label="category.categoryId">
+                    <el-radio-button v-for="category in categoryList" :key="category.name" :label="category.categoryId">
                         {{category.name}}
                     </el-radio-button>
                 </el-radio-group>
@@ -25,7 +25,7 @@
                 <el-divider></el-divider>
                 子类：
                 <el-radio-group v-model="rchildrencategory" @change="getShow()">
-                    <el-radio-button v-for="category in childrenCategoryList" :label="category.categoryId">
+                    <el-radio-button v-for="category in childrenCategoryList" :key="category.name" :label="category.categoryId">
                         {{category.name}}
                     </el-radio-button>
                 </el-radio-group>

@@ -83,20 +83,14 @@
             </div>
             <!--            分页区域-->
             <el-pagination
-                background
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
                 :current-page="pageNumber"
-                :page-size="pageSize"
                 :page-sizes="[1, 2, 5, 10]"
+                :page-size="pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="totalCount">
             </el-pagination>
-<!--            <el-pagination-->
-<!--                background-->
-<!--                @current-change="handleCurrentChange"-->
-<!--                layout="prev, pager, next"-->
-<!--                :current-page="pageNumber"-->
-<!--                :page-size="pageSize">-->
-<!--            </el-pagination>-->
         </el-card>
     </div>
 </template>
@@ -118,17 +112,9 @@ export default {
             showList: [],
             // categoryList: ["演唱会","话剧歌剧","体育","展览休闲","音乐会","曲苑杂坛","舞蹈芭蕾","二次元"]
 
-            categoryForm:{
-                categoryId:'',
-                parentId:'',
-                name:'',
-                weight:'',
-                description:'',
-            },
-
             totalCount: 0,
             pageNumber: 1,
-            pageSize: 1,
+            pageSize: 5,
             pickerOptions: {
                 disabledDate(time) {
                     return time.getTime() > Date.now();
@@ -188,9 +174,12 @@ export default {
             await this.getChildrenCategoryList(this.rcategory);
             await this.getShow();
         },
+        // 判断是否有子分类
+        async changeChildrenCategoryVisible(id){
+            this.childrenCategoryVisible = id !== 0;
+        },
         // 展示搜索结果
         async getShow(){
-            // console.log(categoryId);
             var id,city;
             // 设置category
             if(this.rcategory===0)
@@ -199,11 +188,6 @@ export default {
                 id = this.rcategory;
             else
                 id = this.rchildrencategory;
-            console.log(this.rtime);
-            // if(this.rchildrencategory!==0)
-            //     id = this.rchildrencategory;
-            // else
-            //     id = this.rcategory;
             // 设置城市
             if(this.rcity==='全国')
                 city='';
@@ -216,31 +200,38 @@ export default {
                     categoryId: id,
                     date: this.rtime,
                     sort: this.rsort,
-                    // pageNum: 1,
-                    // pageSize: 6,
+                    pageNum: this.pageNumber,
+                    pageSize: this.pageSize,
                     city: city,
                     keyword: ""
                 }));
-            this.showList=result.data.data.list;
-            this.totalCount=this.showList.length;
-            this.pageNumber=Math.ceil(this.totalCount/this.pageSize);
-            console.log(this.showList);
-
+            if(result.data.code===200)
+            {
+                this.showList=result.data.data.list;
+                this.totalCount=result.data.data.total;
+            }
+            else
+            {
+                this.showList=[];
+                this.totalCount=0;
+            }
+            console.log("pageSize:"+this.pageSize);
+            console.log("pageNumber:"+this.pageNumber);
+            console.log(result.data.data);
         },
-        // 判断是否有子分类
-        async changeChildrenCategoryVisible(id){
-            // console.log(id);
-            this.childrenCategoryVisible = id !== 0;
+        //监听pageSize改变的事件
+        async handleSizeChange(newSize)
+        {
+            this.pageSize = newSize;
+            // console.log("pageSize:"+this.pageSize);
+            await this.getShow();
         },
-        // //监听pageSize改变的事件
-        // handleSizeChange(newSize)
-        // {
-        //     this.pageSize = newSize;
-        // },
         //监听pageNum改变的事件
-        handleCurrentChange(newPage)
+        async handleCurrentChange(newPage)
         {
             this.pageNumber = newPage;
+            // console.log("pageNumber:"+this.pageNumber);
+            await this.getShow();
         },
     }
 }

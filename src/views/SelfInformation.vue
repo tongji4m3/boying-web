@@ -50,12 +50,23 @@
         <el-card>
             <br>
             默认收获地址：
-
+            <el-table :data="defaultAddressList" style="width: 100%">
+                <el-table-column prop="province" label="省份"></el-table-column>
+                <el-table-column prop="city" label="城市"></el-table-column>
+                <el-table-column prop="region" label="区"></el-table-column>
+                <el-table-column prop="street" label="街道"></el-table-column>
+                <el-table-column prop="details" label="详情"></el-table-column>
+            </el-table>
             <br>
             收获地址：
-            <el-card v-for="address in addressList">
-                {{ address.city }}
-            </el-card>
+            <el-table :data="addressList" style="width: 100%">
+                <el-table-column prop="province" label="省份"></el-table-column>
+                <el-table-column prop="city" label="城市"></el-table-column>
+                <el-table-column prop="region" label="区"></el-table-column>
+                <el-table-column prop="street" label="街道"></el-table-column>
+                <el-table-column prop="details" label="详情" width="180"></el-table-column>
+            </el-table>
+            <el-divider></el-divider>
             <!--            分页区域-->
             <el-pagination
                 @size-change="handleSizeChange"
@@ -94,11 +105,13 @@ export default {
             pageSize: 5,
 
             addressList: [],
+            defaultAddressList: [],
         };
     },
     created() {
         this.getUserInfo();
         this.getAddressList();
+        this.getDefaultAddressList();
     },
     methods: {
         onSubmit() {
@@ -148,7 +161,7 @@ export default {
             // this.form = result;
             // console.log(result.data.data);
         },
-        // 获取收获地址
+        // 获取收货地址
         async getAddressList(){
             var result = await this.$http.post(this.$api.getAddressListUrl,
                 {
@@ -161,6 +174,22 @@ export default {
             }
             else{
                 this.addressList=[];
+            }
+            this.totalCount=result.data.data.total;
+        },
+        // 获取默认收货地址
+        async getDefaultAddressList(){
+            var result = await this.$http.post(this.$api.getDefaultAddressUrl,
+                {
+                    pageNum: this.pageNumber,
+                    pageSize: this.pageSize,
+                });
+            console.log(result.data.data);
+            if(result.data.code===200){
+                this.defaultAddressList=result.data.data.list;
+            }
+            else{
+                this.defaultAddressList=[];
             }
         },
         //监听pageSize改变的事件

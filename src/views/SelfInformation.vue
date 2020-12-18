@@ -77,7 +77,7 @@ export default {
         };
     },
     created() {
-
+        this.getUserInfo();
     },
     methods: {
         onSubmit() {
@@ -124,7 +124,9 @@ export default {
             console.log(`移除图片回调`, fileList);
         },
         async getUserInfo(){
-            this.form = await this.$http.post(this.$api.getUserInfoUrl);
+            var result = await this.$http.post(this.$api.getUserInfoUrl);
+            // this.form = result;
+            console.log(result.data.data);
         },
     },
 };

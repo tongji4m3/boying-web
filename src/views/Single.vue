@@ -1,6 +1,6 @@
 <template>
     <div>
-
+        这是单独商品界面
     </div>
 </template>
 

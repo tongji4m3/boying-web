@@ -49,8 +49,9 @@
         <br>
         <el-card>
             <br>
-            这是收货地址
+            默认收获地址：
             <br>
+            收获地址：
         </el-card>
     </div>
 </template>
@@ -83,9 +84,7 @@ export default {
             console.log('submit!');
         },
 
-        /**
-         * 阿里云OSS上传
-         */
+        // 阿里云OSS上传
         uploadHttp({ file }) {
             this.init();
             const { imgName } = "ALIOSS_IMG_";
@@ -106,9 +105,7 @@ export default {
                 });
         },
 
-        /**
-         * 图片限制
-         */
+        // 图片限制
         beforeAvatarUpload(file) {
             const isJPEG = file.name.split(".")[1] === "jpeg";
             const isJPG = file.name.split(".")[1] === "jpg";
@@ -123,9 +120,7 @@ export default {
             return (isJPEG || isJPG || isPNG) && isLt500K;
         },
 
-        /**
-         * 移除图片
-         */
+        // 移除图片
         handleRemove(file, fileList) {
             console.log(`移除图片回调`, fileList);
         },

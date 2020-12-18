@@ -17,4 +17,15 @@ module.exports = {
     getCategoryMapUrl: APIRootUrl + 'category/categoryMap',
     searchUrl: APIRootUrl + 'show/search',
 
+    // 个人信息
+    getUserInfo: APIRootUrl + 'user/info',
+    updateUserInfo: APIRootUrl + 'user/update',
+    // 收货地址
+    getAddressList: APIRootUrl + 'address/list',
+    getAddress: APIRootUrl + 'address',
+    getDefaultAddress: APIRootUrl + 'address/getDefault',
+    addAddress: APIRootUrl + 'address/add',
+    deleteAddress: APIRootUrl + 'address/delete',
+    updateAddress: APIRootUrl + 'address/update',
+    setDefaultAddress: APIRootUrl + 'address/setDefault',
 }

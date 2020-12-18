@@ -1,49 +1,57 @@
 <template>
     <div>
-        <el-form ref="form" :model="form" label-width="80px">
-            <el-form-item label="生日">
-                <el-date-picker type="date" placeholder="选择日期" v-model="form.age" style="width: 10%;"></el-date-picker>
-            </el-form-item>
-            <el-form-item label="邮箱">
-                <el-input v-model="form.email" style="width: 15%"></el-input>
-            </el-form-item>
-            <el-form-item label="姓别">
-                <el-select v-model="form.gender" placeholder="请选择" style="width: 10%">
-                    <el-option label="男" value="man"></el-option>
-                    <el-option label="女" value="woman"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="头像">
-                <el-upload
-                    class="upload"
-                    action
-                    :drag="true"
-                    :multiple="true"
-                    :file-list="images"
-                    :http-request="uploadHttp"
-                    :before-upload="beforeAvatarUpload"
-                    :on-remove="handleRemove">
-                    <i class="el-icon-plus avatar-uploader-icon"></i>
-                    <p id="img-context">上传个人头像</p>
-                    <div class="el-upload__tip" slot="tip">
-                        只能上传jpg/jpeg/png文件，且不超过5MB
-                    </div>
-                </el-upload>
-            </el-form-item>
-            <el-form-item label="身份证号">
-                <el-input v-model="form.identityNumber" style="width: 15%"></el-input>
-            </el-form-item>
-            <el-form-item label="昵称">
-                <el-input v-model="form.name" style="width: 15%"></el-input>
-            </el-form-item>
-            <el-form-item label="真实姓名">
-                <el-input v-model="form.realName" style="width: 15%"></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="onSubmit">编辑</el-button>
-                <el-button>取消</el-button>
-            </el-form-item>
-        </el-form>
+        <el-card>
+            <el-form ref="form" :model="form" label-width="80px">
+                <el-form-item label="生日">
+                    <el-date-picker type="date" placeholder="选择日期" v-model="form.age" style="width: 10%;"></el-date-picker>
+                </el-form-item>
+                <el-form-item label="邮箱">
+                    <el-input v-model="form.email" style="width: 15%"></el-input>
+                </el-form-item>
+                <el-form-item label="姓别">
+                    <el-select v-model="form.gender" placeholder="请选择" style="width: 10%">
+                        <el-option label="男" value="man"></el-option>
+                        <el-option label="女" value="woman"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="头像">
+                    <el-upload
+                        class="upload"
+                        action
+                        :drag="true"
+                        :multiple="true"
+                        :file-list="images"
+                        :http-request="uploadHttp"
+                        :before-upload="beforeAvatarUpload"
+                        :on-remove="handleRemove">
+                        <i class="el-icon-plus avatar-uploader-icon"></i>
+                        <p id="img-context">上传个人头像</p>
+                        <div class="el-upload__tip" slot="tip">
+                            只能上传jpg/jpeg/png文件，且不超过5MB
+                        </div>
+                    </el-upload>
+                </el-form-item>
+                <el-form-item label="身份证号">
+                    <el-input v-model="form.identityNumber" style="width: 15%"></el-input>
+                </el-form-item>
+                <el-form-item label="昵称">
+                    <el-input v-model="form.name" style="width: 15%"></el-input>
+                </el-form-item>
+                <el-form-item label="真实姓名">
+                    <el-input v-model="form.realName" style="width: 15%"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="onSubmit">编辑</el-button>
+                    <el-button>取消</el-button>
+                </el-form-item>
+            </el-form>
+        </el-card>
+        <br>
+        <el-card>
+            <br>
+            这是收货地址
+            <br>
+        </el-card>
     </div>
 </template>
 

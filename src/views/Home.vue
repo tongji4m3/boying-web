@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-backtop :bottom="60" :right="60"> </el-backtop>
-    <el-header>
+    <el-header v-show="currentUser.userId!=''">
       <div></div>
       <div class="out-button">
         <el-dropdown>
@@ -29,10 +29,8 @@
             <el-dropdown-item class="navigation-text" @click.native="goIndex"
               >回到首页</el-dropdown-item
             >
-            <router-link to="/login">登录</router-link>
-            <router-link to="/register">注册</router-link>
-            <el-dropdown-item class="navigation-text" to="/login"
-              >登录</el-dropdown-item
+            <el-dropdown-item class="navigation-text" @click.native="toOrder"
+              >我的订单</el-dropdown-item
             >
             <el-dropdown-item
               class="navigation-text"
@@ -117,6 +115,13 @@ export default {
     this.getUser();
   },
   methods: {
+    toOrder() {
+      this.$router.push("/order");
+    },
+    logout(){
+        this.$router.push("/login");
+        this.$message.success("退出成功")
+    },
     async getCategoryList() {
       let result = await this.$http.post(
         this.$api.getCategoryListUrl,
@@ -126,7 +131,7 @@ export default {
       this.categoryList = result.data.data;
       // console.log(this.categoryList)
       for (var i = 0; i < this.categoryList.length; i++) {
-        // this.showList[i] = await this.getShow(this.categoryList[i].categoryId);
+        this.showList[i] = await this.getShow(this.categoryList[i].categoryId);
       }
     },
     async getShow(categoryId) {
@@ -158,12 +163,13 @@ export default {
 
     async getUser() {
       try {
-        const res = await axios.post(
-          this.$api.getUserUrl
-        );
+        const res = await axios.post(this.$api.getUserUrl);
         console.log(res);
         if (res.data.code == 200) {
-            this.currentUser=res.data.data
+          this.currentUser = res.data.data;
+        }
+        else{
+            this.currentUser.userId='';
         }
       } catch (err) {
         console.log(err);
@@ -194,6 +200,7 @@ export default {
   justify-content: space-between;
   margin-left: 0;
   padding-left: 0;
+  width: 100%;
 }
 
 .out-button {

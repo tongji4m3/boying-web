@@ -8,6 +8,7 @@ import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Search from '../views/Search.vue'
 import Test from '../views/Test.vue'
+import Order from '../views/Order.vue'
 
 Vue.use(VueRouter)
 
@@ -41,6 +42,11 @@ const routes = [
     path: '/test',
     name: 'Test',
     component: Test
+  },
+  {
+    path: '/order',
+    name: 'Order',
+    component: Order
   },
   {
     path: '/about',

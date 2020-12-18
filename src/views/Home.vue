@@ -46,14 +46,14 @@
         <el-main>
             <!--            走马灯-->
             <el-carousel indicator-position="outside">
-                <el-carousel-item v-for="item in 4" :key="item">
+                <el-carousel-item v-for="item in 4">
                     <h3>{{ item }}</h3>
                 </el-carousel-item>
             </el-carousel>
             <!--            种类分类-->
             <el-card shadow="never">
                 <el-row>
-                    <el-col :span="3" v-for="category in categoryList" :key="category">
+                    <el-col :span="3" v-for="category in categoryList">
                         <!--                    <el-card class="myCard" :body-style="{ padding: '20px'}" shadow="hover">-->
                         <!--                        {{category}}-->
                         <!--                    </el-card>-->
@@ -67,15 +67,17 @@
             </el-card>
             <br />
             <!--            每个分类-->
-            <div v-for="childrenList in showList" :key="childrenList.id">
-                {{ childrenList }}
-<!--                <el-card shadow="never">-->
-<!--                    <div v-for="show in childrenList" :key="show.name">-->
-<!--                        {{ show.name }}-->
-<!--                    </div>-->
-<!--                    <br /><br /><br /><br /><br /><br /><br /><br /><br />-->
-<!--                </el-card>-->
-                <br />
+            <div v-for="(childrenList,i) in showList" :key="i">
+                <el-card shadow="never">
+                    {{ i }}
+                    <el-row>
+                        <el-col :span="8" v-for="(show,j) in showList[i]" :key="j">
+                            <el-card class="myCard" :body-style="{ padding: '20px'}" shadow="hover">
+                                {{ j }}{{ show.name }}
+                            </el-card>
+                        </el-col>
+                    </el-row>
+                </el-card>
             </div>
         </el-main>
     </el-container>
@@ -90,7 +92,7 @@ export default {
             categoryCommand: 0,
             categoryList: [],
             showList: [],
-            // categoryList: ["演唱会","话剧歌剧","体育","展览休闲","音乐会","曲苑杂坛","舞蹈芭蕾","二次元"]
+            translateList: ["演唱会","话剧歌剧","体育","展览休闲","音乐会","曲苑杂坛","舞蹈芭蕾","二次元"],
 
             currentUser: {
                 userId: "",
@@ -131,8 +133,10 @@ export default {
             // console.log(result)
             this.categoryList = result.data.data;
             // console.log(this.categoryList)
+            this.showList.length=this.categoryList.length;
             for (var i = 0; i < this.categoryList.length; i++) {
                 this.showList[i] = await this.getShow(this.categoryList[i].categoryId);
+                // this.showList[i].name = this.categoryList[i].name;
             }
             console.log(this.showList);
         },
@@ -146,6 +150,7 @@ export default {
                 }));
 
             // console.log(result);
+            this.$forceUpdate();
             if(result.data.code===200)
                 return result.data.data.list;
             else
@@ -156,7 +161,7 @@ export default {
             try {
                 const res = await axios.post(this.$api.getUserUrl);
                 console.log(res);
-                if (res.data.code == 200) {
+                if (res.data.code === 200) {
                     this.currentUser = res.data.data;
                 }
                 else{

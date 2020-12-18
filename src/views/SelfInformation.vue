@@ -54,7 +54,7 @@
             <br>
             收获地址：
             <el-card v-for="address in addressList">
-
+                {{ address.city }}
             </el-card>
             <!--            分页区域-->
             <el-pagination
@@ -155,9 +155,9 @@ export default {
                     pageNum: this.pageNumber,
                     pageSize: this.pageSize,
                 });
-            console.log(result.data);
+            console.log(result.data.data);
             if(result.data.code===200){
-                this.addressList=result.data.data;
+                this.addressList=result.data.data.list;
             }
             else{
                 this.addressList=[];

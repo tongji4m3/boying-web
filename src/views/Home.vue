@@ -70,10 +70,21 @@
             <div v-for="(childrenList,i) in showList" :key="i">
                 <el-card shadow="never">
                     {{ translateList[i] }}：
-                    <el-row>
+                    <el-row :gutter="40">
                         <el-col :span="8" v-for="(show,j) in childrenList" :key="j">
-                            <el-card class="myCard" :body-style="{ padding: '20px'}" shadow="hover">
-                                {{ j }}{{ show.name }}
+                            <el-card class="myCard" :body-style="{ padding: '10px'}" shadow="hover">
+                                <el-col :span="10">
+                                    <img width="100" height="140" :src="show.poster" class="image" />
+                                </el-col>
+                                <el-col :span="14">
+                                    {{ show.name }}
+                                    <br>
+                                    {{ show.city }}
+                                    <br>
+                                    {{ show.dayStart.substring(0,10) }}~{{ show.dayEnd.substring(0,10) }}
+                                    <br>
+                                    ¥{{ show.minPrice }}起
+                                </el-col>
                             </el-card>
                         </el-col>
                     </el-row>
@@ -150,7 +161,7 @@ export default {
                 this.translateList[i] = await this.getCategoryName(this.categoryList[i].categoryId-1);
                 // this.showList[i].name = this.categoryList[i].name;
             }
-            // console.log(this.translateList);
+            console.log(this.showList);
         },
         async getShow(categoryId) {
             let result = await this.$http.post(
@@ -164,7 +175,16 @@ export default {
             // console.log(result);
             this.$forceUpdate();
             if(result.data.code===200)
+            {
+                // for (let i = 0; i < result.data.data.list.length; i++)
+                // {
+                //     result.data.data.list.length[i].dayEnd=result.data.data.list.length[i].dayEnd.substring(0,10);
+                //     result.data.data.list.length[i].dayStart=result.data.data.list.length[i].dayStart.substring(0,10);
+                // }
+                console.log(result);
                 return result.data.data.list;
+            }
+
             else
                 return [];
         },

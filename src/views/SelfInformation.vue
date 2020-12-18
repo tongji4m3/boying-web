@@ -50,8 +50,22 @@
         <el-card>
             <br>
             默认收获地址：
+
             <br>
             收获地址：
+            <el-card v-for="address in addressList">
+
+            </el-card>
+            <!--            分页区域-->
+            <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="pageNumber"
+                :page-sizes="[1, 2, 5, 10]"
+                :page-size="pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="totalCount">
+            </el-pagination>
         </el-card>
     </div>
 </template>
@@ -73,11 +87,18 @@ export default {
                 identityNumber: '',
                 name: '',
                 realName: '',
-            }
+            },
+
+            totalCount: 0,
+            pageNumber: 1,
+            pageSize: 5,
+
+            addressList: [],
         };
     },
     created() {
         this.getUserInfo();
+        this.getAddressList();
     },
     methods: {
         onSubmit() {
@@ -103,7 +124,6 @@ export default {
                     console.log(`阿里云OSS上传图片失败回调`, err);
                 });
         },
-
         // 图片限制
         beforeAvatarUpload(file) {
             const isJPEG = file.name.split(".")[1] === "jpeg";
@@ -118,17 +138,48 @@ export default {
             }
             return (isJPEG || isJPG || isPNG) && isLt500K;
         },
-
         // 移除图片
         handleRemove(file, fileList) {
             console.log(`移除图片回调`, fileList);
         },
+        // 获取用户信息
         async getUserInfo(){
             var result = await this.$http.post(this.$api.getUserInfoUrl);
             // this.form = result;
-            console.log(result.data.data);
+            // console.log(result.data.data);
+        },
+        // 获取收获地址
+        async getAddressList(){
+            var result = await this.$http.post(this.$api.getAddressListUrl,
+                {
+                    pageNum: this.pageNumber,
+                    pageSize: this.pageSize,
+                });
+            console.log(result.data);
+            if(result.data.code===200){
+                this.addressList=result.data.data;
+            }
+            else{
+                this.addressList=[];
+            }
+        },
+        //监听pageSize改变的事件
+        async handleSizeChange(newSize)
+        {
+            this.pageSize = newSize;
+            this.pageNumber = 1;
+            // console.log("pageSize:"+this.pageSize);
+            await this.getAddressList();
+        },
+        //监听pageNum改变的事件
+        async handleCurrentChange(newPage)
+        {
+            this.pageNumber = newPage;
+            // console.log("pageNumber:"+this.pageNumber);
+            await this.getAddressList();
         },
     },
+
 };
 </script>
 

@@ -24,7 +24,7 @@
         <!--        主体区域-->
         <el-main>
             <!--            路由占位符-->
-            <router-view></router-view>
+            <router-view style="align-items: center"></router-view>
         </el-main>
         <el-footer>
 <!--            <div id="foot">-->
@@ -47,7 +47,7 @@ export default {
     created()
     {
         this.name = window.sessionStorage.getItem('name');
-        console.log(this.name)
+        // console.log(this.name)
         if (this.name != null)
         {
             this.isLogin = true;
@@ -91,7 +91,7 @@ export default {
     display: flex;
     justify-content: space-between;
     margin-left: 0;
-    padding-left: 0;
+    /* padding-left: 0; */
 }
 
 .el-main {

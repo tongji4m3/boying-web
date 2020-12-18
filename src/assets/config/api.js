@@ -11,6 +11,7 @@ module.exports = {
     LoginTel2Url:APIRootUrl + 'user/authCodeLogin',
     getAuthCodeUrl: APIRootUrl + 'user/getAuthCode',
     registerUrl: APIRootUrl + 'user/register',
+    getUserUrl: APIRootUrl + 'user/info',
 
     getCategoryListUrl: APIRootUrl + 'category/categoryList',
     getCategoryMapUrl: APIRootUrl + 'category/categoryMap',

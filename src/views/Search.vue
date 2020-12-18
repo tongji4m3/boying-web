@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <el-card>
+    <div style="align-items: center">
+        <el-card style="width: 80%">
             <div>
                 城市：
                 <el-radio-group v-model="rcity" @change="getShow()">
@@ -16,7 +16,7 @@
                 分类：
                 <el-radio-group v-model="rcategory" @change="getChildren()">
                     <el-radio-button :label="0">全部</el-radio-button>
-                    <el-radio-button v-for="category in categoryList" :label="category.categoryId">
+                    <el-radio-button v-for="category in categoryList" :key="category.name" :label="category.categoryId">
                         {{category.name}}
                     </el-radio-button>
                 </el-radio-group>
@@ -25,7 +25,8 @@
                 <el-divider></el-divider>
                 子类：
                 <el-radio-group v-model="rchildrencategory" @change="getShow()">
-                    <el-radio-button v-for="category in childrenCategoryList" :label="category.categoryId">
+                    <el-radio-button :label="0">全部</el-radio-button>
+                    <el-radio-button v-for="category in childrenCategoryList" :key="category.name" :label="category.categoryId">
                         {{category.name}}
                     </el-radio-button>
                 </el-radio-group>
@@ -50,19 +51,50 @@
             </div>
         </el-card>
         <br>
-        <el-card>
+        <el-card style="width: 80%">
             <el-tabs type="card" v-model="rway" @change="getShow()">
-                <el-tab-pane label="相关度排序"></el-tab-pane>
-                <el-tab-pane label="推荐排序"></el-tab-pane>
-                <el-tab-pane label="最近开场"></el-tab-pane>
-                <el-tab-pane label="价格升序"></el-tab-pane>
-                <el-tab-pane label="价格降序"></el-tab-pane>
+                <el-tab-pane label="相关度排序" name="0"></el-tab-pane>
+                <el-tab-pane label="推荐排序" name="1"></el-tab-pane>
+                <el-tab-pane label="最近开场" name="2"></el-tab-pane>
+                <el-tab-pane label="价格升序" name="3"></el-tab-pane>
+                <el-tab-pane label="价格降序" name="4"></el-tab-pane>
             </el-tabs>
+            <div v-for="show in showList">
+                <el-card>
+                    <el-row :gutter="2">
+                        <el-col :span="3">
+                            <el-image
+                                style="width: 90px; height: 160px"
+                                :src="show.poster"
+                            ></el-image>
+                        </el-col>
+                        <el-col :span="9">
+                            {{show.name}}
+                        </el-col>
+                        <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
+                        <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
+                    </el-row>
+
+
+                </el-card>
+                <br>
+            </div>
+            <!--            分页区域-->
             <el-pagination
                 background
-                layout="prev, pager, next"
-                :total="500">
+                :current-page="pageNumber"
+                :page-size="pageSize"
+                :page-sizes="[1, 2, 5, 10]"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="totalCount">
             </el-pagination>
+<!--            <el-pagination-->
+<!--                background-->
+<!--                @current-change="handleCurrentChange"-->
+<!--                layout="prev, pager, next"-->
+<!--                :current-page="pageNumber"-->
+<!--                :page-size="pageSize">-->
+<!--            </el-pagination>-->
         </el-card>
     </div>
 </template>
@@ -76,11 +108,12 @@ export default {
             rcategory: 0,
             rchildrencategory: 0,
             rtime: '',
-            rway: "相关度排序",
+            rway: '0',
             childrenCategoryVisible: false,
             categoryCommand: 0,
             categoryList: [],
             childrenCategoryList: [],
+            showList: [],
             // categoryList: ["演唱会","话剧歌剧","体育","展览休闲","音乐会","曲苑杂坛","舞蹈芭蕾","二次元"]
 
             categoryForm:{
@@ -91,12 +124,9 @@ export default {
                 description:'',
             },
 
-            searchForm:{
-                categoryId:'',
-                pageNum: 1,
-                pageSize: 6,
-            },
-
+            totalCount: 0,
+            pageNumber: 1,
+            pageSize: 1,
             pickerOptions: {
                 disabledDate(time) {
                     return time.getTime() > Date.now();
@@ -126,6 +156,7 @@ export default {
     },
     created() {
         this.getCategoryList();
+        this.getShow();
     },
     methods: {
         // 获取主分类
@@ -134,7 +165,7 @@ export default {
                 this.$api.getCategoryListUrl,
                 JSON.stringify(0)
             );
-            console.log(result)
+            // console.log(result)
             this.categoryList = result.data.data;
             // console.log(this.categoryList)
         },
@@ -144,12 +175,13 @@ export default {
                 this.$api.getCategoryListUrl,
                 JSON.stringify(id)
             );
-            console.log(result)
+            // console.log(result)
             this.childrenCategoryList = result.data.data;
             // console.log(this.categoryList)
         },
         // 触发子分类
         async getChildren(){
+            this.rchildrencategory=0;
             await this.changeChildrenCategoryVisible(this.rcategory);
             await this.getChildrenCategoryList(this.rcategory);
             await this.getShow();
@@ -157,20 +189,50 @@ export default {
         // 展示搜索结果
         async getShow(){
             // console.log(categoryId);
+            var id;
+            if(this.rchildrencategory!==0)
+                id = this.rchildrencategory;
+            else
+                id = this.rcategory;
+            // console.log(id);
             let result = await this.$http.post(
-                this.$api.searchUrl+'?city='+this.city+'&date='+this.date+"&keyword="+this.keyword);
-            console.log(result);
-            return result
+                this.$api.searchUrl,
+                JSON.stringify({
+                    // categoryId: id,
+                    // date:"2020-01-22-2021-01-01",
+                    // pageNum: 1,
+                    // pageSize: 6,
+                    // city: this.rcity,
+                    keyword: ""
+                }));
+            this.showList=result.data.data.list;
+            this.totalCount=this.showList.length;
+            this.pageNumber=Math.ceil(this.totalCount/this.pageSize);
+            console.log(this.showList);
+
         },
         // 判断是否有子分类
         async changeChildrenCategoryVisible(id){
             // console.log(id);
             this.childrenCategoryVisible = id !== 0;
-        }
+        },
+        // //监听pageSize改变的事件
+        // handleSizeChange(newSize)
+        // {
+        //     this.pageSize = newSize;
+        // },
+        //监听pageNum改变的事件
+        handleCurrentChange(newPage)
+        {
+            this.pageNumber = newPage;
+        },
     }
 }
 </script>
 
 <style scoped>
-
+#set1{
+    justify-content: center;
+    align-items: center;
+}
 </style>

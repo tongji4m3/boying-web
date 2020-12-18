@@ -1,78 +1,81 @@
 <!--有前端验证注册信息是否合理-->
 <template>
-  <body id="poster">
-    <el-form
-      ref="registerFormRef"
-      :model="registerForm"
-      :rules="registerFormRules"
-      class="register-container"
-      label-position="left"
-      label-width="0px"
-      v-loading="loading"
-    >
-      <h3 class="login_title">注册</h3>
-      <el-form-item prop="username">
-        <el-input
-          v-model="registerForm.username"
-          placeholder="用户名"
-        ></el-input>
-      </el-form-item>
-      <el-form-item prop="password">
-        <el-input
-          type="password"
-          v-model="registerForm.password"
-          placeholder="密码"
-        ></el-input>
-      </el-form-item>
-      <el-form-item prop="confirmPassword">
-        <el-input
-          type="password"
-          v-model="registerForm.confirmPassword"
-          placeholder="确认密码"
-        ></el-input>
-      </el-form-item>
-      <el-form-item prop="telephone">
-        <el-input
-          v-model="registerForm.telephone"
-          placeholder="手机号"
-        ></el-input>
-      </el-form-item>
-      <el-form-item prop="authCode">
-        <el-input
-          v-model="registerForm.authCode"
-          placeholder="验证码"
-          class="authInput"
-        ></el-input>
-        <el-button class="authButton" v-on:click="getAuthCode"
-          >获取验证码</el-button
-        >
-      </el-form-item>
-
-      <el-upload
-        class="upload"
-        action
-        :drag="true"
-        :multiple="true"
-        :file-list="images"
-        :http-request="uploadHttp"
-        :before-upload="beforeAvatarUpload"
-        :on-remove="handleRemove"
+  <body id="poster" >
+    <el-scrollbar style="height: 100%">
+      <el-form
+        ref="registerFormRef"
+        :model="registerForm"
+        :rules="registerFormRules"
+        class="register-container"
+        label-position="left"
+        label-width="0px"
+        v-loading="loading"
+        size="medium"
       >
-        <i class="el-icon-plus avatar-uploader-icon"></i>
-        <p id="img-context">上传个人头像</p>
-        <div class="el-upload__tip" slot="tip">
-          只能上传jpg/jpeg/png文件，且不超过5MB
-        </div>
-      </el-upload>
-      <el-form-item style="width: 100%">
-        <el-button
-          type="primary"
-          style="width: 100%; background: #505458; border: none"
-          v-on:click="register"
-          >注册</el-button
+        <h3 class="login_title">注册</h3>
+        <el-form-item prop="username">
+          <el-input
+            v-model="registerForm.username"
+            placeholder="用户名"
+          ></el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input
+            type="password"
+            v-model="registerForm.password"
+            placeholder="密码"
+          ></el-input>
+        </el-form-item>
+        <el-form-item prop="confirmPassword">
+          <el-input
+            type="password"
+            v-model="registerForm.confirmPassword"
+            placeholder="确认密码"
+          ></el-input>
+        </el-form-item>
+        <el-form-item prop="telephone">
+          <el-input
+            v-model="registerForm.telephone"
+            placeholder="手机号"
+          ></el-input>
+        </el-form-item>
+        <el-form-item prop="authCode">
+          <el-input
+            v-model="registerForm.authCode"
+            placeholder="验证码"
+            class="authInput"
+          ></el-input>
+          <el-button class="authButton" v-on:click="getAuthCode"
+            >获取验证码</el-button
+          >
+        </el-form-item>
+
+        <el-upload
+          class="upload"
+          action
+          :drag="true"
+          :multiple="true"
+          :file-list="images"
+          :http-request="uploadHttp"
+          :before-upload="beforeAvatarUpload"
+          :on-remove="handleRemove"
         >
-      </el-form-item>
-    </el-form>
+          <i class="el-icon-plus avatar-uploader-icon"></i>
+          <p id="img-context">上传个人头像</p>
+          <div class="el-upload__tip" slot="tip">
+            只能上传jpg/jpeg/png文件，且不超过5MB
+          </div>
+        </el-upload>
+        <el-form-item style="width: 100%">
+          <el-button
+            type="primary"
+            style="width: 100%; background: #505458; border: none"
+            v-on:click="register"
+            >注册</el-button
+          >
+        </el-form-item>
+      </el-form>
+    </el-scrollbar>
   </body>
 </template>
 
@@ -164,8 +167,8 @@ export default {
     //创建后挂载
     let _this = this;
     setTimeout(() => {
-          this.loading = false;
-        }, 500);
+      this.loading = false;
+    }, 500);
     document.onkeydown = function (e) {
       let key = window.event.keyCode;
 
@@ -301,6 +304,8 @@ body {
   /*linear-gradient(#191c20, #24292e 15%);*/
   background-repeat: repeat-x;
   background-position: center 0, 0 0, 0 0;
+  margin-left: 0;
+  margin-top: 1;
 }
 
 .register-container {

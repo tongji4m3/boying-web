@@ -45,4 +45,7 @@ module.exports = {
     //订单相关
     getOrderListUrl: APIRootUrl + 'order/list',
     getShowName: APIRootUrl + 'show/detail',
+    getOrderDetailsUrl: APIRootUrl +'order',
+    getAddressUrl: APIRootUrl +'address',
+    getShowDetails: APIRootUrl +'show/detail',
 }

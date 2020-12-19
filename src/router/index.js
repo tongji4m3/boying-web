@@ -10,6 +10,7 @@ import Search from '../views/Search.vue'
 import Test from '../views/Test.vue'
 import SelfInformation from '../views/SelfInformation.vue'
 import Order from '../views/Order.vue'
+import OrderDetails from '../views/OrderDetails.vue'
 
 Vue.use(VueRouter)
 
@@ -50,9 +51,15 @@ const routes = [
     component: SelfInformation
   },
   {
-    path:'/order',
-    name:'Order',
-    component:Order
+    path: '/order',
+    name: 'Order',
+    component: Order
+  },
+  {
+    path: '/orderDetails',
+    name: 'OrderDetails',
+    component: OrderDetails
+
   },
   {
     path: '/about',
@@ -70,11 +77,11 @@ const router = new VueRouter({
 
 //挂载路由导航守卫
 router.beforeEach((to, from, next) => {
-  if (to.path === '/login' || to.path ==='/register') {
-      window.sessionStorage.clear();
-      return next();
+  if (to.path === '/login' || to.path === '/register') {
+    window.sessionStorage.clear();
+    return next();
   }
-  if(to.path ==='/home'){
+  if (to.path === '/home') {
     return next();
   }
   //获取token

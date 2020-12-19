@@ -87,7 +87,7 @@
               <el-button
                 size="mini"
                 type="info"
-                @click="handleDelete(scope.$index, scope.row)"
+                @click="handleInfo(scope.$index, scope.row)"
                 style="float: left"
                 >查看订单</el-button
               >
@@ -119,12 +119,12 @@ const fields = [
   { label: "订单提交时间", prop: "time" },
   { label: "订单总金额", prop: "money" },
 
-  //展开行功能多出的内容
-  { label: "演出场次编号", prop: "showSessionId" },
-  { label: "订单支付方式", prop: "payment" },
-  { label: "订单地址编号", prop: "addressId" },
-  { label: "该订单对用户是否可见", prop: "userDelete" },
-  { label: "订单所含票数", prop: "ticketCount" },
+  // //展开行功能多出的内容
+  // { label: "演出场次编号", prop: "showSessionId" },
+  // { label: "订单支付方式", prop: "payment" },
+  // { label: "订单地址编号", prop: "addressId" },
+  // { label: "该订单对用户是否可见", prop: "userDelete" },
+  // { label: "订单所含票数", prop: "ticketCount" },
 ];
 export default {
   name: "",
@@ -156,8 +156,13 @@ export default {
   },
 
   methods: {
+    //选择不同类型的订单显示在订单列表
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
+    },
+
+    handleInfo(index,row){
+      this.$router.push({path:'/orderDetails',query:{orderId:row.orderId}})
     },
 
     async getShowName(id, i) {
@@ -184,9 +189,9 @@ export default {
         if (res.data.code == 200) {
           this.tableData = res.data.data.list;
           for (var i = 0; i < this.tableData.length; i++) {
-            if (this.tableData[i].status == 0) {
+            if (this.tableData[i].status == 1) {
               this.tableData[i].realStatus = "待评价";
-            } else if (this.tableData[i].status == 1) {
+            } else if (this.tableData[i].status == 2) {
               this.tableData[i].realStatus = "已完成";
             } else {
               this.tableData[i].realStatus = "已退订单";

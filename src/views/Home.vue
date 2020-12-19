@@ -26,8 +26,8 @@
                             @click.native="systemNotice"
                         >系统公告</el-dropdown-item
                         >
-                        <el-dropdown-item class="navigation-text" @click.native="goIndex"
-                        >回到首页</el-dropdown-item
+                        <el-dropdown-item class="navigation-text" @click.native="toSelfInformation"
+                        >我的信息</el-dropdown-item
                         >
                         <el-dropdown-item class="navigation-text" @click.native="toOrder"
                         >我的订单</el-dropdown-item
@@ -137,6 +137,9 @@ export default {
         logout(){
             this.$router.push("/login");
             this.$message.success("退出成功")
+        },
+        toSelfInformation(){
+            this.$router.push("/selfInformation");
         },
         async getCategoryName(id) {
             let result = await this.$http.post(

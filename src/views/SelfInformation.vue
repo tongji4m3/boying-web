@@ -84,7 +84,7 @@
                         联系人：
                         <el-button type="primary" @click="showAddFrequent()">添加联系人</el-button>
                         <el-table :data="frequentList" style="width: 100%">
-                            <el-table-column prop="frequentId" label="联系人编号"></el-table-column>
+<!--                            <el-table-column prop="frequentId" label="联系人编号"></el-table-column>-->
                             <el-table-column prop="identityNumber" label="身份证号"></el-table-column>
                             <el-table-column prop="name" label="姓名"></el-table-column>
                             <el-table-column prop="phone" label="联系方式"></el-table-column>
@@ -376,7 +376,7 @@ export default {
 
             totalCount2: 0,
             pageNumber2: 1,
-            pageSize2: 5,
+            pageSize2: 10,
 
             addressList: [],
             defaultAddressList: [],

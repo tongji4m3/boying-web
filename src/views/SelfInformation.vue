@@ -100,7 +100,7 @@
                         <el-dialog title="添加联系人" :visible.sync="addDialogVisible2" width="630px" top="60px" center>
                             <!--            内容主体区域 放置一个表单-->
                             <!--绑定到addForm中，绑定验证规则对象addFormRules 表单校验项的引用为addFormRef-->
-                            <el-form :model="addForm2" :rules="addFormRules2" label-width="100px">
+                            <el-form :model="addForm2" :rules="addFormRules2" ref="addFormRef2" label-width="100px">
                                 <!-- prop属性指定验证规则-->
                                 <el-form-item label="身份证号:" prop="identityNumber">
                                     <!--v-model双向绑定-->
@@ -153,7 +153,7 @@
                         <el-dialog title="编辑联系人" :visible.sync="editDialogVisible2" width="630px" top="60px" center>
                             <!--            内容主体区域 放置一个表单-->
                             <!--绑定到addForm中，绑定验证规则对象addFormRules 表单校验项的引用为addFormRef-->
-                            <el-form :model="editForm2" :rules="editFormRules2" label-width="100px">
+                            <el-form :model="editForm2" :rules="editFormRules2" ref="editFormRef2" label-width="100px">
                                 <!-- prop属性指定验证规则-->
                                 <el-form-item label="身份证号:" prop="identityNumber">
                                     <!--v-model双向绑定-->
@@ -420,8 +420,32 @@ export default {
             addDialogVisible2: false,
             editDialogVisible2: false,
             showDialogVisible2: false,
-            addFormRules2: {},
-            editFormRules2: {},
+            addFormRules2: {
+                identityNumber: [
+                    {required: true, message: '请输入身份证号', trigger: 'blur'},
+                    {min: 17, max: 17, message: '身份证号必须17位', trigger: 'blur'}
+                ],
+                name: [
+                    {required: true, message: '请输入姓名', trigger: 'blur'},
+                ],
+                phone: [
+                    {required: true, message: '请输入电话号码', trigger: 'blur'},
+                    {min: 11, max: 11, message: '电话号码必须11位', trigger: 'blur'}
+                ],
+            },
+            editFormRules2: {
+                identityNumber: [
+                    {required: true, message: '请输入身份证号', trigger: 'blur'},
+                    {min: 17, max: 17, message: '身份证号必须17位', trigger: 'blur'}
+                ],
+                name: [
+                    {required: true, message: '请输入姓名', trigger: 'blur'},
+                ],
+                phone: [
+                    {required: true, message: '请输入电话号码', trigger: 'blur'},
+                    {min: 11, max: 11, message: '电话号码必须11位', trigger: 'blur'}
+                ],
+            },
             addForm2: {
                 identityNumber: '',
                 name: '',
@@ -542,17 +566,23 @@ export default {
             this.addDialogVisible2=true;
         },
         async addFrequent(){
-            await this.$http.post(this.$api.addFrequentUrl,{
-                identityNumber: this.addForm2.identityNumber,
-                name: this.addForm2.name,
-                phone: this.addForm2.phone,
-            });
-            await this.getFrequentList();
-            this.addDialogVisible2=false;
-            this.addForm2.identityNumber='';
-            this.addForm2.name='';
-            this.addForm2.phone='';
-            this.$message.info("添加联系人成功!");
+            this.$refs.addFormRef2.validate(
+                async valid =>
+                {
+                    if (!valid) return;
+                    await this.$http.post(this.$api.addFrequentUrl,{
+                        identityNumber: this.addForm2.identityNumber,
+                        name: this.addForm2.name,
+                        phone: this.addForm2.phone,
+                    });
+                    await this.getFrequentList();
+                    this.addDialogVisible2=false;
+                    this.addForm2.identityNumber='';
+                    this.addForm2.name='';
+                    this.addForm2.phone='';
+                    this.$message.info("添加联系人成功!");
+                }
+            );
         },
         async cancelAdd2(){
             this.addDialogVisible2=false;
@@ -582,16 +612,24 @@ export default {
             this.$message.info("取消编辑联系人!");
         },
         async editFrequent(){
-            // console.log(this.editForm.addressId);
-            await this.$http.post(this.$api.updateFrequentUrl + "/" + this.editForm2.frequentId, this.editForm2);
-            this.getFrequentList();
-            this.editDialogVisible2=false;
-            this.$message.info("编辑联系人成功!");
+            this.$refs.editFormRef2.validate(
+                async valid =>
+                {
+                    if (!valid) return;
+                    // console.log(this.editForm.addressId);
+                    await this.$http.post(this.$api.updateFrequentUrl + "/" + this.editForm2.frequentId, this.editForm2);
+                    this.getFrequentList();
+                    this.editDialogVisible2=false;
+                    this.$message.info("编辑联系人成功!");
+                }
+            );
+
         },
 
         // 收货地址相关
         // 获取收货地址
         async getAddressList(){
+
             var result = await this.$http.post(this.$api.getAddressListUrl,
                 {
                     pageNum: this.pageNumber,
@@ -644,6 +682,7 @@ export default {
             this.addDialogVisible=true;
         },
         async addAddress(){
+
             await this.$http.post(this.$api.addAddressUrl,{
                 receiver: this.addForm.receiver,
                 phone: this.addForm.phone,

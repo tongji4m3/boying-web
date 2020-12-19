@@ -1,91 +1,97 @@
 <template>
     <div>
-        <el-row :gutter="20">
-            <el-col :span="12">
+        <el-row :gutter="20" class="el-row">
+            <el-col :span="12" class="el-col">
                 <!--        个人信息相关-->
-                <el-card>
-                    <el-form ref="form" :model="form" label-width="80px">
-                        <el-form-item label="生日">
-                            <el-date-picker type="date" placeholder="选择日期" v-model="form.age" style="width: 20%;"></el-date-picker>
-                        </el-form-item>
-                        <el-form-item label="邮箱">
-                            <el-input v-model="form.email" style="width: 30%"></el-input>
-                        </el-form-item>
-                        <el-form-item label="姓别">
-                            <el-select v-model="form.gender" placeholder="请选择" style="width: 20%">
-                                <el-option label="男" value="man"></el-option>
-                                <el-option label="女" value="woman"></el-option>
-                            </el-select>
-                        </el-form-item>
+                <el-card class="el-card">
+                    <div>
+                        <br>
+                        个人信息：
+                        <el-form ref="form" :model="form" label-width="80px">
+                            <el-form-item label="生日">
+                                <el-date-picker type="date" placeholder="选择日期" v-model="form.age" style="width: 20%;"></el-date-picker>
+                            </el-form-item>
+                            <el-form-item label="邮箱">
+                                <el-input v-model="form.email" style="width: 30%"></el-input>
+                            </el-form-item>
+                            <el-form-item label="姓别">
+                                <el-select v-model="form.gender" placeholder="请选择" style="width: 20%">
+                                    <el-option label="男" value="man"></el-option>
+                                    <el-option label="女" value="woman"></el-option>
+                                </el-select>
+                            </el-form-item>
 
-                        <el-form-item label="头像">
-                            <img
-                                width="100"
-                                height="100"
-                                :src="form.icon"
-                                class="image"
-                                style="border-radius: 50%"
-                            />
-                            <el-upload
-                                class="upload"
-                                action
-                                :drag="true"
-                                :multiple="true"
-                                :file-list="images"
-                                :http-request="uploadHttp"
-                                :before-upload="beforeAvatarUpload"
-                                :on-remove="handleRemove">
-                                <i class="el-icon-plus avatar-uploader-icon"></i>
-                                <p id="img-context">上传个人头像</p>
-                                <div class="el-upload__tip" slot="tip">
-                                    只能上传jpg/jpeg/png文件，且不超过5MB
-                                </div>
-                            </el-upload>
-                        </el-form-item>
-                        <el-form-item label="身份证号">
-                            <el-input v-model="form.identityNumber" style="width: 30%"></el-input>
-                        </el-form-item>
-                        <el-form-item label="昵称">
-                            <el-input v-model="form.name" style="width: 30%"></el-input>
-                        </el-form-item>
-                        <el-form-item label="真实姓名">
-                            <el-input v-model="form.realName" style="width: 30%"></el-input>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" @click="updateUserInfo()">编辑</el-button>
-                            <el-button>取消</el-button>
-                        </el-form-item>
-                    </el-form>
+                            <el-form-item label="头像">
+                                <img
+                                    width="100"
+                                    height="100"
+                                    :src="form.icon"
+                                    class="image"
+                                    style="border-radius: 50%"
+                                />
+                                <el-upload
+                                    class="upload"
+                                    action
+                                    :drag="true"
+                                    :multiple="true"
+                                    :file-list="images"
+                                    :http-request="uploadHttp"
+                                    :before-upload="beforeAvatarUpload"
+                                    :on-remove="handleRemove">
+                                    <i class="el-icon-plus avatar-uploader-icon"></i>
+                                    <p id="img-context">上传个人头像</p>
+                                    <div class="el-upload__tip" slot="tip">
+                                        只能上传jpg/jpeg/png文件，且不超过5MB
+                                    </div>
+                                </el-upload>
+                            </el-form-item>
+                            <el-form-item label="身份证号">
+                                <el-input v-model="form.identityNumber" style="width: 30%"></el-input>
+                            </el-form-item>
+                            <el-form-item label="昵称">
+                                <el-input v-model="form.name" style="width: 30%"></el-input>
+                            </el-form-item>
+                            <el-form-item label="真实姓名">
+                                <el-input v-model="form.realName" style="width: 30%"></el-input>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @click="updateUserInfo()">编辑</el-button>
+                                <el-button>取消</el-button>
+                            </el-form-item>
+                        </el-form>
+                    </div>
                 </el-card>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="12" class="el-col">
                 <!--        常用联系人相关-->
-                <el-card>
+                <el-card class="el-card">
                     <div>
                         <br>
                         默认常用联系人：
                         <el-table :data="defaultFrequentList" style="width: 100%">
-                            <el-table-column prop="receiver" label="收货人"></el-table-column>
-                            <el-table-column label="操作">
+                            <el-table-column prop="identityNumber" label="身份证号"></el-table-column>
+                            <el-table-column prop="name" label="姓名"></el-table-column>
+                            <el-table-column prop="phone" label="联系方式"></el-table-column>
+                            <el-table-column label="操作" width="200px">
                                 <template slot-scope="scope">
-                                    <el-button type="primary" @click="">查看详情</el-button>
-                                    <el-button type="danger" @click="">删除</el-button>
-                                    <el-button type="info" @click="">编辑</el-button>
-                                    <el-button type="danger" @click="">取消默认</el-button>
+                                    <el-button type="text" @click="">删除</el-button>
+                                    <el-button type="text" @click="">编辑</el-button>
+                                    <el-button type="text" @click="">设为默认</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
                         <br>
                         联系人：
-                        <el-button type="primary" @click="">添加联系人</el-button>
+                        <el-button type="primary" @click="showAddFrequent()">添加联系人</el-button>
                         <el-table :data="frequentList" style="width: 100%">
-                            <el-table-column prop="street" label="街道"></el-table-column>
-                            <el-table-column label="操作" width="400px">
+                            <el-table-column prop="identityNumber" label="身份证号"></el-table-column>
+                            <el-table-column prop="name" label="姓名"></el-table-column>
+                            <el-table-column prop="phone" label="联系方式"></el-table-column>
+                            <el-table-column label="操作" width="200px">
                                 <template slot-scope="scope">
-                                    <el-button type="primary" @click="">查看详情</el-button>
-                                    <el-button type="danger" @click="">删除</el-button>
-                                    <el-button type="info" @click="">编辑</el-button>
-                                    <el-button type="success" @click="">设为默认</el-button>
+                                    <el-button type="text" @click="">删除</el-button>
+                                    <el-button type="text" @click="">编辑</el-button>
+                                    <el-button type="text" @click="">设为默认</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -93,37 +99,24 @@
                         <el-dialog title="添加联系人" :visible.sync="addDialogVisible2" width="630px" top="60px" center>
                             <!--            内容主体区域 放置一个表单-->
                             <!--绑定到addForm中，绑定验证规则对象addFormRules 表单校验项的引用为addFormRef-->
-                            <el-form :model="addForm2" :rules="addFormRules2" ref="addFormRef" label-width="100px">
+                            <el-form :model="addForm2" :rules="addFormRules2" label-width="100px">
                                 <!-- prop属性指定验证规则-->
-                                <el-form-item label="收货人:" prop="receiver">
+                                <el-form-item label="身份证号:" prop="identityNumber">
                                     <!--v-model双向绑定-->
-                                    <el-input style="width: 82%;" v-model="addForm2.receiver"></el-input>
+                                    <el-input style="width: 82%;" v-model="addForm2.identityNumber"></el-input>
+                                </el-form-item>
+                                <el-form-item label="姓名:" prop="name">
+                                    <el-input style="width: 82%;" v-model="addForm2.name"></el-input>
                                 </el-form-item>
                                 <el-form-item label="联系方式:" prop="phone">
                                     <el-input style="width: 82%;" v-model="addForm2.phone"></el-input>
                                 </el-form-item>
-                                <el-form-item label="省:" prop="province">
-                                    <el-input style="width: 82%;" v-model="addForm2.province"></el-input>
-                                </el-form-item>
-                                <el-form-item label="市:" prop="city">
-                                    <el-input style="width: 82%;" v-model="addForm2.city"></el-input>
-                                </el-form-item>
-                                <el-form-item label="区:" prop="region">
-                                    <el-input style="width: 82%;" v-model="addForm2.region"></el-input>
-                                </el-form-item>
-                                <el-form-item label="街道:" prop="street">
-                                    <el-input style="width: 82%;" v-model="addForm2.street"></el-input>
-                                </el-form-item>
-                                <el-form-item label="详情:" prop="details">
-                                    <el-input style="width: 82%;" type="textarea"
-                                              :autosize="{ minRows: 3, maxRows: 4}" v-model="addForm2.details"></el-input>
-                                </el-form-item>
                             </el-form>
                             <!--            底部区域-->
                             <span slot="footer" class="dialog-footer">
-                    <el-button style="margin-right:20px" @click="cancelAdd()">取 消</el-button>
-                    <el-button style="margin-left:20px" type="primary" @click="addAddress()">确 定</el-button>
-                </span>
+                                <el-button style="margin-right:20px" @click="cancelAdd2()">取 消</el-button>
+                                <el-button style="margin-left:20px" type="primary" @click="addFrequent()">确 定</el-button>
+                            </span>
                         </el-dialog>
                         <!--        展示联系人对话框-->
                         <el-dialog title="联系人详情" :visible.sync="showDialogVisible2" width="630px" top="60px" center>
@@ -198,11 +191,11 @@
                         <el-pagination
                             @size-change="handleSizeChange"
                             @current-change="handleCurrentChange"
-                            :current-page="pageNumber"
+                            :current-page="pageNumber2"
                             :page-sizes="[1, 2, 5, 10]"
-                            :page-size="pageSize"
+                            :page-size="pageSize2"
                             layout="total, sizes, prev, pager, next, jumper"
-                            :total="totalCount">
+                            :total="totalCount2">
                         </el-pagination>
                     </div>
                 </el-card>
@@ -250,7 +243,7 @@
                     </el-table-column>
                 </el-table>
                 <!--        添加收获地址对话框-->
-                <el-dialog title="添加收货地址" :visible.sync="addDialogVisible2" width="630px" top="60px" center>
+                <el-dialog title="添加收货地址" :visible.sync="addDialogVisible" width="630px" top="60px" center>
                     <!--            内容主体区域 放置一个表单-->
                     <!--绑定到addForm中，绑定验证规则对象addFormRules 表单校验项的引用为addFormRef-->
                     <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px">
@@ -286,7 +279,7 @@
                 </span>
                 </el-dialog>
                 <!--        展示收获地址对话框-->
-                <el-dialog title="收货地址详情" :visible.sync="showDialogVisible2" width="630px" top="60px" center>
+                <el-dialog title="收货地址详情" :visible.sync="showDialogVisible" width="630px" top="60px" center>
                     <!--            内容主体区域 放置一个表单-->
                     <el-form :model="showForm" ref="addFormRef" label-width="100px">
                         <!-- prop属性指定验证规则-->
@@ -316,7 +309,7 @@
                     </el-form>
                 </el-dialog>
                 <!--        编辑收获地址对话框-->
-                <el-dialog title="编辑收货地址" :visible.sync="editDialogVisible2" width="630px" top="60px" center>
+                <el-dialog title="编辑收货地址" :visible.sync="editDialogVisible" width="630px" top="60px" center>
                     <!--            内容主体区域 放置一个表单-->
                     <!--绑定到addForm中，绑定验证规则对象addFormRules 表单校验项的引用为addFormRef-->
                     <el-form :model="editForm" :rules="editFormRules" ref="addFormRef" label-width="100px">
@@ -441,9 +434,21 @@ export default {
             showDialogVisible2: false,
             addFormRules2: {},
             editFormRules2: {},
-            addForm2: {},
-            showForm2: {},
-            editForm2: {},
+            addForm2: {
+                identityNumber: '',
+                name: '',
+                phone: '',
+            },
+            showForm2: {
+                identityNumber: '',
+                name: '',
+                phone: '',
+            },
+            editForm2: {
+                identityNumber: '',
+                name: '',
+                phone: '',
+            },
         };
     },
     created() {
@@ -515,9 +520,39 @@ export default {
                 pageNum: this.pageNumber2,
                 pageSize: this.pageSize2,
             });
-            console.log(result);
+            console.log(result.data.data);
+            if(result.data.code===200){
+                this.frequentList=result.data.data.list;
+            }
+            else{
+                this.frequentList=[];
+            }
+            this.totalCount2=result.data.data.total;
         },
-
+        async showAddFrequent(){
+            this.addDialogVisible2=true;
+        },
+        async addFrequent(){
+            await this.$http.post(this.$api.addFrequentUrl,{
+                identityNumber: this.addForm2.identityNumber,
+                name: this.addForm2.name,
+                phone: this.addForm2.phone,
+            });
+            await this.getFrequentList();
+            this.addDialogVisible2=false;
+            this.addForm2.identityNumber='';
+            this.addForm2.name='';
+            this.addForm2.phone='';
+            this.$message.info("添加联系人成功!");
+        },
+        async cancelAdd2(){
+            this.addDialogVisible2=false;
+            this.addForm2.identityNumber='';
+            this.addForm2.name='';
+            this.addForm2.phone='';
+            // console.log(this.addForm);
+            this.$message.info("取消添加联系人!");
+        },
 
 
         // 收货地址相关
@@ -646,6 +681,20 @@ export default {
 </script>
 
 <style scoped>
+
+.el-row {
+    margin-bottom: 20px;
+    display:flex;
+    flex-wrap: wrap;
+}
+
+.el-row .el-card {
+    min-width: 100%;
+    height: 100%;
+    margin-right: 20px;
+    transition: all .5s;
+}
+
 body {
     color: rgba(255, 255, 255, 0.65);
     background-color: #24292e;

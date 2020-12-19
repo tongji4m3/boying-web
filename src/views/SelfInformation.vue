@@ -78,14 +78,13 @@
                     <template slot-scope="scope">
                         <el-button type="primary" @click="showAddress(scope.row.addressId)">查看详情</el-button>
                         <el-button type="danger" @click="deleteAddress(scope.row.addressId)">删除</el-button>
-                        <el-button type="info" @click="">编辑</el-button>
+                        <el-button type="info" @click="showEditAddress(scope.row.addressId)">编辑</el-button>
                         <el-button type="success" @click="setDefaultAddress(scope.row.addressId)">设为默认</el-button>
                     </template>
                 </el-table-column>
             </el-table>
             <!--        添加活动对话框-->
-            <el-dialog title="添加收货地址" :visible.sync="addDialogVisible"
-                       width="630px" top="60px" center>
+            <el-dialog title="添加收货地址" :visible.sync="addDialogVisible" width="630px" top="60px" center>
                 <!--            内容主体区域 放置一个表单-->
                 <!--绑定到addForm中，绑定验证规则对象addFormRules 表单校验项的引用为addFormRef-->
                 <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px">
@@ -149,6 +148,42 @@
                                   :autosize="{ minRows: 3, maxRows: 4}" v-model="showForm.details" readonly="true"></el-input>
                     </el-form-item>
                 </el-form>
+            </el-dialog>
+            <!--        编辑活动对话框-->
+            <el-dialog title="编辑收货地址" :visible.sync="editDialogVisible" width="630px" top="60px" center>
+                <!--            内容主体区域 放置一个表单-->
+                <!--绑定到addForm中，绑定验证规则对象addFormRules 表单校验项的引用为addFormRef-->
+                <el-form :model="editForm" :rules="editFormRules" ref="addFormRef" label-width="100px">
+                    <!-- prop属性指定验证规则-->
+                    <el-form-item label="收货人:" prop="receiver">
+                        <!--v-model双向绑定-->
+                        <el-input style="width: 82%;" v-model="editForm.receiver"></el-input>
+                    </el-form-item>
+                    <el-form-item label="联系方式:" prop="phone">
+                        <el-input style="width: 82%;" v-model="editForm.phone"></el-input>
+                    </el-form-item>
+                    <el-form-item label="省:" prop="province">
+                        <el-input style="width: 82%;" v-model="editForm.province"></el-input>
+                    </el-form-item>
+                    <el-form-item label="市:" prop="city">
+                        <el-input style="width: 82%;" v-model="editForm.city"></el-input>
+                    </el-form-item>
+                    <el-form-item label="区:" prop="region">
+                        <el-input style="width: 82%;" v-model="editForm.region"></el-input>
+                    </el-form-item>
+                    <el-form-item label="街道:" prop="street">
+                        <el-input style="width: 82%;" v-model="editForm.street"></el-input>
+                    </el-form-item>
+                    <el-form-item label="详情:" prop="details">
+                        <el-input style="width: 82%;" type="textarea"
+                                  :autosize="{ minRows: 3, maxRows: 4}" v-model="editForm.details"></el-input>
+                    </el-form-item>
+                </el-form>
+                <!--            底部区域-->
+                <span slot="footer" class="dialog-footer">
+                    <el-button style="margin-right:20px" @click="cancelEdit()">取 消</el-button>
+                    <el-button style="margin-left:20px" type="primary" @click="editAddress()">修 改</el-button>
+                </span>
             </el-dialog>
 
 
@@ -218,6 +253,18 @@ export default {
                 street: '',
                 details: '',
             },
+
+            editForm: {
+                receiver: '',
+                phone: '',
+                province: '',
+                city: '',
+                region: '',
+                street: '',
+                details: '',
+            },
+            editFormRules: {},
+
         };
     },
     created() {
@@ -372,12 +419,17 @@ export default {
             this.getAddressList();
             this.getDefaultAddressList();
         },
-
         async showAddress(id){
             let result = await this.$http.post(this.$api.getAddressUrl + "/" + id);
             this.showForm=result.data.data;
             // console.log(this.showForm);
             this.showDialogVisible=true;
+        },
+
+        async showEditAddress(id){
+            let result = await this.$http.post(this.$api.getAddressUrl + "/" + id);
+            this.editForm=result.data.data;
+            this.editDialogVisible=true;
         },
     },
 

@@ -84,13 +84,14 @@
                         联系人：
                         <el-button type="primary" @click="showAddFrequent()">添加联系人</el-button>
                         <el-table :data="frequentList" style="width: 100%">
+                            <el-table-column prop="frequentId" label="联系人编号"></el-table-column>
                             <el-table-column prop="identityNumber" label="身份证号"></el-table-column>
                             <el-table-column prop="name" label="姓名"></el-table-column>
                             <el-table-column prop="phone" label="联系方式"></el-table-column>
                             <el-table-column label="操作" width="200px">
                                 <template slot-scope="scope">
-                                    <el-button type="text" @click="">删除</el-button>
-                                    <el-button type="text" @click="">编辑</el-button>
+                                    <el-button type="text" @click="deleteFrequent(scope.row.frequentId)">删除</el-button>
+                                    <el-button type="text" @click="showEditFrequent(scope.row.frequentId)">编辑</el-button>
                                     <el-button type="text" @click="">设为默认</el-button>
                                 </template>
                             </el-table-column>
@@ -152,36 +153,23 @@
                         <el-dialog title="编辑联系人" :visible.sync="editDialogVisible2" width="630px" top="60px" center>
                             <!--            内容主体区域 放置一个表单-->
                             <!--绑定到addForm中，绑定验证规则对象addFormRules 表单校验项的引用为addFormRef-->
-                            <el-form :model="editForm2" :rules="editFormRules2" ref="addFormRef" label-width="100px">
+                            <el-form :model="editForm2" :rules="editFormRules2" label-width="100px">
                                 <!-- prop属性指定验证规则-->
-                                <el-form-item label="收货人:" prop="receiver">
+                                <el-form-item label="身份证号:" prop="identityNumber">
                                     <!--v-model双向绑定-->
-                                    <el-input style="width: 82%;" v-model="editForm2.receiver"></el-input>
+                                    <el-input style="width: 82%;" v-model="editForm2.identityNumber"></el-input>
+                                </el-form-item>
+                                <el-form-item label="姓名:" prop="name">
+                                    <el-input style="width: 82%;" v-model="editForm2.name"></el-input>
                                 </el-form-item>
                                 <el-form-item label="联系方式:" prop="phone">
                                     <el-input style="width: 82%;" v-model="editForm2.phone"></el-input>
                                 </el-form-item>
-                                <el-form-item label="省:" prop="province">
-                                    <el-input style="width: 82%;" v-model="editForm2.province"></el-input>
-                                </el-form-item>
-                                <el-form-item label="市:" prop="city">
-                                    <el-input style="width: 82%;" v-model="editForm2.city"></el-input>
-                                </el-form-item>
-                                <el-form-item label="区:" prop="region">
-                                    <el-input style="width: 82%;" v-model="editForm2.region"></el-input>
-                                </el-form-item>
-                                <el-form-item label="街道:" prop="street">
-                                    <el-input style="width: 82%;" v-model="editForm2.street"></el-input>
-                                </el-form-item>
-                                <el-form-item label="详情:" prop="details">
-                                    <el-input style="width: 82%;" type="textarea"
-                                              :autosize="{ minRows: 3, maxRows: 4}" v-model="editForm2.details"></el-input>
-                                </el-form-item>
                             </el-form>
                             <!--            底部区域-->
                             <span slot="footer" class="dialog-footer">
-                    <el-button style="margin-right:20px" @click="cancelEdit()">取 消</el-button>
-                    <el-button style="margin-left:20px" type="primary" @click="editAddress()">修 改</el-button>
+                    <el-button style="margin-right:20px" @click="cancelEdit2()">取 消</el-button>
+                    <el-button style="margin-left:20px" type="primary" @click="editFrequent()">修 改</el-button>
                 </span>
                         </el-dialog>
 
@@ -189,8 +177,8 @@
                         <el-divider></el-divider>
                         <!--            分页区域-->
                         <el-pagination
-                            @size-change="handleSizeChange"
-                            @current-change="handleCurrentChange"
+                            @size-change="handleSizeChange2"
+                            @current-change="handleCurrentChange2"
                             :current-page="pageNumber2"
                             :page-sizes="[1, 2, 5, 10]"
                             :page-size="pageSize2"
@@ -438,16 +426,19 @@ export default {
                 identityNumber: '',
                 name: '',
                 phone: '',
+                frequentId: '',
             },
             showForm2: {
                 identityNumber: '',
                 name: '',
                 phone: '',
+                frequentId: '',
             },
             editForm2: {
                 identityNumber: '',
                 name: '',
                 phone: '',
+                frequentId: '',
             },
         };
     },
@@ -508,19 +499,34 @@ export default {
             this.form.name=result.data.data.name;
             this.form.icon=result.data.data.icon;
             this.form.gender=result.data.data.gender===true?'男':'女';
-            console.log(result.data.data);
+            // console.log(result.data.data);
         },
         async updateUserInfo(){
             await this.$http.post(this.$api.updateUserInfoUrl,this.form);
         },
 
         // 联系人相关
+        //监听pageSize改变的事件
+        async handleSizeChange2(newSize)
+        {
+            this.pageSize2 = newSize;
+            this.pageNumber2 = 1;
+            // console.log("pageSize:"+this.pageSize);
+            await this.getFrequentList();
+        },
+        //监听pageNum改变的事件
+        async handleCurrentChange2(newPage)
+        {
+            this.pageNumber2 = newPage;
+            // console.log("pageNumber:"+this.pageNumber);
+            await this.getFrequentList();
+        },
         async getFrequentList(){
             let result = await this.$http.post(this.$api.getFrequentListUrl,{
                 pageNum: this.pageNumber2,
                 pageSize: this.pageSize2,
             });
-            console.log(result.data.data);
+            // console.log(result.data.data);
             if(result.data.code===200){
                 this.frequentList=result.data.data.list;
             }
@@ -528,6 +534,9 @@ export default {
                 this.frequentList=[];
             }
             this.totalCount2=result.data.data.total;
+        },
+        async getDefaultFrequentList(){
+
         },
         async showAddFrequent(){
             this.addDialogVisible2=true;
@@ -553,7 +562,32 @@ export default {
             // console.log(this.addForm);
             this.$message.info("取消添加联系人!");
         },
-
+        async deleteFrequent(id)
+        {
+            // console.log(id);
+            let result = await this.$http.post(this.$api.deleteFrequentUrl + "/" + id);
+            // console.log(result);
+            this.getFrequentList();
+            this.getDefaultFrequentList();
+            this.$message.info("删除联系人成功!");
+        },
+        async showEditFrequent(id){
+            let result = await this.$http.post(this.$api.getFrequentUrl + "/" + id);
+            console.log(result);
+            this.editForm2=result.data.data;
+            this.editDialogVisible2=true;
+        },
+        async cancelEdit2(){
+            this.editDialogVisible2=false;
+            this.$message.info("取消编辑联系人!");
+        },
+        async editFrequent(){
+            // console.log(this.editForm.addressId);
+            await this.$http.post(this.$api.updateFrequentUrl + "/" + this.editForm2.frequentId, this.editForm2);
+            this.getFrequentList();
+            this.editDialogVisible2=false;
+            this.$message.info("编辑联系人成功!");
+        },
 
         // 收货地址相关
         // 获取收货地址
@@ -575,7 +609,7 @@ export default {
         // 获取默认收货地址
         async getDefaultAddressList(){
             var result = await this.$http.post(this.$api.getDefaultAddressUrl);
-            console.log(result.data);
+            // console.log(result.data);
             if(result.data.code===200){
                 this.defaultAddressList=result.data.data.list;
             }

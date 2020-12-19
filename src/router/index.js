@@ -9,6 +9,7 @@ import Register from '../views/Register.vue'
 import Search from '../views/Search.vue'
 import Test from '../views/Test.vue'
 import SelfInformation from '../views/SelfInformation.vue'
+import Order from '../views/Order.vue'
 
 Vue.use(VueRouter)
 
@@ -47,6 +48,11 @@ const routes = [
     path: '/selfInformation',
     name: 'SelfInformation',
     component: SelfInformation
+  },
+  {
+    path:'/order',
+    name:'Order',
+    component:Order
   },
   {
     path: '/about',

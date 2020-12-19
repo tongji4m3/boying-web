@@ -23,6 +23,7 @@ module.exports = {
     getUserInfoUrl: APIRootUrl + 'user/info',
     getUserUrl: APIRootUrl + 'user/info',
     updateUserInfoUrl: APIRootUrl + 'user/update',
+
     // 收货地址
     getAddressListUrl: APIRootUrl + 'address/list',
     getAddressUrl: APIRootUrl + 'address',
@@ -31,4 +32,8 @@ module.exports = {
     deleteAddressUrl: APIRootUrl + 'address/delete',
     updateAddressUrl: APIRootUrl + 'address/update',
     setDefaultAddressUrl: APIRootUrl + 'address/setDefault',
+
+    //订单相关
+    getOrderListUrl: APIRootUrl + 'order/list',
+    getShowName: APIRootUrl + 'show/detail',
 }

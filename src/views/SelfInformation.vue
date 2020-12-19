@@ -126,26 +126,26 @@
                     <!-- prop属性指定验证规则-->
                     <el-form-item label="收货人:" prop="receiver">
                         <!--v-model双向绑定-->
-                        <el-input style="width: 82%;" v-model="showForm.receiver" readonly="true"></el-input>
+                        <el-input style="width: 82%;" v-model="showForm.receiver" :readonly="true"></el-input>
                     </el-form-item>
                     <el-form-item label="联系方式:" prop="phone">
-                        <el-input style="width: 82%;" v-model="showForm.phone" readonly="true"></el-input>
+                        <el-input style="width: 82%;" v-model="showForm.phone" :readonly="true"></el-input>
                     </el-form-item>
                     <el-form-item label="省:" prop="province">
-                        <el-input style="width: 82%;" v-model="showForm.province" readonly="true"></el-input>
+                        <el-input style="width: 82%;" v-model="showForm.province" :readonly="true"></el-input>
                     </el-form-item>
                     <el-form-item label="市:" prop="city">
-                        <el-input style="width: 82%;" v-model="showForm.city" readonly="true"></el-input>
+                        <el-input style="width: 82%;" v-model="showForm.city" :readonly="true"></el-input>
                     </el-form-item>
                     <el-form-item label="区:" prop="region">
-                        <el-input style="width: 82%;" v-model="showForm.region" readonly="true"></el-input>
+                        <el-input style="width: 82%;" v-model="showForm.region" :readonly="true"></el-input>
                     </el-form-item>
                     <el-form-item label="街道:" prop="street">
-                        <el-input style="width: 82%;" v-model="showForm.street" readonly="true"></el-input>
+                        <el-input style="width: 82%;" v-model="showForm.street" :readonly="true"></el-input>
                     </el-form-item>
                     <el-form-item label="详情:" prop="details">
                         <el-input style="width: 82%;" type="textarea"
-                                  :autosize="{ minRows: 3, maxRows: 4}" v-model="showForm.details" readonly="true"></el-input>
+                                  :autosize="{ minRows: 3, maxRows: 4}" v-model="showForm.details" :readonly="true"></el-input>
                     </el-form-item>
                 </el-form>
             </el-dialog>
@@ -262,6 +262,7 @@ export default {
                 region: '',
                 street: '',
                 details: '',
+                addressId: '',
             },
             editFormRules: {},
 
@@ -372,6 +373,7 @@ export default {
             await this.$http.post(this.$api.deleteAddressUrl + "/" + id);
             this.getAddressList();
             this.getDefaultAddressList();
+            this.$message.info("删除收货地点成功!");
         },
         async showAddAddress(){
             this.addDialogVisible=true;
@@ -429,7 +431,19 @@ export default {
         async showEditAddress(id){
             let result = await this.$http.post(this.$api.getAddressUrl + "/" + id);
             this.editForm=result.data.data;
+            this.editForm.addressId=id;
             this.editDialogVisible=true;
+        },
+        async editAddress(){
+            // console.log(this.editForm.addressId);
+            await this.$http.post(this.$api.updateAddressUrl + "/" + this.editForm.addressId, this.editForm);
+            this.getAddressList();
+            this.editDialogVisible=false;
+            this.$message.info("编辑收货地点成功!");
+        },
+        async cancelEdit(){
+            this.editDialogVisible=false;
+            this.$message.info("取消编辑收货地点!");
         },
     },
 

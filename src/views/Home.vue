@@ -5,12 +5,12 @@
             <div></div>
             <div class="out-button">
                 <el-dropdown>
-          <span class="el-dropdown-link" style="margin-right: 15px">
-            <el-badge is-dot class="item">
-              <el-avatar :src="currentUser.icon"></el-avatar>
-            </el-badge>
-            <i class="el-icon-arrow-down el-icon--right"></i>
-          </span>
+                    <span class="el-dropdown-link" style="margin-right: 15px">
+                        <el-badge is-dot class="item">
+                            <el-avatar :src="currentUser.icon"></el-avatar>
+                        </el-badge>
+                        <i class="el-icon-arrow-down el-icon--right"></i>
+                    </span>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item
                             class="navigation-text"
@@ -19,19 +19,15 @@
                         <el-dropdown-item
                             class="navigation-text"
                             @click.native="changePassword"
-                        >修改密码</el-dropdown-item
-                        >
+                        >修改密码</el-dropdown-item>
                         <el-dropdown-item
                             class="navigation-text"
                             @click.native="systemNotice"
-                        >系统公告</el-dropdown-item
-                        >
+                        >系统公告</el-dropdown-item>
                         <el-dropdown-item class="navigation-text" @click.native="toSelfInformation"
-                        >我的信息</el-dropdown-item
-                        >
+                        >我的信息</el-dropdown-item>
                         <el-dropdown-item class="navigation-text" @click.native="toOrder"
-                        >我的订单</el-dropdown-item
-                        >
+                        >我的订单</el-dropdown-item>
                         <el-dropdown-item
                             class="navigation-text"
                             id="exit-div"

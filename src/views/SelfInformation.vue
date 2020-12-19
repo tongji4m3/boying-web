@@ -52,11 +52,12 @@
             默认收获地址：
             <el-button type="primary" @click="showAddAddress()">添加收货地址</el-button>
             <el-table :data="defaultAddressList" style="width: 100%">
+                <el-table-column prop="receiver" label="收货人"></el-table-column>
+                <el-table-column prop="phone" label="联系方式"></el-table-column>
                 <el-table-column prop="province" label="省份"></el-table-column>
                 <el-table-column prop="city" label="城市"></el-table-column>
                 <el-table-column prop="region" label="区"></el-table-column>
                 <el-table-column prop="street" label="街道"></el-table-column>
-                <el-table-column prop="details" label="详情"></el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <el-button type="primary" @click="">查看详情</el-button>
@@ -69,11 +70,12 @@
             <br>
             收获地址：
             <el-table :data="addressList" style="width: 100%">
+                <el-table-column prop="receiver" label="收货人"></el-table-column>
+                <el-table-column prop="phone" label="联系方式"></el-table-column>
                 <el-table-column prop="province" label="省份"></el-table-column>
                 <el-table-column prop="city" label="城市"></el-table-column>
                 <el-table-column prop="region" label="区"></el-table-column>
                 <el-table-column prop="street" label="街道"></el-table-column>
-                <el-table-column prop="details" label="详情"></el-table-column>
                 <el-table-column label="操作" width="400px">
                     <template slot-scope="scope">
                         <el-button type="primary" @click="showAddress(scope.row.addressId)">查看详情</el-button>

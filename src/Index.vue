@@ -70,11 +70,10 @@ export default {
   watch: {
     $route(to, from) {
       console.log(to.path);
-      if(to.path ==='/home'){
-          this.isHome=true;
-      }
-      else{
-          this.isHome=false;
+      if (to.path === "/home") {
+        this.isHome = true;
+      } else {
+        this.isHome = false;
       }
       this.token = window.sessionStorage.getItem("token");
       console.log(this.token);
@@ -87,6 +86,9 @@ export default {
   },
   methods: {
     listenPage() {
+      if(this.$route.path =='/home'){
+        this.isHome=true;
+      }
       window.onbeforeunload = function (e) {
         e = e || window.event;
         if (e) {

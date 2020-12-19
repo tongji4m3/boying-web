@@ -33,6 +33,15 @@ module.exports = {
     updateAddressUrl: APIRootUrl + 'address/update',
     setDefaultAddressUrl: APIRootUrl + 'address/setDefault',
 
+    // 联系人相关
+    getFrequentListUrl: APIRootUrl + 'frequent/list',
+    addFrequentUrl: APIRootUrl + 'frequent/add',
+    deleteFrequentUrl: APIRootUrl + 'frequent/delete',
+    updateFrequentUrl: APIRootUrl + 'frequent/update',
+    getDefaultFrequentUrl: APIRootUrl + 'frequent/getDefault',
+    getFrequentUrl: APIRootUrl + 'frequent',
+    setDefaultFrequentUrl: APIRootUrl + 'frequent/setDefault',
+
     //订单相关
     getOrderListUrl: APIRootUrl + 'order/list',
     getShowName: APIRootUrl + 'show/detail',

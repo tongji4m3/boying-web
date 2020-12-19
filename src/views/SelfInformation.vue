@@ -17,7 +17,15 @@
                                 <el-option label="女" value="woman"></el-option>
                             </el-select>
                         </el-form-item>
+
                         <el-form-item label="头像">
+                            <img
+                                width="100"
+                                height="100"
+                                :src="form.icon"
+                                class="image"
+                                style="border-radius: 50%"
+                            />
                             <el-upload
                                 class="upload"
                                 action
@@ -242,6 +250,10 @@ export default {
             pageNumber: 1,
             pageSize: 5,
 
+            totalCount2: 0,
+            pageNumber2: 1,
+            pageSize2: 5,
+
             addressList: [],
             defaultAddressList: [],
 
@@ -282,6 +294,9 @@ export default {
     },
     created() {
         this.getUserInfo();
+
+        this.getFrequentList();
+
         this.getAddressList();
         this.getDefaultAddressList();
     },
@@ -330,12 +345,25 @@ export default {
         // 获取用户信息
         async getUserInfo(){
             var result = await this.$http.post(this.$api.getUserInfoUrl);
-            this.form = result.data.data;
+            this.form.realName=result.data.data.username;
+            this.form.name=result.data.data.name;
+            this.form.icon=result.data.data.icon;
+            this.form.gender=result.data.data.gender===true?'男':'女';
             console.log(result.data.data);
         },
         async updateUserInfo(){
             await this.$http.post(this.$api.updateUserInfoUrl,this.form);
         },
+
+        // 联系人相关
+        async getFrequentList(){
+            let result = await this.$http.post(this.$api.getFrequentListUrl,{
+                pageNum: this.pageNumber2,
+                pageSize: this.pageSize2,
+            });
+            console.log(result);
+        },
+
 
 
         // 收货地址相关

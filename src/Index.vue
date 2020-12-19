@@ -1,12 +1,12 @@
 <template>
   <el-container class="index-container">
     <!--        上边框-->
-    <el-header v-show="!isLogin">
+    <el-header v-show="!isLogin || !isHome">
       <div></div>
       <!--            开启了路由模式-->
 
       <el-menu
-        v-if="!isLogin"
+        v-if="!isLogin || !isHome"
         router
         class="el-menu-demo"
         mode="horizontal"
@@ -16,8 +16,8 @@
         default-active="/Welcome"
       >
         <el-menu-item index="/home">首页</el-menu-item>
-        <el-menu-item index="/login">登录</el-menu-item>
-        <el-menu-item index="/register">注册</el-menu-item>
+        <el-menu-item index="/login" v-if="!isLogin">登录</el-menu-item>
+        <el-menu-item index="/register" v-if="!isLogin">注册</el-menu-item>
       </el-menu>
       <!-- <div class="out-button" v-if="isLogin">
         <el-menu
@@ -51,6 +51,7 @@ export default {
   data() {
     return {
       isLogin: false,
+      isHome: false,
       token: window.sessionStorage.getItem("token"),
     };
   },
@@ -69,6 +70,12 @@ export default {
   watch: {
     $route(to, from) {
       console.log(to.path);
+      if(to.path ==='/home'){
+          this.isHome=true;
+      }
+      else{
+          this.isHome=false;
+      }
       this.token = window.sessionStorage.getItem("token");
       console.log(this.token);
       if (this.token != null) {

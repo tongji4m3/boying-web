@@ -1,206 +1,219 @@
 <template>
     <div>
-        <el-card>
-            <el-form ref="form" :model="form" label-width="80px">
-                <el-form-item label="生日">
-                    <el-date-picker type="date" placeholder="选择日期" v-model="form.age" style="width: 10%;"></el-date-picker>
-                </el-form-item>
-                <el-form-item label="邮箱">
-                    <el-input v-model="form.email" style="width: 15%"></el-input>
-                </el-form-item>
-                <el-form-item label="姓别">
-                    <el-select v-model="form.gender" placeholder="请选择" style="width: 10%">
-                        <el-option label="男" value="man"></el-option>
-                        <el-option label="女" value="woman"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="头像">
-                    <el-upload
-                        class="upload"
-                        action
-                        :drag="true"
-                        :multiple="true"
-                        :file-list="images"
-                        :http-request="uploadHttp"
-                        :before-upload="beforeAvatarUpload"
-                        :on-remove="handleRemove">
-                        <i class="el-icon-plus avatar-uploader-icon"></i>
-                        <p id="img-context">上传个人头像</p>
-                        <div class="el-upload__tip" slot="tip">
-                            只能上传jpg/jpeg/png文件，且不超过5MB
-                        </div>
-                    </el-upload>
-                </el-form-item>
-                <el-form-item label="身份证号">
-                    <el-input v-model="form.identityNumber" style="width: 15%"></el-input>
-                </el-form-item>
-                <el-form-item label="昵称">
-                    <el-input v-model="form.name" style="width: 15%"></el-input>
-                </el-form-item>
-                <el-form-item label="真实姓名">
-                    <el-input v-model="form.realName" style="width: 15%"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="onSubmit">编辑</el-button>
-                    <el-button>取消</el-button>
-                </el-form-item>
-            </el-form>
-        </el-card>
+        <el-row :gutter="20">
+            <el-col :span="12">
+                <!--        个人信息相关-->
+                <el-card>
+                    <el-form ref="form" :model="form" label-width="80px">
+                        <el-form-item label="生日">
+                            <el-date-picker type="date" placeholder="选择日期" v-model="form.age" style="width: 20%;"></el-date-picker>
+                        </el-form-item>
+                        <el-form-item label="邮箱">
+                            <el-input v-model="form.email" style="width: 30%"></el-input>
+                        </el-form-item>
+                        <el-form-item label="姓别">
+                            <el-select v-model="form.gender" placeholder="请选择" style="width: 20%">
+                                <el-option label="男" value="man"></el-option>
+                                <el-option label="女" value="woman"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="头像">
+                            <el-upload
+                                class="upload"
+                                action
+                                :drag="true"
+                                :multiple="true"
+                                :file-list="images"
+                                :http-request="uploadHttp"
+                                :before-upload="beforeAvatarUpload"
+                                :on-remove="handleRemove">
+                                <i class="el-icon-plus avatar-uploader-icon"></i>
+                                <p id="img-context">上传个人头像</p>
+                                <div class="el-upload__tip" slot="tip">
+                                    只能上传jpg/jpeg/png文件，且不超过5MB
+                                </div>
+                            </el-upload>
+                        </el-form-item>
+                        <el-form-item label="身份证号">
+                            <el-input v-model="form.identityNumber" style="width: 30%"></el-input>
+                        </el-form-item>
+                        <el-form-item label="昵称">
+                            <el-input v-model="form.name" style="width: 30%"></el-input>
+                        </el-form-item>
+                        <el-form-item label="真实姓名">
+                            <el-input v-model="form.realName" style="width: 30%"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="updateUserInfo()">编辑</el-button>
+                            <el-button>取消</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-card>
+            </el-col>
+            <el-col :span="12">
+                <!--        常用联系人相关-->
+                <el-card>
+
+                </el-card>
+            </el-col>
+        </el-row>
         <br>
+        <!--        收货地址相关-->
         <el-card>
-            <br>
-            默认收获地址：
-            <el-button type="primary" @click="showAddAddress()">添加收货地址</el-button>
-            <el-table :data="defaultAddressList" style="width: 100%">
-                <el-table-column prop="receiver" label="收货人"></el-table-column>
-                <el-table-column prop="phone" label="联系方式"></el-table-column>
-                <el-table-column prop="province" label="省份"></el-table-column>
-                <el-table-column prop="city" label="城市"></el-table-column>
-                <el-table-column prop="region" label="区"></el-table-column>
-                <el-table-column prop="street" label="街道"></el-table-column>
-                <el-table-column label="操作">
-                    <template slot-scope="scope">
-                        <el-button type="primary" @click="">查看详情</el-button>
-                        <el-button type="danger" @click="">删除</el-button>
-                        <el-button type="info" @click="">编辑</el-button>
-                        <el-button type="danger" @click="">取消默认</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <br>
-            收获地址：
-            <el-table :data="addressList" style="width: 100%">
-                <el-table-column prop="receiver" label="收货人"></el-table-column>
-                <el-table-column prop="phone" label="联系方式"></el-table-column>
-                <el-table-column prop="province" label="省份"></el-table-column>
-                <el-table-column prop="city" label="城市"></el-table-column>
-                <el-table-column prop="region" label="区"></el-table-column>
-                <el-table-column prop="street" label="街道"></el-table-column>
-                <el-table-column label="操作" width="400px">
-                    <template slot-scope="scope">
-                        <el-button type="primary" @click="showAddress(scope.row.addressId)">查看详情</el-button>
-                        <el-button type="danger" @click="deleteAddress(scope.row.addressId)">删除</el-button>
-                        <el-button type="info" @click="showEditAddress(scope.row.addressId)">编辑</el-button>
-                        <el-button type="success" @click="setDefaultAddress(scope.row.addressId)">设为默认</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <!--        添加活动对话框-->
-            <el-dialog title="添加收货地址" :visible.sync="addDialogVisible" width="630px" top="60px" center>
-                <!--            内容主体区域 放置一个表单-->
-                <!--绑定到addForm中，绑定验证规则对象addFormRules 表单校验项的引用为addFormRef-->
-                <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px">
-                    <!-- prop属性指定验证规则-->
-                    <el-form-item label="收货人:" prop="receiver">
-                        <!--v-model双向绑定-->
-                        <el-input style="width: 82%;" v-model="addForm.receiver"></el-input>
-                    </el-form-item>
-                    <el-form-item label="联系方式:" prop="phone">
-                        <el-input style="width: 82%;" v-model="addForm.phone"></el-input>
-                    </el-form-item>
-                    <el-form-item label="省:" prop="province">
-                        <el-input style="width: 82%;" v-model="addForm.province"></el-input>
-                    </el-form-item>
-                    <el-form-item label="市:" prop="city">
-                        <el-input style="width: 82%;" v-model="addForm.city"></el-input>
-                    </el-form-item>
-                    <el-form-item label="区:" prop="region">
-                        <el-input style="width: 82%;" v-model="addForm.region"></el-input>
-                    </el-form-item>
-                    <el-form-item label="街道:" prop="street">
-                        <el-input style="width: 82%;" v-model="addForm.street"></el-input>
-                    </el-form-item>
-                    <el-form-item label="详情:" prop="details">
-                        <el-input style="width: 82%;" type="textarea"
-                                  :autosize="{ minRows: 3, maxRows: 4}" v-model="addForm.details"></el-input>
-                    </el-form-item>
-                </el-form>
-                <!--            底部区域-->
-                <span slot="footer" class="dialog-footer">
+            <div>
+                <br>
+                默认收获地址：
+                <el-table :data="defaultAddressList" style="width: 100%">
+                    <el-table-column prop="receiver" label="收货人"></el-table-column>
+                    <el-table-column prop="phone" label="联系方式"></el-table-column>
+                    <el-table-column prop="province" label="省份"></el-table-column>
+                    <el-table-column prop="city" label="城市"></el-table-column>
+                    <el-table-column prop="region" label="区"></el-table-column>
+                    <el-table-column prop="street" label="街道"></el-table-column>
+                    <el-table-column label="操作">
+                        <template slot-scope="scope">
+                            <el-button type="primary" @click="">查看详情</el-button>
+                            <el-button type="danger" @click="">删除</el-button>
+                            <el-button type="info" @click="">编辑</el-button>
+                            <el-button type="danger" @click="">取消默认</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <br>
+                收获地址：
+                <el-button type="primary" @click="showAddAddress()">添加收货地址</el-button>
+                <el-table :data="addressList" style="width: 100%">
+                    <el-table-column prop="receiver" label="收货人"></el-table-column>
+                    <el-table-column prop="phone" label="联系方式"></el-table-column>
+                    <el-table-column prop="province" label="省份"></el-table-column>
+                    <el-table-column prop="city" label="城市"></el-table-column>
+                    <el-table-column prop="region" label="区"></el-table-column>
+                    <el-table-column prop="street" label="街道"></el-table-column>
+                    <el-table-column label="操作" width="400px">
+                        <template slot-scope="scope">
+                            <el-button type="primary" @click="showAddress(scope.row.addressId)">查看详情</el-button>
+                            <el-button type="danger" @click="deleteAddress(scope.row.addressId)">删除</el-button>
+                            <el-button type="info" @click="showEditAddress(scope.row.addressId)">编辑</el-button>
+                            <el-button type="success" @click="setDefaultAddress(scope.row.addressId)">设为默认</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <!--        添加活动对话框-->
+                <el-dialog title="添加收货地址" :visible.sync="addDialogVisible" width="630px" top="60px" center>
+                    <!--            内容主体区域 放置一个表单-->
+                    <!--绑定到addForm中，绑定验证规则对象addFormRules 表单校验项的引用为addFormRef-->
+                    <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px">
+                        <!-- prop属性指定验证规则-->
+                        <el-form-item label="收货人:" prop="receiver">
+                            <!--v-model双向绑定-->
+                            <el-input style="width: 82%;" v-model="addForm.receiver"></el-input>
+                        </el-form-item>
+                        <el-form-item label="联系方式:" prop="phone">
+                            <el-input style="width: 82%;" v-model="addForm.phone"></el-input>
+                        </el-form-item>
+                        <el-form-item label="省:" prop="province">
+                            <el-input style="width: 82%;" v-model="addForm.province"></el-input>
+                        </el-form-item>
+                        <el-form-item label="市:" prop="city">
+                            <el-input style="width: 82%;" v-model="addForm.city"></el-input>
+                        </el-form-item>
+                        <el-form-item label="区:" prop="region">
+                            <el-input style="width: 82%;" v-model="addForm.region"></el-input>
+                        </el-form-item>
+                        <el-form-item label="街道:" prop="street">
+                            <el-input style="width: 82%;" v-model="addForm.street"></el-input>
+                        </el-form-item>
+                        <el-form-item label="详情:" prop="details">
+                            <el-input style="width: 82%;" type="textarea"
+                                      :autosize="{ minRows: 3, maxRows: 4}" v-model="addForm.details"></el-input>
+                        </el-form-item>
+                    </el-form>
+                    <!--            底部区域-->
+                    <span slot="footer" class="dialog-footer">
                     <el-button style="margin-right:20px" @click="cancelAdd()">取 消</el-button>
                     <el-button style="margin-left:20px" type="primary" @click="addAddress()">确 定</el-button>
                 </span>
-            </el-dialog>
-            <!--        展示活动对话框-->
-            <el-dialog title="收货地址详情" :visible.sync="showDialogVisible" width="630px" top="60px" center>
-                <!--            内容主体区域 放置一个表单-->
-                <el-form :model="showForm" ref="addFormRef" label-width="100px">
-                    <!-- prop属性指定验证规则-->
-                    <el-form-item label="收货人:" prop="receiver">
-                        <!--v-model双向绑定-->
-                        <el-input style="width: 82%;" v-model="showForm.receiver" :readonly="true"></el-input>
-                    </el-form-item>
-                    <el-form-item label="联系方式:" prop="phone">
-                        <el-input style="width: 82%;" v-model="showForm.phone" :readonly="true"></el-input>
-                    </el-form-item>
-                    <el-form-item label="省:" prop="province">
-                        <el-input style="width: 82%;" v-model="showForm.province" :readonly="true"></el-input>
-                    </el-form-item>
-                    <el-form-item label="市:" prop="city">
-                        <el-input style="width: 82%;" v-model="showForm.city" :readonly="true"></el-input>
-                    </el-form-item>
-                    <el-form-item label="区:" prop="region">
-                        <el-input style="width: 82%;" v-model="showForm.region" :readonly="true"></el-input>
-                    </el-form-item>
-                    <el-form-item label="街道:" prop="street">
-                        <el-input style="width: 82%;" v-model="showForm.street" :readonly="true"></el-input>
-                    </el-form-item>
-                    <el-form-item label="详情:" prop="details">
-                        <el-input style="width: 82%;" type="textarea"
-                                  :autosize="{ minRows: 3, maxRows: 4}" v-model="showForm.details" :readonly="true"></el-input>
-                    </el-form-item>
-                </el-form>
-            </el-dialog>
-            <!--        编辑活动对话框-->
-            <el-dialog title="编辑收货地址" :visible.sync="editDialogVisible" width="630px" top="60px" center>
-                <!--            内容主体区域 放置一个表单-->
-                <!--绑定到addForm中，绑定验证规则对象addFormRules 表单校验项的引用为addFormRef-->
-                <el-form :model="editForm" :rules="editFormRules" ref="addFormRef" label-width="100px">
-                    <!-- prop属性指定验证规则-->
-                    <el-form-item label="收货人:" prop="receiver">
-                        <!--v-model双向绑定-->
-                        <el-input style="width: 82%;" v-model="editForm.receiver"></el-input>
-                    </el-form-item>
-                    <el-form-item label="联系方式:" prop="phone">
-                        <el-input style="width: 82%;" v-model="editForm.phone"></el-input>
-                    </el-form-item>
-                    <el-form-item label="省:" prop="province">
-                        <el-input style="width: 82%;" v-model="editForm.province"></el-input>
-                    </el-form-item>
-                    <el-form-item label="市:" prop="city">
-                        <el-input style="width: 82%;" v-model="editForm.city"></el-input>
-                    </el-form-item>
-                    <el-form-item label="区:" prop="region">
-                        <el-input style="width: 82%;" v-model="editForm.region"></el-input>
-                    </el-form-item>
-                    <el-form-item label="街道:" prop="street">
-                        <el-input style="width: 82%;" v-model="editForm.street"></el-input>
-                    </el-form-item>
-                    <el-form-item label="详情:" prop="details">
-                        <el-input style="width: 82%;" type="textarea"
-                                  :autosize="{ minRows: 3, maxRows: 4}" v-model="editForm.details"></el-input>
-                    </el-form-item>
-                </el-form>
-                <!--            底部区域-->
-                <span slot="footer" class="dialog-footer">
+                </el-dialog>
+                <!--        展示活动对话框-->
+                <el-dialog title="收货地址详情" :visible.sync="showDialogVisible" width="630px" top="60px" center>
+                    <!--            内容主体区域 放置一个表单-->
+                    <el-form :model="showForm" ref="addFormRef" label-width="100px">
+                        <!-- prop属性指定验证规则-->
+                        <el-form-item label="收货人:" prop="receiver">
+                            <!--v-model双向绑定-->
+                            <el-input style="width: 82%;" v-model="showForm.receiver" :readonly="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="联系方式:" prop="phone">
+                            <el-input style="width: 82%;" v-model="showForm.phone" :readonly="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="省:" prop="province">
+                            <el-input style="width: 82%;" v-model="showForm.province" :readonly="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="市:" prop="city">
+                            <el-input style="width: 82%;" v-model="showForm.city" :readonly="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="区:" prop="region">
+                            <el-input style="width: 82%;" v-model="showForm.region" :readonly="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="街道:" prop="street">
+                            <el-input style="width: 82%;" v-model="showForm.street" :readonly="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="详情:" prop="details">
+                            <el-input style="width: 82%;" type="textarea"
+                                      :autosize="{ minRows: 3, maxRows: 4}" v-model="showForm.details" :readonly="true"></el-input>
+                        </el-form-item>
+                    </el-form>
+                </el-dialog>
+                <!--        编辑活动对话框-->
+                <el-dialog title="编辑收货地址" :visible.sync="editDialogVisible" width="630px" top="60px" center>
+                    <!--            内容主体区域 放置一个表单-->
+                    <!--绑定到addForm中，绑定验证规则对象addFormRules 表单校验项的引用为addFormRef-->
+                    <el-form :model="editForm" :rules="editFormRules" ref="addFormRef" label-width="100px">
+                        <!-- prop属性指定验证规则-->
+                        <el-form-item label="收货人:" prop="receiver">
+                            <!--v-model双向绑定-->
+                            <el-input style="width: 82%;" v-model="editForm.receiver"></el-input>
+                        </el-form-item>
+                        <el-form-item label="联系方式:" prop="phone">
+                            <el-input style="width: 82%;" v-model="editForm.phone"></el-input>
+                        </el-form-item>
+                        <el-form-item label="省:" prop="province">
+                            <el-input style="width: 82%;" v-model="editForm.province"></el-input>
+                        </el-form-item>
+                        <el-form-item label="市:" prop="city">
+                            <el-input style="width: 82%;" v-model="editForm.city"></el-input>
+                        </el-form-item>
+                        <el-form-item label="区:" prop="region">
+                            <el-input style="width: 82%;" v-model="editForm.region"></el-input>
+                        </el-form-item>
+                        <el-form-item label="街道:" prop="street">
+                            <el-input style="width: 82%;" v-model="editForm.street"></el-input>
+                        </el-form-item>
+                        <el-form-item label="详情:" prop="details">
+                            <el-input style="width: 82%;" type="textarea"
+                                      :autosize="{ minRows: 3, maxRows: 4}" v-model="editForm.details"></el-input>
+                        </el-form-item>
+                    </el-form>
+                    <!--            底部区域-->
+                    <span slot="footer" class="dialog-footer">
                     <el-button style="margin-right:20px" @click="cancelEdit()">取 消</el-button>
                     <el-button style="margin-left:20px" type="primary" @click="editAddress()">修 改</el-button>
                 </span>
-            </el-dialog>
+                </el-dialog>
 
 
-            <el-divider></el-divider>
-            <!--            分页区域-->
-            <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="pageNumber"
-                :page-sizes="[1, 2, 5, 10]"
-                :page-size="pageSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="totalCount">
-            </el-pagination>
-
+                <el-divider></el-divider>
+                <!--            分页区域-->
+                <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="pageNumber"
+                    :page-sizes="[1, 2, 5, 10]"
+                    :page-size="pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="totalCount">
+                </el-pagination>
+            </div>
         </el-card>
     </div>
 </template>
@@ -224,6 +237,7 @@ export default {
                 realName: '',
             },
 
+
             totalCount: 0,
             pageNumber: 1,
             pageSize: 5,
@@ -234,7 +248,8 @@ export default {
             addDialogVisible: false,
             editDialogVisible: false,
             showDialogVisible: false,
-
+            addFormRules: {},
+            editFormRules: {},
             addForm: {
                 receiver: '',
                 phone: '',
@@ -244,8 +259,6 @@ export default {
                 street: '',
                 details: '',
             },
-            addFormRules: {},
-
             showForm: {
                 receiver: '',
                 phone: '',
@@ -255,7 +268,6 @@ export default {
                 street: '',
                 details: '',
             },
-
             editForm: {
                 receiver: '',
                 phone: '',
@@ -266,8 +278,6 @@ export default {
                 details: '',
                 addressId: '',
             },
-            editFormRules: {},
-
         };
     },
     created() {
@@ -320,9 +330,15 @@ export default {
         // 获取用户信息
         async getUserInfo(){
             var result = await this.$http.post(this.$api.getUserInfoUrl);
-            // this.form = result;
-            // console.log(result.data.data);
+            this.form = result.data.data;
+            console.log(result.data.data);
         },
+        async updateUserInfo(){
+            await this.$http.post(this.$api.updateUserInfoUrl,this.form);
+        },
+
+
+        // 收货地址相关
         // 获取收货地址
         async getAddressList(){
             var result = await this.$http.post(this.$api.getAddressListUrl,
@@ -364,10 +380,6 @@ export default {
             this.pageNumber = newPage;
             // console.log("pageNumber:"+this.pageNumber);
             await this.getAddressList();
-        },
-        async updateAddress(id)
-        {
-            var result = await this.$http.post(this.$api.updateAddressUrl,id);
         },
         async deleteAddress(id)
         {
@@ -429,7 +441,6 @@ export default {
             // console.log(this.showForm);
             this.showDialogVisible=true;
         },
-
         async showEditAddress(id){
             let result = await this.$http.post(this.$api.getAddressUrl + "/" + id);
             this.editForm=result.data.data;

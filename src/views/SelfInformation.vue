@@ -269,7 +269,7 @@
                 <!--        展示收获地址对话框-->
                 <el-dialog title="收货地址详情" :visible.sync="showDialogVisible" width="630px" top="60px" center>
                     <!--            内容主体区域 放置一个表单-->
-                    <el-form :model="showForm" ref="addFormRef" label-width="100px">
+                    <el-form :model="showForm" label-width="100px">
                         <!-- prop属性指定验证规则-->
                         <el-form-item label="收货人:" prop="receiver">
                             <!--v-model双向绑定-->
@@ -300,7 +300,7 @@
                 <el-dialog title="编辑收货地址" :visible.sync="editDialogVisible" width="630px" top="60px" center>
                     <!--            内容主体区域 放置一个表单-->
                     <!--绑定到addForm中，绑定验证规则对象addFormRules 表单校验项的引用为addFormRef-->
-                    <el-form :model="editForm" :rules="editFormRules" ref="addFormRef" label-width="100px">
+                    <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="100px">
                         <!-- prop属性指定验证规则-->
                         <el-form-item label="收货人:" prop="receiver">
                             <!--v-model双向绑定-->
@@ -386,8 +386,46 @@ export default {
             addDialogVisible: false,
             editDialogVisible: false,
             showDialogVisible: false,
-            addFormRules: {},
-            editFormRules: {},
+            addFormRules: {
+                receiver: [
+                    {required: true, message: '请输入收货人', trigger: 'blur'},
+                ],
+                phone: [
+                    {required: true, message: '请输入联系方式', trigger: 'blur'},
+                ],
+                province: [
+                    {required: true, message: '请输入省份', trigger: 'blur'},
+                ],
+                city: [
+                    {required: true, message: '请输入城市', trigger: 'blur'},
+                ],
+                region: [
+                    {required: true, message: '请输入区', trigger: 'blur'},
+                ],
+                street: [
+                    {required: true, message: '请输入街道', trigger: 'blur'},
+                ],
+            },
+            editFormRules: {
+                receiver: [
+                    {required: true, message: '请输入收货人', trigger: 'blur'},
+                ],
+                phone: [
+                    {required: true, message: '请输入联系方式', trigger: 'blur'},
+                ],
+                province: [
+                    {required: true, message: '请输入省份', trigger: 'blur'},
+                ],
+                city: [
+                    {required: true, message: '请输入城市', trigger: 'blur'},
+                ],
+                region: [
+                    {required: true, message: '请输入区', trigger: 'blur'},
+                ],
+                street: [
+                    {required: true, message: '请输入街道', trigger: 'blur'},
+                ],
+            },
             addForm: {
                 receiver: '',
                 phone: '',
@@ -623,7 +661,6 @@ export default {
                     this.$message.info("编辑联系人成功!");
                 }
             );
-
         },
 
         // 收货地址相关
@@ -682,29 +719,34 @@ export default {
             this.addDialogVisible=true;
         },
         async addAddress(){
+            this.$refs.addFormRef.validate(
+                async valid =>
+                {
+                    if (!valid) return;
+                    await this.$http.post(this.$api.addAddressUrl,{
+                        receiver: this.addForm.receiver,
+                        phone: this.addForm.phone,
+                        province: this.addForm.province,
+                        city: this.addForm.city,
+                        region: this.addForm.region,
+                        street: this.addForm.street,
+                        details: this.addForm.details,
+                    });
+                    this.getAddressList();
+                    this.addDialogVisible=false;
 
-            await this.$http.post(this.$api.addAddressUrl,{
-                receiver: this.addForm.receiver,
-                phone: this.addForm.phone,
-                province: this.addForm.province,
-                city: this.addForm.city,
-                region: this.addForm.region,
-                street: this.addForm.street,
-                details: this.addForm.details,
-            });
-            this.getAddressList();
-            this.addDialogVisible=false;
+                    this.addForm.receiver='';
+                    this.addForm.phone='';
+                    this.addForm.province='';
+                    this.addForm.city='';
+                    this.addForm.region='';
+                    this.addForm.street='';
+                    this.addForm.details='';
 
-            this.addForm.receiver='';
-            this.addForm.phone='';
-            this.addForm.province='';
-            this.addForm.city='';
-            this.addForm.region='';
-            this.addForm.street='';
-            this.addForm.details='';
-
-            // console.log(this.addForm);
-            this.$message.info("添加收货地点成功!");
+                    // console.log(this.addForm);
+                    this.$message.info("添加收货地点成功!");
+                }
+            );
         },
         async cancelAdd(){
             this.addDialogVisible=false;
@@ -738,11 +780,18 @@ export default {
             this.editDialogVisible=true;
         },
         async editAddress(){
-            // console.log(this.editForm.addressId);
-            await this.$http.post(this.$api.updateAddressUrl + "/" + this.editForm.addressId, this.editForm);
-            this.getAddressList();
-            this.editDialogVisible=false;
-            this.$message.info("编辑收货地点成功!");
+            this.$refs.editFormRef.validate(
+                async valid =>
+                {
+                    if (!valid) return;
+                    // console.log(this.editForm.addressId);
+                    await this.$http.post(this.$api.updateAddressUrl + "/" + this.editForm.addressId, this.editForm);
+                    this.getAddressList();
+                    this.editDialogVisible=false;
+                    this.$message.info("编辑收货地点成功!");
+                }
+            );
+
         },
         async cancelEdit(){
             this.editDialogVisible=false;

@@ -23,11 +23,7 @@
       <div class="table-container">
         <el-table
           :key="key"
-          :data="
-            tableData.filter(
-              (data) => data.status == activeIndex - 1 || activeIndex == 1
-            )
-          "
+          :data="tableData"
           v-loading="loading"
           style="width: 100%"
         >
@@ -91,12 +87,6 @@ const fields = [
   { label: "订单提交时间", prop: "time" },
   { label: "订单总金额", prop: "money" },
 
-  // //展开行功能多出的内容
-  // { label: "演出场次编号", prop: "showSessionId" },
-  // { label: "订单支付方式", prop: "payment" },
-  // { label: "订单地址编号", prop: "addressId" },
-  // { label: "该订单对用户是否可见", prop: "userDelete" },
-  // { label: "订单所含票数", prop: "ticketCount" },
 ];
 export default {
   name: "",
@@ -113,7 +103,7 @@ export default {
       page: {
         pageNum: 1,
         pageSize: 5,
-        totalRecord:0,
+        totalRecord: 0,
       },
     };
   },
@@ -124,28 +114,39 @@ export default {
 
   beforeMount() {},
 
-  mounted() {
-    this.reload();
+  async mounted() {
+    await this.reload();
+    this.page.totalRecord = this.tableData.length;
   },
 
   methods: {
     handleSizeChange(val) {
-      this.page.pageSize=val;
-        this.page.pageNum=1;
-      this.reload();
-
-      console.log(`每页 ${val} 条`);
+      this.page.pageSize = val;
+      this.page.pageNum = 1;
+      if (this.activeIndex != 1) {
+        this.reload(this.activeIndex - 1);
+      } else {
+        this.reload();
+      }
     },
     handleCurrentChange(val) {
-      this.page.pageNum=val
-      this.reload();
-      console.log(`当前页: ${val}`);
+      this.page.pageNum = val;
+      if (this.activeIndex != 1) {
+        this.reload(this.activeIndex - 1);
+      } else {
+        this.reload();
+      }
     },
     //选择不同类型的订单显示在订单列表
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
       this.activeIndex = key;
-      console.log(this.activeIndex);
+      var orders = [];
+      if (key != 1) {
+        this.reload(key - 1);
+      } else {
+        this.reload();
+      }
     },
 
     handleInfo(index, row) {
@@ -190,27 +191,26 @@ export default {
         const res = await axios.post(this.$api.getShowName + "/" + id);
         console.log(res);
         if (res.data.code == 200) {
-          console.log(res.data.data.name);
           this.tableData[i].name = res.data.data.name;
           this.$set(this.tableData, i, this.tableData[i]);
-          console.log(this.tableData[i].name);
         }
       } catch (err) {
         console.log(err);
       }
     },
 
-    async reload() {
+    async reload(status = -1) {
       try {
         console.log("mounted");
         const res = await axios.post(this.$api.getOrderListUrl, {
-            pageNum: this.page.pageNum,
-            pageSize: this.page.pageSize,
+          status: status,
+          pageNum: this.page.pageNum,
+          pageSize: this.page.pageSize,
         });
         console.log(res);
         if (res.data.code == 200) {
           this.tableData = res.data.data.list;
-          this.page.totalRecord=res.data.data.total;
+          this.page.totalRecord = res.data.data.total;
           for (var i = 0; i < this.tableData.length; i++) {
             if (this.tableData[i].status == 1) {
               this.tableData[i].realStatus = "待评价";
@@ -224,7 +224,7 @@ export default {
         }
         if (res.data.message == "当前用户无订单!") {
           this.tableData = null;
-            this.page.totalRecord=0;
+          this.page.totalRecord = 0;
         }
         setTimeout(() => {
           this.loading = false;

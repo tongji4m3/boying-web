@@ -95,33 +95,52 @@
         <div v-for="(childrenList, i) in showList" :key="i">
           <el-card shadow="never">
             {{ translateList[i] }}：
-            <el-row :gutter="40">
-              <el-col :span="8" v-for="(show, j) in childrenList" :key="j">
-                <el-card
-                  class="myCard"
-                  :body-style="{ padding: '10px' }"
-                  shadow="hover"
-                >
-                  <el-col :span="10">
-                    <img
-                      width="100"
-                      height="140"
-                      :src="show.poster"
-                      class="image"
-                    />
-                  </el-col>
-                  <el-col :span="14">
-                    {{ show.name }}
-                    <br />
-                    {{ show.city }}
-                    <br />
-                    {{ show.dayStart.substring(0, 10) }}~{{
-                      show.dayEnd.substring(0, 10)
-                    }}
-                    <br />
-                    ¥{{ show.minPrice }}起
-                  </el-col>
+            <el-row :gutter="20">
+              <el-col :span="6">
+                <el-card shadow="hover">
+                  <img
+                    width="200"
+                    height="280"
+                    :src="showList[0][0].poster"
+                    class="image"
+                  />
                 </el-card>
+              </el-col>
+              <el-col :span="18">
+                <el-row :gutter="40">
+                  <el-col :span="8" v-for="(show, j) in childrenList" :key="j">
+                    <el-card
+                      class="myCard"
+                      :body-style="{ padding: '10px' }"
+                      shadow="hover"
+                      v-if="j !== 0"
+                    >
+                      <el-col :span="10">
+                        <img
+                          width="100"
+                          height="140"
+                          :src="show.poster"
+                          class="image"
+                        />
+                      </el-col>
+                      <el-col :span="14">
+                        <div class="showName">
+                          {{ show.name }}
+                        </div>
+                        <br />
+                        <div class="showAddress">
+                          {{ show.city }}
+                        </div>
+                        <br />
+                        {{ show.dayStart.substring(0, 10) }}~{{
+                          show.dayEnd.substring(0, 10)
+                        }}
+                        <br />
+                        ¥{{ show.minPrice }}起
+                      </el-col>
+                    </el-card>
+                  </el-col>
+                </el-row>
               </el-col>
             </el-row>
           </el-card>
@@ -213,7 +232,8 @@ export default {
         );
         // this.showList[i].name = this.categoryList[i].name;
       }
-      console.log(this.showList);
+      // console.log(this.translateList);
+      this.$forceUpdate();
     },
     async getShow(categoryId) {
       let result = await this.$http.post(
@@ -221,7 +241,7 @@ export default {
         JSON.stringify({
           categoryId: categoryId,
           pageNum: 1,
-          pageSize: 6,
+          pageSize: 7,
         })
       );
 
@@ -307,6 +327,11 @@ export default {
 
 .categoryCol {
   cursor: pointer; /*鼠标悬停变小手*/
-  background-clip: padding-box;
+  background-clip: padding-box;}
+.showName {
+    font-size: 20px;
+}
+.showAddress {
+    font-size: 12px;
 }
 </style>

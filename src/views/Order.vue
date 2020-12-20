@@ -72,7 +72,7 @@
       :page-sizes="[1, 2, 5, 10]"
       :page-size="page.pageSize"
       layout="total, sizes, prev, pager, next, jumper"
-      :total=totalRecord
+      :total=page.totalRecord
     >
     </el-pagination>
   </div>

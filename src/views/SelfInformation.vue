@@ -9,11 +9,11 @@
                             <br>
                             个人信息：
                             <el-form ref="form" :model="form" label-width="80px">
-                                <el-form-item label="生日">
-                                    <el-date-picker type="date" placeholder="选择日期" v-model="form.age" style="width: 40%;"></el-date-picker>
+                                <el-form-item label="年龄">
+                                    <el-input v-model="form.age" style="width: 30%"></el-input>
                                 </el-form-item>
                                 <el-form-item label="联系方式">
-                                    <el-input v-model="form.phone" style="width: 30%"></el-input>
+                                    <el-input v-model="form.phone" style="width: 30%" :readonly="true"></el-input>
                                 </el-form-item>
                                 <el-form-item label="邮箱">
                                     <el-input v-model="form.email" style="width: 30%"></el-input>
@@ -52,8 +52,8 @@
                                 <el-form-item label="身份证号">
                                     <el-input v-model="form.identityNumber" style="width: 30%"></el-input>
                                 </el-form-item>
-                                <el-form-item label="昵称">
-                                    <el-input v-model="form.name" style="width: 30%"></el-input>
+                                <el-form-item label="账号名称">
+                                    <el-input v-model="form.name" style="width: 30%" :readonly="true"></el-input>
                                 </el-form-item>
                                 <el-form-item label="真实姓名">
                                     <el-input v-model="form.realName" style="width: 30%"></el-input>
@@ -349,7 +349,15 @@ export default {
     name: "SelfInformation",
     data() {
         return {
+            loading: true,
+            //上传图片相关
             images: [],
+            uploadConf: {
+                region: null,
+                accessKeyId: null,
+                accessKeySecret: null,
+                bucket: null,
+            },
             form: {
                 age: '',
                 email: '',
@@ -524,6 +532,15 @@ export default {
         onSubmit() {
             console.log('submit!');
         },
+
+        // 初始化
+        async init() {
+            //获取阿里云token  这里是后台返回来的数据
+            this.uploadConf.region = "oss-cn-shanghai";
+            this.uploadConf.accessKeyId = "LTAI4FzMDhgBN9LMBr71T3Ny";
+            this.uploadConf.accessKeySecret = "hTPgQQSyBgEDnfMNe06RPf8ecDafpz";
+            this.uploadConf.bucket = "tongji-boying";
+        },
         // 阿里云OSS上传
         uploadHttp({ file }) {
             this.init();
@@ -537,7 +554,7 @@ export default {
                     if (res && res.status === 200) {
                         console.log(`阿里云OSS上传图片成功回调`, res, url, name);
                         console.log(url);
-                        this.registerForm.icon = url;
+                        this.form.icon = url;
                     }
                 })
                 .catch((err) => {
@@ -562,6 +579,7 @@ export default {
         handleRemove(file, fileList) {
             console.log(`移除图片回调`, fileList);
         },
+
         // 获取用户信息
         async getUserInfo(){
             var result = await this.$http.post(this.$api.getUserInfoUrl);
@@ -573,11 +591,20 @@ export default {
             this.form.identityNumber=result.data.data.identityNumber;
             this.form.email=result.data.data.email;
             this.form.phone=result.data.data.phone;
-            console.log(result.data.data);
+
+            console.log("修改前"+this.form.icon);
         },
         async updateUserInfo(){
-            let result = await this.$http.post(this.$api.updateUserInfoUrl,this.form);
-            console.log(result);
+            console.log("修改后"+this.form.icon);
+            let result = await this.$http.post(this.$api.updateUserInfoUrl,{
+                realName: this.form.realName,
+                icon: this.form.icon,
+                gender: this.form.gender,
+                age: this.form.age,
+                identityNumber: this.form.identityNumber,
+                email: this.form.email,
+            });
+            // console.log(result);
             await this.getUserInfo();
         },
 
@@ -615,7 +642,7 @@ export default {
         },
         async getDefaultFrequentList(){
             let result = await this.$http.post(this.$api.getDefaultFrequentUrl);
-            console.log(result);
+            // console.log(result);
             if(result.data.code===200){
                 this.defaultFrequentList=result.data.data;
             }

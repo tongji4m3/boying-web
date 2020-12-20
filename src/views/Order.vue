@@ -23,7 +23,11 @@
       <div class="table-container">
         <el-table
           :key="key"
-          :data="tableData.filter((data) => (data.status == activeIndex - 1 || activeIndex==1))"
+          :data="
+            tableData.filter(
+              (data) => data.status == activeIndex - 1 || activeIndex == 1
+            )
+          "
           v-loading="loading"
           style="width: 100%"
         >
@@ -61,6 +65,16 @@
         </el-table>
       </div>
     </div>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page.pageNum"
+      :page-sizes="[3, 6, 9]"
+      :page-size="page.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total=totalRecord
+    >
+    </el-pagination>
   </div>
 </template>
 
@@ -98,7 +112,9 @@ export default {
       OrderState: ["待评价", "已完成", "已退订单"],
       page: {
         pageNum: 1,
-        pageSize: 4,
+        pageSize: 3,
+        currentPage:1,
+        totalRecord:0,
       },
     };
   },
@@ -114,6 +130,17 @@ export default {
   },
 
   methods: {
+    handleSizeChange(val) {
+      this.page.pageSize=val;
+            this.reload();
+
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      this.page.pageNum=val
+      this.reload();
+      console.log(`当前页: ${val}`);
+    },
     //选择不同类型的订单显示在订单列表
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
@@ -180,6 +207,7 @@ export default {
         console.log(res);
         if (res.data.code == 200) {
           this.tableData = res.data.data.list;
+          this.page.totalRecord=this.tableData.length;
           for (var i = 0; i < this.tableData.length; i++) {
             if (this.tableData[i].status == 1) {
               this.tableData[i].realStatus = "待评价";

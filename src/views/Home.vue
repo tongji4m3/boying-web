@@ -48,10 +48,19 @@
       </el-header>
       <el-main>
         <!--            走马灯-->
-        <el-carousel indicator-position="outside">
-          <el-carousel-item v-for="item in 4">
-            <h3>{{ item }}</h3>
+        <el-carousel indicator-position="outside" height="400px">
+          <el-carousel-item>
+              <img src="https://i.loli.net/2020/12/20/jI9Pqw5HUVEbSsr.jpg" height="400" width="1500" alt=""/>
           </el-carousel-item>
+            <el-carousel-item>
+                <img src="https://i.loli.net/2020/12/20/phOzri862tuXZ9V.jpg" height="400" width="1500"/>
+            </el-carousel-item>
+            <el-carousel-item>
+                <img src="https://i.loli.net/2020/12/20/PgD9QxLN2JtnuXS.jpg" height="400" width="1500"/>
+            </el-carousel-item>
+            <el-carousel-item>
+                <img src="https://i.loli.net/2020/12/20/7AxHqzCvWItlSRj.jpg" height="400" width="1500"/>
+            </el-carousel-item>
         </el-carousel>
         <!--            种类分类-->
         <el-card shadow="never">

@@ -68,23 +68,18 @@
                     <el-card class="el-card">
                         <div>
                             <br>
-                            默认常用联系人：
-                            <el-table :data="defaultFrequentList" style="width: 100%">
-                                <el-table-column prop="identityNumber" label="身份证号"></el-table-column>
-                                <el-table-column prop="name" label="姓名"></el-table-column>
-                                <el-table-column prop="phone" label="联系方式"></el-table-column>
-                                <el-table-column label="操作" width="200px">
-                                    <template slot-scope="scope">
-                                        <el-button type="text" @click="">删除</el-button>
-                                        <el-button type="text" @click="">编辑</el-button>
-                                        <el-button type="text" @click="">设为默认</el-button>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
+                            常用联系人：
+                            <br>
+                            姓名：{{ defaultFrequentList.name }}
+                            <br>
+                            身份证号：{{ defaultFrequentList.identityNumber }}
+                            <br>
+                            联系方式：{{ defaultFrequentList.phone }}
+                            <br>
                             <br>
                             联系人：
                             <el-button type="primary" @click="showAddFrequent()">添加联系人</el-button>
-                            <el-table :data="frequentList" style="width: 100%">
+                            <el-table :data="frequentList" style="width: 100%" :row-class-name="tableRowClassName2">
                                 <!--                            <el-table-column prop="frequentId" label="联系人编号"></el-table-column>-->
                                 <el-table-column prop="identityNumber" label="身份证号"></el-table-column>
                                 <el-table-column prop="name" label="姓名"></el-table-column>
@@ -93,7 +88,7 @@
                                     <template slot-scope="scope">
                                         <el-button type="text" @click="deleteFrequent(scope.row.frequentId)">删除</el-button>
                                         <el-button type="text" @click="showEditFrequent(scope.row.frequentId)">编辑</el-button>
-                                        <el-button type="text" @click="">设为默认</el-button>
+                                        <el-button type="text" @click="setDefaultFrequentList(scope.row.frequentId)">设为默认</el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -500,6 +495,7 @@ export default {
         this.getUserInfo();
 
         this.getFrequentList();
+        this.getDefaultFrequentList();
 
         this.getAddressList();
         this.getDefaultAddressList();
@@ -508,6 +504,13 @@ export default {
 
         tableRowClassName({row, rowIndex}) {
             if (this.addressList[rowIndex].addressId === this.defaultAddressList.addressId) {
+                return 'warning-row';
+            }
+            return '';
+        },
+
+        tableRowClassName2({row, rowIndex}) {
+            if (this.frequentList[rowIndex].frequentId === this.defaultFrequentList.frequentId) {
                 return 'warning-row';
             }
             return '';
@@ -575,6 +578,7 @@ export default {
             this.pageNumber2 = 1;
             // console.log("pageSize:"+this.pageSize);
             await this.getFrequentList();
+            await this.getDefaultFrequentList();
         },
         //监听pageNum改变的事件
         async handleCurrentChange2(newPage)
@@ -582,6 +586,7 @@ export default {
             this.pageNumber2 = newPage;
             // console.log("pageNumber:"+this.pageNumber);
             await this.getFrequentList();
+            await this.getDefaultFrequentList();
         },
         async getFrequentList(){
             let result = await this.$http.post(this.$api.getFrequentListUrl,{
@@ -598,7 +603,19 @@ export default {
             this.totalCount2=result.data.data.total;
         },
         async getDefaultFrequentList(){
-
+            let result = await this.$http.post(this.$api.getDefaultFrequentUrl);
+            console.log(result);
+            if(result.data.code===200){
+                this.defaultFrequentList=result.data.data;
+            }
+            else{
+                this.defaultFrequentList=[];
+            }
+        },
+        async setDefaultFrequentList(id){
+            await this.$http.post(this.$api.setDefaultFrequentUrl + "/" + id);
+            await this.getFrequentList();
+            await this.getDefaultFrequentList();
         },
         async showAddFrequent(){
             this.addDialogVisible2=true;
@@ -614,6 +631,7 @@ export default {
                         phone: this.addForm2.phone,
                     });
                     await this.getFrequentList();
+                    await this.getDefaultFrequentList();
                     this.addDialogVisible2=false;
                     this.addForm2.identityNumber='';
                     this.addForm2.name='';
@@ -635,13 +653,13 @@ export default {
             // console.log(id);
             let result = await this.$http.post(this.$api.deleteFrequentUrl + "/" + id);
             // console.log(result);
-            this.getFrequentList();
-            this.getDefaultFrequentList();
+            await this.getFrequentList();
+            await this.getDefaultFrequentList();
             this.$message.info("删除联系人成功!");
         },
         async showEditFrequent(id){
             let result = await this.$http.post(this.$api.getFrequentUrl + "/" + id);
-            console.log(result);
+            // console.log(result);
             this.editForm2=result.data.data;
             this.editDialogVisible2=true;
         },
@@ -656,7 +674,8 @@ export default {
                     if (!valid) return;
                     // console.log(this.editForm.addressId);
                     await this.$http.post(this.$api.updateFrequentUrl + "/" + this.editForm2.frequentId, this.editForm2);
-                    this.getFrequentList();
+                    await this.getFrequentList();
+                    await this.getDefaultFrequentList();
                     this.editDialogVisible2=false;
                     this.$message.info("编辑联系人成功!");
                 }
@@ -680,7 +699,7 @@ export default {
                 this.addressList=[];
             }
             this.totalCount=result.data.data.total;
-            console.log(this.addressList);
+            // console.log(this.addressList);
         },
         // 获取默认收货地址
         async getDefaultAddressList(){
@@ -692,7 +711,7 @@ export default {
             else{
                 this.defaultAddressList=[];
             }
-            console.log(this.defaultAddressList);
+            // console.log(this.defaultAddressList);
         },
         //监听pageSize改变的事件
         async handleSizeChange(newSize)
@@ -769,8 +788,8 @@ export default {
         },
         async setDefaultAddress(id){
             await this.$http.post(this.$api.setDefaultAddressUrl + "/" + id);
-            this.getAddressList();
-            this.getDefaultAddressList();
+            await this.getAddressList();
+            await this.getDefaultAddressList();
         },
         async showAddress(id){
             let result = await this.$http.post(this.$api.getAddressUrl + "/" + id);

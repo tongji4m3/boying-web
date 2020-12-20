@@ -290,6 +290,8 @@ export default {
   width: 100%;
   background-size: cover;
   position: fixed;
+  padding: 0;
+  margin: 0;
 }
 
 body {

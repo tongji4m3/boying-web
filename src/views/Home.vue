@@ -19,16 +19,6 @@
               ></el-dropdown-item>
               <el-dropdown-item
                 class="navigation-text"
-                @click.native="changePassword"
-                >修改密码</el-dropdown-item
-              >
-              <el-dropdown-item
-                class="navigation-text"
-                @click.native="systemNotice"
-                >系统公告</el-dropdown-item
-              >
-              <el-dropdown-item
-                class="navigation-text"
                 @click.native="toSelfInformation"
                 >我的信息</el-dropdown-item
               >
@@ -46,7 +36,7 @@
           </el-dropdown>
         </div>
       </el-header>
-      <el-main>
+      <el-main style="padding:0">
         <!--            走马灯-->
         <el-carousel indicator-position="outside" height="400px">
           <el-carousel-item>

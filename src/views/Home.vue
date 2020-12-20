@@ -46,7 +46,7 @@
           </el-dropdown>
         </div>
       </el-header>
-      <el-main>
+      <el-main style="padding:0">
         <!--            走马灯-->
         <el-carousel indicator-position="outside" height="400px">
           <el-carousel-item>

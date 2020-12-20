@@ -1,6 +1,6 @@
 <!--有前端验证注册信息是否合理-->
 <template>
-  <body id="poster" >
+  <body id="poster">
     <el-scrollbar style="height: 100%">
       <el-form
         ref="registerFormRef"
@@ -295,6 +295,8 @@ export default {
   width: 100%;
   background-size: cover;
   position: fixed;
+  padding: 0;
+  margin: 0;
 }
 
 body {

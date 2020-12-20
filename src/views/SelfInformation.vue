@@ -12,6 +12,9 @@
                                 <el-form-item label="生日">
                                     <el-date-picker type="date" placeholder="选择日期" v-model="form.age" style="width: 20%;"></el-date-picker>
                                 </el-form-item>
+                                <el-form-item label="联系方式">
+                                    <el-input v-model="form.phone" style="width: 30%"></el-input>
+                                </el-form-item>
                                 <el-form-item label="邮箱">
                                     <el-input v-model="form.email" style="width: 30%"></el-input>
                                 </el-form-item>
@@ -56,8 +59,7 @@
                                     <el-input v-model="form.realName" style="width: 30%"></el-input>
                                 </el-form-item>
                                 <el-form-item>
-                                    <el-button type="primary" @click="updateUserInfo()">编辑</el-button>
-                                    <el-button>取消</el-button>
+                                    <el-button type="primary" @click="updateUserInfo()">更 新</el-button>
                                 </el-form-item>
                             </el-form>
                         </div>
@@ -356,6 +358,7 @@ export default {
                 identityNumber: '',
                 name: '',
                 realName: '',
+                phone: '',
             },
 
 
@@ -562,14 +565,20 @@ export default {
         // 获取用户信息
         async getUserInfo(){
             var result = await this.$http.post(this.$api.getUserInfoUrl);
-            this.form.realName=result.data.data.username;
-            this.form.name=result.data.data.name;
+            this.form.name=result.data.data.username;
+            this.form.realName=result.data.data.realName;
             this.form.icon=result.data.data.icon;
             this.form.gender=result.data.data.gender===true?'男':'女';
-            // console.log(result.data.data);
+            this.form.age=result.data.data.age;
+            this.form.identityNumber=result.data.data.identityNumber;
+            this.form.email=result.data.data.email;
+            this.form.phone=result.data.data.phone;
+            console.log(result.data.data);
         },
         async updateUserInfo(){
-            await this.$http.post(this.$api.updateUserInfoUrl,this.form);
+            let result = await this.$http.post(this.$api.updateUserInfoUrl,this.form);
+            console.log(result);
+            await this.getUserInfo();
         },
 
         // 联系人相关

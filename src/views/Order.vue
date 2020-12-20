@@ -69,7 +69,7 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="page.pageNum"
-      :page-sizes="[3, 6, 9]"
+      :page-sizes="[1, 2, 5, 10]"
       :page-size="page.pageSize"
       layout="total, sizes, prev, pager, next, jumper"
       :total=totalRecord
@@ -112,7 +112,7 @@ export default {
       OrderState: ["待评价", "已完成", "已退订单"],
       page: {
         pageNum: 1,
-        pageSize: 3,
+        pageSize: 5,
         currentPage:1,
         totalRecord:0,
       },
@@ -132,7 +132,8 @@ export default {
   methods: {
     handleSizeChange(val) {
       this.page.pageSize=val;
-            this.reload();
+        this.page.pageNum=1;
+      this.reload();
 
       console.log(`每页 ${val} 条`);
     },
@@ -203,7 +204,10 @@ export default {
     async reload() {
       try {
         console.log("mounted");
-        const res = await axios.post(this.$api.getOrderListUrl, this.page);
+        const res = await axios.post(this.$api.getOrderListUrl, {
+            pageNum: this.page.pageNum,
+            pageSize: this.page.pageSize,
+        });
         console.log(res);
         if (res.data.code == 200) {
           this.tableData = res.data.data.list;

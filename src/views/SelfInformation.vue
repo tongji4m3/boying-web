@@ -69,7 +69,7 @@
                         <div>
                             <br>
                             常用联系人：
-                            <br>
+                            <br><br>
                             姓名：{{ defaultFrequentList.name }}
                             <br>
                             身份证号：{{ defaultFrequentList.identityNumber }}
@@ -139,7 +139,7 @@
                                     <el-form-item label="街道:" prop="street">
                                         <el-input style="width: 82%;" v-model="showForm2.street" :readonly="true"></el-input>
                                     </el-form-item>
-                                    <el-form-item label="详情:" prop="details">
+                                    <el-form-item label="详细地址:" prop="details">
                                         <el-input style="width: 82%;" type="textarea"
                                                   :autosize="{ minRows: 3, maxRows: 4}" v-model="showForm2.details" :readonly="true"></el-input>
                                     </el-form-item>
@@ -202,10 +202,12 @@
                     <el-table :data="addressList" style="width: 100%" :row-class-name="tableRowClassName">
                         <el-table-column prop="receiver" label="收货人"></el-table-column>
                         <el-table-column prop="phone" label="联系方式"></el-table-column>
-                        <el-table-column prop="province" label="省份"></el-table-column>
-                        <el-table-column prop="city" label="城市"></el-table-column>
-                        <el-table-column prop="region" label="区"></el-table-column>
-                        <el-table-column prop="street" label="街道"></el-table-column>
+                        <el-table-column label="地址">
+                            <el-table-column prop="province" label="省份"></el-table-column>
+                            <el-table-column prop="city" label="城市"></el-table-column>
+                            <el-table-column prop="region" label="区"></el-table-column>
+                            <el-table-column prop="street" label="街道"></el-table-column>
+                        </el-table-column>
                         <el-table-column label="操作" width="400px">
                             <template slot-scope="scope">
                                 <el-button type="primary" @click="showAddress(scope.row.addressId)">查看详情</el-button>
@@ -240,7 +242,7 @@
                             <el-form-item label="街道:" prop="street">
                                 <el-input style="width: 82%;" v-model="addForm.street"></el-input>
                             </el-form-item>
-                            <el-form-item label="详情:" prop="details">
+                            <el-form-item label="详细地址:" prop="details">
                                 <el-input style="width: 82%;" type="textarea"
                                           :autosize="{ minRows: 3, maxRows: 4}" v-model="addForm.details"></el-input>
                             </el-form-item>
@@ -275,7 +277,7 @@
                             <el-form-item label="街道:" prop="street">
                                 <el-input style="width: 82%;" v-model="showForm.street" :readonly="true"></el-input>
                             </el-form-item>
-                            <el-form-item label="详情:" prop="details">
+                            <el-form-item label="详细地址:" prop="details">
                                 <el-input style="width: 82%;" type="textarea"
                                           :autosize="{ minRows: 3, maxRows: 4}" v-model="showForm.details" :readonly="true"></el-input>
                             </el-form-item>
@@ -306,7 +308,7 @@
                             <el-form-item label="街道:" prop="street">
                                 <el-input style="width: 82%;" v-model="editForm.street"></el-input>
                             </el-form-item>
-                            <el-form-item label="详情:" prop="details">
+                            <el-form-item label="详细地址:" prop="details">
                                 <el-input style="width: 82%;" type="textarea"
                                           :autosize="{ minRows: 3, maxRows: 4}" v-model="editForm.details"></el-input>
                             </el-form-item>

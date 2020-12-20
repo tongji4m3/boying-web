@@ -865,6 +865,8 @@ export default {
 };
 </script>
 
+
+
 <style scoped>
 
 .el-row {
@@ -904,6 +906,17 @@ body {
 /*    color: rgba(52, 52, 52, 0.7);*/
 /*}*/
 
+.el-table .warning-row {
+    background: oldlace;
+}
+
+.el-table .success-row {
+    background: #f0f9eb;
+}
+</style>
+
+
+<style>
 .el-table .warning-row {
     background: oldlace;
 }

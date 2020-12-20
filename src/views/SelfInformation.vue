@@ -10,7 +10,7 @@
                             个人信息：
                             <el-form ref="form" :model="form" label-width="80px">
                                 <el-form-item label="生日">
-                                    <el-date-picker type="date" placeholder="选择日期" v-model="form.age" style="width: 20%;"></el-date-picker>
+                                    <el-date-picker type="date" placeholder="选择日期" v-model="form.age" style="width: 40%;"></el-date-picker>
                                 </el-form-item>
                                 <el-form-item label="联系方式">
                                     <el-input v-model="form.phone" style="width: 30%"></el-input>

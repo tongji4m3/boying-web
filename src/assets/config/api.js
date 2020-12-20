@@ -48,4 +48,8 @@ module.exports = {
     getOrderDetailsUrl: APIRootUrl +'order',
     getAddressUrl: APIRootUrl +'address',
     getShowDetails: APIRootUrl +'show/detail',
+    deleteUserOrder: APIRootUrl +'order/delete',
+
+    //评论相关
+    addReviewUrl: APIRootUrl +'review/add',
 }

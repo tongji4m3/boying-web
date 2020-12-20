@@ -23,52 +23,10 @@
       <div class="table-container">
         <el-table
           :key="key"
-          :data="tableData"
+          :data="tableData.filter((data) => (data.status == activeIndex - 1 || activeIndex==1))"
           v-loading="loading"
           style="width: 100%"
         >
-          <!-- <el-table-column type="expand">
-            <template slot-scope="props">
-              <el-form label-position="left" inline class="demo-table-expand">
-                <el-form-item label="订单编号">
-                  <span>{{ props.row.orderId }}</span>
-                </el-form-item>
-                <el-form-item label="用户账号">
-                  <span>{{ props.row.userId }}</span>
-                </el-form-item>
-                <el-form-item label="演出编号">
-                  <span>{{ props.row.showId }}</span>
-                </el-form-item>
-                <el-form-item label="演出名称">
-                  <span>{{ props.row.name }}</span>
-                </el-form-item>
-                <el-form-item label="订单状态">
-                  <span>{{ props.row.realStatus }}</span>
-                </el-form-item>
-                <el-form-item label="订单提交时间">
-                  <span>{{ props.row.time | formatDateTime }}</span>
-                </el-form-item>
-                <el-form-item label="订单总金额">
-                  <span>{{ props.row.money }}</span>
-                </el-form-item>
-                <el-form-item label="演出场次编号">
-                  <span>{{ props.row.showSessionId }}</span>
-                </el-form-item>
-                <el-form-item label="订单支付方式">
-                  <span>{{ props.row.payment }}</span>
-                </el-form-item>
-                <el-form-item label="订单地址编号">
-                  <span>{{ props.row.addressId }}</span>
-                </el-form-item>
-                <el-form-item label="该订单对用户是否可见">
-                  <span>{{ props.row.userDelete }}</span>
-                </el-form-item>
-                <el-form-item label="订单所含票数">
-                  <span>{{ props.row.ticketCount }}</span>
-                </el-form-item>
-              </el-form>
-            </template>
-          </el-table-column> -->
           <el-table-column label="订单编号" prop="orderId"> </el-table-column>
           <el-table-column label="用户账号" prop="userId"> </el-table-column>
           <el-table-column label="演出名称" prop="name"> </el-table-column>
@@ -88,14 +46,14 @@
                 size="mini"
                 type="info"
                 @click="handleInfo(scope.$index, scope.row)"
-                style="float: left"
+                style="float: left; margin-left: 10px"
                 >查看订单</el-button
               >
               <el-button
                 size="mini"
                 type="danger"
-                @click="handleDelete(scope.$index, scope.row)"
-                style="float: right"
+                @click="Delete(scope.$index, scope.row)"
+                style="float: right; margin-right: 10px"
                 >删除订单</el-button
               >
             </template>
@@ -140,7 +98,7 @@ export default {
       OrderState: ["待评价", "已完成", "已退订单"],
       page: {
         pageNum: 1,
-        pageSize: 3,
+        pageSize: 4,
       },
     };
   },
@@ -159,10 +117,44 @@ export default {
     //选择不同类型的订单显示在订单列表
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
+      this.activeIndex = key;
+      console.log(this.activeIndex);
     },
 
-    handleInfo(index,row){
-      this.$router.push({path:'/orderDetails',query:{orderId:row.orderId}})
+    handleInfo(index, row) {
+      this.$router.push({
+        path: "/orderDetails",
+        query: { orderId: row.orderId },
+      });
+    },
+
+    Delete(index, row) {
+      this.$confirm("此操作将删除该订单, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.handleDelete(index, row);
+        })
+        .catch(() => {
+          this.$message.info("已取消删除");
+        });
+    },
+    async handleDelete(index, row) {
+      try {
+        const res = await axios.post(
+          this.$api.deleteUserOrder + "/" + row.orderId
+        );
+        console.log("删除订单");
+        console.log(res);
+        if (res.data.code == 200) {
+          this.$message.success("删除成功");
+          this.reload();
+        }
+      } catch (err) {
+        console.log(err);
+      }
     },
 
     async getShowName(id, i) {
@@ -199,6 +191,9 @@ export default {
             this.getShowName(this.tableData[i].showId, i);
           }
         }
+        if (res.data.message == "当前用户无订单!") {
+          this.tableData = null;
+        }
         setTimeout(() => {
           this.loading = false;
         }, 500);
@@ -216,6 +211,8 @@ export default {
       let date = new Date(time);
       return formatDate(date, "yyyy-MM-dd hh:mm:ss");
     },
+
+    dataFilter(data) {},
   },
 
   watch: {},

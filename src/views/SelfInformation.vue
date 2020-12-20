@@ -592,14 +592,20 @@ export default {
             this.form.email=result.data.data.email;
             this.form.phone=result.data.data.phone;
 
-            console.log("修改前"+this.form.icon);
+            // console.log("修改前"+this.form.icon);
         },
         async updateUserInfo(){
-            console.log("修改后"+this.form.icon);
+            // console.log("修改后"+this.form.icon);
+            console.log(this.form.gender);
+            let gender;
+            if(this.form.gender==='man')
+                gender=true;
+            else if(this.form.gender==='woman')
+                gender=false;
             let result = await this.$http.post(this.$api.updateUserInfoUrl,{
                 realName: this.form.realName,
                 icon: this.form.icon,
-                gender: this.form.gender,
+                gender: gender,
                 age: this.form.age,
                 identityNumber: this.form.identityNumber,
                 email: this.form.email,

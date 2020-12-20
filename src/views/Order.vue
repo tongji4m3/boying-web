@@ -72,7 +72,7 @@
       :page-sizes="[1, 2, 5, 10]"
       :page-size="page.pageSize"
       layout="total, sizes, prev, pager, next, jumper"
-      :total=page.totalRecord
+      :total="page.totalRecord"
     >
     </el-pagination>
   </div>
@@ -113,7 +113,6 @@ export default {
       page: {
         pageNum: 1,
         pageSize: 5,
-        currentPage:1,
         totalRecord:0,
       },
     };
@@ -211,7 +210,7 @@ export default {
         console.log(res);
         if (res.data.code == 200) {
           this.tableData = res.data.data.list;
-          this.page.totalRecord=this.tableData.length;
+          this.page.totalRecord=res.data.data.total;
           for (var i = 0; i < this.tableData.length; i++) {
             if (this.tableData[i].status == 1) {
               this.tableData[i].realStatus = "待评价";
@@ -225,6 +224,7 @@ export default {
         }
         if (res.data.message == "当前用户无订单!") {
           this.tableData = null;
+            this.page.totalRecord=0;
         }
         setTimeout(() => {
           this.loading = false;

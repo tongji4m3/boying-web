@@ -108,13 +108,16 @@
                 <el-card shadow="hover" v-if="childrenList"  @click.native="BuyShow(childrenList[0].showId)"
                   class="bigPosterCard"
                          :body-style="{ padding: '23px' }">
-                  <img
-                    width="200"
-                    height="280"
-                    :src="childrenList[0].poster"
-                    class="image"
-                    style="margin:auto;"
-                  />
+                    <el-tooltip class="item" effect="light" :content="childrenList[0].name" placement="bottom">
+                        <img
+                            width="200"
+                            height="280"
+                            :src="childrenList[0].poster"
+                            class="image"
+                            style="margin:auto;"
+                        />
+                    </el-tooltip>
+
                 </el-card>
               </el-col>
               <el-col :span="18">

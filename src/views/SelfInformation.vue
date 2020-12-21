@@ -29,8 +29,10 @@
                                     :http-request="uploadHttp"
                                     :before-upload="beforeAvatarUpload"
                                     :on-remove="handleRemove">
-                                    <i class="el-icon-plus avatar-uploader-icon"></i>
-                                    <p id="img-context">上传个人头像</p>
+                                    <i class="el-icon-upload"></i>
+                                    <div class="el-upload__text">将文件拖到此处，或<em>点击上传个人头像</em></div>
+<!--                                    <i class="el-icon-plus avatar-uploader-icon"></i>-->
+<!--                                    <p id="img-context">上传个人头像</p>-->
                                     <div class="el-upload__tip" slot="tip">
                                         只能上传jpg/jpeg/png文件，且不超过5MB
                                     </div>

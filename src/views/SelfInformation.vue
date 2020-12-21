@@ -10,7 +10,7 @@
                 <br><br><br>
 
                 <el-form ref="form" :model="form" label-width="80px">
-                    <el-row gutter="40">
+                    <el-row :gutter="40">
                         <el-col :span="12">
                             <el-form-item label="头像">
                                 <img

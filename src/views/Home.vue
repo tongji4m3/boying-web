@@ -51,22 +51,24 @@
                   <el-carousel-item>
                       <img
                           src="https://i.loli.net/2020/12/20/phOzri862tuXZ9V.jpg"
-                          height="400*0.8"
-                          width="1500*0.8"
+                          height="400*width"
+                          width="1500*width"
                       />
                   </el-carousel-item>
                   <el-carousel-item>
                       <img
                           src="https://i.loli.net/2020/12/20/PgD9QxLN2JtnuXS.jpg"
-                          height="400*0.8"
-                          width="1500*0.8"
+<!--                          height="320"-->
+<!--                          width="1200"-->
+                          height="400*width"
+                          width="1500*width"
                       />
                   </el-carousel-item>
                   <el-carousel-item>
                       <img
                           src="https://i.loli.net/2020/12/20/7AxHqzCvWItlSRj.jpg"
-                          height="400*0.8"
-                          width="1500*0.8"
+                          height="400*width"
+                          width="1500*width"
                       />
                   </el-carousel-item>
               </el-carousel>

@@ -102,7 +102,7 @@
                   <img
                     width="200"
                     height="280"
-                    :src="showList[0][0].poster"
+                    :src="childrenList[0].poster"
                     class="image"
                   />
                 </el-card>
@@ -227,6 +227,12 @@ export default {
       this.showList.length = this.categoryList.length;
       this.translateList.length = this.categoryList.length;
       for (var i = 0; i < this.categoryList.length; i++) {
+          if(!await this.getShow(this.categoryList[i].categoryId))
+          {
+              this.showList.length=i;
+              this.translateList.length=i;
+              break;
+          }
         this.showList[i] = await this.getShow(this.categoryList[i].categoryId);
         this.translateList[i] = await this.getCategoryName(
           this.categoryList[i].categoryId - 1

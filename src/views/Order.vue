@@ -54,7 +54,16 @@
                 type="danger"
                 @click="Delete(scope.$index, scope.row)"
                 style="float: right; margin-right: 10px"
+                v-show="scope.row.status!=1"
                 >删除订单</el-button
+              >
+              <el-button
+                size="mini"
+                type="warning"
+                @click="Refund(scope.$index, scope.row)"
+                style="float: right; margin-right: 10px"
+                v-show="scope.row.status==1"
+                >取消订单</el-button
               >
             </template>
           </el-table-column>
@@ -177,7 +186,37 @@ export default {
         console.log("删除订单");
         console.log(res);
         if (res.data.code == 200) {
-          this.$message.success("删除成功");
+          this.$message.success("删除订单成功");
+          this.reload();
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    Refund(index, row) {
+      this.$confirm("此操作将取消该订单, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.handleRefund(index, row);
+        })
+        .catch(() => {
+          this.$message.info("未取消订单");
+        });
+    },
+
+    async handleRefund(index, row) {
+      try {
+        const res = await axios.post(
+          this.$api.refundUserOrder + "/" + row.orderId
+        );
+        console.log("取消订单");
+        console.log(res);
+        if (res.data.code == 200) {
+          this.$message.success("取消订单成功");
           this.reload();
         }
       } catch (err) {

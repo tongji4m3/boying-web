@@ -3,8 +3,16 @@
     <el-button @click="back">返回订单列表</el-button>
     <el-card shadow="never" style="margin-top: 15px">
       <div class="operate-container">
-        <i class="el-icon-warning color-danger" style="margin-left: 20px"></i>
-        <span class="color-danger"
+        <i class="el-icon-error color-danger" style="margin-left: 20px" v-show="order.status ==3"></i>
+        <i class="el-icon-success color-success" style="margin-left: 20px" v-show="order.status==2"></i>
+        <i class="el-icon-warning color-warning" style="margin-left: 20px" v-show="order.status==1"></i>
+        <span class="color-danger" v-show="order.status==3"
+          >当前订单状态：{{ order.status | formatStatus }}</span
+        >
+        <span class="color-success" v-show="order.status==2"
+          >当前订单状态：{{ order.status | formatStatus }}</span
+        >
+        <span class="color-warning" v-show="order.status==1"
           >当前订单状态：{{ order.status | formatStatus }}</span
         >
         <div
@@ -12,6 +20,11 @@
           v-show="order.status === 1 || 2 || 3"
         >
           <el-button size="mini" @click="Delete">删除订单</el-button>
+        </div>
+        <div class="operate-button-container" v-show="order.status === 1">
+          <el-button size="mini" @click="Cancel" type="warning"
+            >取消订单</el-button
+          >
         </div>
         <!-- <div class="operate-button-container" v-show="order.status === 1">
           <el-button size="mini" @click="showMarkOrderDialog"
@@ -225,6 +238,35 @@ export default {
       }
     },
 
+    Cancel() {
+      this.$confirm("此操作将取消该订单, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.handleCancel();
+        })
+        .catch(() => {
+          this.$message.info("未取消订单");
+        });
+    },
+    async handleCancel() {
+      try {
+        const res = await axios.post(
+          this.$api.refundUserOrder + "/" + this.orderId
+        );
+        console.log("取消订单");
+        console.log(res);
+        if (res.data.code == 200) {
+          this.$message.success("取消订单成功");
+          this.$router.push("/order");
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
     async getOrderDetails(id) {
       try {
         console.log("订单详情");
@@ -375,6 +417,12 @@ export default {
   color: #303133;
 }
 .color-danger {
-  color: red;
+  color:#F56C6C;
+}
+.color-success{
+  color:#67C23A;
+}
+.color-warning{
+  color:#E6A23C;
 }
 </style>

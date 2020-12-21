@@ -49,6 +49,7 @@ module.exports = {
     getAddressUrl: APIRootUrl +'address',
     getShowDetails: APIRootUrl +'show/detail',
     deleteUserOrder: APIRootUrl +'order/delete',
+    refundUserOrder: APIRootUrl +'order/cancel',
 
     //评论相关
     addReviewUrl: APIRootUrl +'review/add',

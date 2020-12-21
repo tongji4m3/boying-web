@@ -105,7 +105,7 @@
             >
             <el-row :gutter="40">
               <el-col :span="6">
-                <el-card shadow="hover" v-if="childrenList"  @click.native="search(categoryList[i].categoryId)"
+                <el-card shadow="hover" v-if="childrenList"  @click.native="BuyShow(childrenList[0].showId)"
                   class="bigPosterCard"
                          :body-style="{ padding: '23px' }">
                   <img

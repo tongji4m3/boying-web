@@ -56,4 +56,5 @@ module.exports = {
 
     //演出相关
     getShowSessionUrl: APIRootUrl +'session/sessionList',
+    getShowClassUrl: APIRootUrl + 'class/classList',
 }

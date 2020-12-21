@@ -1,9 +1,9 @@
 <template>
   <div>
-    <el-container v-loading="loading">
+    <el-card v-loading="loading">
       <el-backtop :bottom="60" :right="60"> </el-backtop>
       <el-card class="firstCard">
-        <img width="200" height="280" :src="show.poster" class="image" />
+        <img width="300" height="430" :src="show.poster" class="image" />
         <div class="text">
           <el-col :span="25">
             <div class="showName">
@@ -44,13 +44,37 @@
                 <br />
               </el-radio-group>
             </div>
-            ¥{{ show.minPrice }}起
+            <div v-show="this.classList != []||this.classList.length==0">
+              票种
+              <el-radio-group
+                v-model="showClassSelected"
+                @change="classChange()"
+                class="classGroup"
+                v-for="showclass in classList"
+                :key="showclass.showClassId"
+              >
+                <el-radio-button
+                  :label="showclass.showClassId"
+                  class="classRadioButton"
+                  >{{ showclass.name }} 票价:{{ showclass.price }}
+                </el-radio-button>
+                <br />
+              </el-radio-group>
+            </div>
+            <div>
+              最终价格
+            </div>
+            <div v-show="this.priceSelected==null">
+            ¥{{ show.minPrice }}</div>
+            <div v-show="this.priceSelected!=null">
+              ¥{{ this.finalPrice }}
+            </div>
           </el-col>
         </div>
       </el-card>
-      <br/>
+      <br />
       <el-card> 演出详情 </el-card>
-    </el-container>
+    </el-card>
   </div>
 </template>
 
@@ -67,6 +91,10 @@ export default {
       show: {},
       sessionList: [],
       sessionSelected: "",
+      classList: [],
+      showClassSelected: "",
+      priceSelected:null,
+      finalPrice:null,
     };
   },
 
@@ -74,10 +102,12 @@ export default {
     this.showId = this.$route.query.showId;
     await this.getShow();
     await this.getShowSession();
+    await this.getShowClass();
     console.log(this.showId);
     setTimeout(() => {
       this.loading = false;
     }, 500);
+    console.log(this.classList)
   },
 
   components: {},
@@ -91,6 +121,12 @@ export default {
   methods: {
     sessionChange() {
       console.log(this.sessionSelected);
+      this.getShowClass();
+    },
+    classChange() {
+      console.log(this.showClassSelected);
+      this.priceSelected=this.classList[this.showClassSelected-1].price;
+      this.finalPrice=this.show.minPrice+this.priceSelected;
     },
     async getShow() {
       try {
@@ -124,6 +160,24 @@ export default {
         this.$message.error("获取演出场次信息失败");
       }
     },
+
+    async getShowClass() {
+      try {
+        const res = await axios.post(this.$api.getShowClassUrl, {
+          sessionId: this.sessionSelected,
+          pageNum: 1,
+          pageSize: 10,
+        });
+        console.log(res);
+        if (res.data.code === 200) {
+          this.classList = res.data.data.list;
+          this.showClassSelected = this.classList[0].showClassId;
+        }
+      } catch (err) {
+        console.log(err);
+        this.$message.error("获取演出票种失败");
+      }
+    },
   },
 
   watch: {},
@@ -142,6 +196,7 @@ export default {
 <style scoped>
 .firstCard {
   margin-left: 230px;
+  margin-right: 230px;
 }
 
 .image {
@@ -150,7 +205,7 @@ export default {
 
 .text {
   float: right;
-  margin-left: 60px;
+  padding-right: 200px;
 }
 
 .minor-text {
@@ -167,11 +222,17 @@ export default {
   margin: 10px;
 }
 
-/* 改radio-goupe的填充不起作用 */
-.sessionGroup {
-  fill: #67c23a;
+.el-radio-button {
+  margin-top: 10px;
+}
+
+.el-radio-group {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-around;
+}
+
+.classGroup{
+  margin-right: 20px;
 }
 </style>

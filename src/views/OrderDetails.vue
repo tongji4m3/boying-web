@@ -309,7 +309,7 @@ export default {
   filters: {
     formatStatus(value) {
       if (value === 1) {
-        return "待评价";
+        return "待观看";
       } else if (value === 2) {
         return "已完成";
       } else if (value === 3) {

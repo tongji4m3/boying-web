@@ -75,6 +75,7 @@
             <el-col
               :span="3"
               v-for="category in categoryList"
+              :key="category"
               @click.native="search(category.categoryId)"
             >
               <!--                    <el-card class="myCard" :body-style="{ padding: '20px'}" shadow="hover">-->
@@ -94,7 +95,7 @@
         <!--            每个分类-->
         <div v-for="(childrenList, i) in showList" :key="i">
           <el-card shadow="never">
-            {{ translateList[i] }}：
+            <el-link :underline="false" @click="search(categoryList[i].categoryId)">{{ translateList[i] }}：</el-link>
             <el-row :gutter="20">
               <el-col :span="6">
                 <el-card shadow="hover">

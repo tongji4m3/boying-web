@@ -7,7 +7,7 @@
       @select="handleSelect"
     >
       <el-menu-item index="1">所有订单</el-menu-item>
-      <el-menu-item index="2">待评价</el-menu-item>
+      <el-menu-item index="2">待观看</el-menu-item>
       <el-menu-item index="3">已完成</el-menu-item>
       <el-menu-item index="4">已退订单</el-menu-item>
     </el-menu>
@@ -99,7 +99,7 @@ export default {
       key: 1, // table key
       formThead: fields, // 默认表头 Default header
       loading: true,
-      OrderState: ["待评价", "已完成", "已退订单"],
+      OrderState: ["待观看", "已完成", "已退订单"],
       page: {
         pageNum: 1,
         pageSize: 5,
@@ -213,7 +213,7 @@ export default {
           this.page.totalRecord = res.data.data.total;
           for (var i = 0; i < this.tableData.length; i++) {
             if (this.tableData[i].status == 1) {
-              this.tableData[i].realStatus = "待评价";
+              this.tableData[i].realStatus = "待观看";
             } else if (this.tableData[i].status == 2) {
               this.tableData[i].realStatus = "已完成";
             } else {

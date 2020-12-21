@@ -17,7 +17,7 @@
         >
         <div
           class="operate-button-container"
-          v-show="order.status === 1 || 2 || 3"
+          v-show="order.status === 2 || order.status=== 3"
         >
           <el-button size="mini" @click="Delete">删除订单</el-button>
         </div>

@@ -54,7 +54,7 @@
                 type="danger"
                 @click="Delete(scope.$index, scope.row)"
                 style="float: right; margin-right: 10px"
-                v-show="scope.row.status!=1"
+                v-show="scope.row.status != 1"
                 >删除订单</el-button
               >
               <el-button
@@ -62,7 +62,7 @@
                 type="warning"
                 @click="Refund(scope.$index, scope.row)"
                 style="float: right; margin-right: 10px"
-                v-show="scope.row.status==1"
+                v-show="scope.row.status == 1"
                 >取消订单</el-button
               >
             </template>
@@ -95,7 +95,6 @@ const fields = [
   { label: "订单状态", prop: "realStatus" },
   { label: "订单提交时间", prop: "time" },
   { label: "订单总金额", prop: "money" },
-
 ];
 export default {
   name: "",
@@ -187,7 +186,11 @@ export default {
         console.log(res);
         if (res.data.code == 200) {
           this.$message.success("删除订单成功");
-          this.reload();
+          if (this.activeIndex != 1) {
+            this.reload(this.activeIndex - 1);
+          } else {
+            this.reload();
+          }
         }
       } catch (err) {
         console.log(err);
@@ -261,9 +264,10 @@ export default {
             this.getShowName(this.tableData[i].showId, i);
           }
         }
-        if (res.data.message == "当前用户无订单!") {
+        if (res.data.message == "当前用户无此类型的订单!") {
           this.tableData = null;
           this.page.totalRecord = 0;
+          this.$forceUpdate();
         }
         setTimeout(() => {
           this.loading = false;

@@ -83,7 +83,7 @@
         <el-tab-pane label="价格降序" name="4"></el-tab-pane>
       </el-tabs>
       <div v-for="show in showList">
-        <el-card>
+        <el-card @click.native="BuyShow(show.showId)">
           <el-row :gutter="2">
             <el-col :span="3">
               <el-image
@@ -188,6 +188,12 @@ export default {
     this.getShow();
   },
   methods: {
+      BuyShow(id) {
+          this.$router.push({
+              path: "/showDetails",
+              query: { showId: id },
+          });
+      },
     // 获取主分类
     async getCategoryList() {
       let result = await this.$http.post(

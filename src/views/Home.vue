@@ -1,8 +1,10 @@
 <template>
   <div>
     <el-container v-loading="loading">
-      <el-backtop :bottom="60" :right="60"> </el-backtop>
-      <el-header v-show="currentUser.userId != ''">
+      <el-backtop :bottom="60" :right="60">
+          <div>UP</div>
+      </el-backtop>
+      <el-header v-show="currentUser.userId !== ''">
         <div></div>
         <div class="out-button">
           <el-dropdown>
@@ -101,20 +103,22 @@
               @click="search(categoryList[i].categoryId)"
               >{{ translateList[i] }}：</el-link
             >
-            <el-row :gutter="20">
+            <el-row :gutter="40">
               <el-col :span="6">
                 <el-card shadow="hover" v-if="childrenList"  @click.native="search(categoryList[i].categoryId)"
-                  class="bigPosterCard">
+                  class="bigPosterCard"
+                         :body-style="{ padding: '23px' }">
                   <img
                     width="200"
                     height="280"
                     :src="childrenList[0].poster"
                     class="image"
+                    style="margin:auto;"
                   />
                 </el-card>
               </el-col>
               <el-col :span="18">
-                <el-row :gutter="40">
+                <el-row :gutter="0">
                   <el-col :span="8" v-if="childrenList ? childrenList: []" v-for="(show, j) in childrenList" :key="j">
                     <el-card
                       class="myCard"

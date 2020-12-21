@@ -233,7 +233,7 @@ export default {
         if (res.data.code === 200) {
           this.$message.success("购票成功!可以前往订单界面查看订单");
         } else {
-          this.$message.info("购票失败");
+          this.$message.warning("已经购买过该场次的票了，不允许多次抢票");
         }
       } catch (err) {
         console.log(err);

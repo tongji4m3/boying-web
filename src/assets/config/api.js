@@ -53,4 +53,7 @@ module.exports = {
 
     //评论相关
     addReviewUrl: APIRootUrl +'review/add',
+
+    //演出相关
+    getShowSessionUrl: APIRootUrl +'session/sessionList',
 }

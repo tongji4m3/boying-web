@@ -92,53 +92,59 @@
                       </el-col>
                   </el-row>
               </el-card>
-              <br />
-              <!--            每个分类-->
-              <div v-for="(childrenList, i) in showList" :key="i">
-                  <el-card shadow="never">
-                      <el-link :underline="false" @click="search(categoryList[i].categoryId)">{{ translateList[i] }}：</el-link>
-                      <el-row :gutter="20">
-                          <el-col :span="6">
-                              <el-card shadow="hover" v-if="childrenList">
-                                  <img
-                                      width="200"
-                                      height="280"
-                                      :src="childrenList[0].poster"
-                                      class="image"
-                                  />
-                              </el-card>
-                          </el-col>
-                          <el-col :span="18">
-                              <el-row :gutter="40">
-                                  <el-col :span="8" v-if="childrenList ? childrenList: []" v-for="(show, j) in childrenList" :key="j">
-                                      <el-card
-                                          class="myCard"
-                                          :body-style="{ padding: '10px' }"
-                                          shadow="hover"
-                                          v-if="j !== 0"
-                                      >
-                                          <el-col :span="10">
-                                              <img
-                                                  width="100"
-                                                  height="140"
-                                                  :src="show.poster"
-                                                  class="image"
-                                              />
-                                          </el-col>
-                                          <el-col :span="14">
-                                              <div class="showName">
-                                                  {{ show.name }}
-                                              </div>
-                                              <br />
-                                              <div class="showAddress">
-                                                  {{ show.city }}
-                                              </div>
-                                              <br />
-                                              {{ show.dayStart.substring(0, 10) }}~{{
-                                                  show.dayEnd.substring(0, 10)
-                                              }}
-                                              <br />
-                                              ¥{{ show.minPrice }}起
+<br />
+        <!--            每个分类-->
+        <div v-for="(childrenList, i) in showList" :key="i">
+          <el-card shadow="never">
+            <el-link
+              :underline="false"
+              @click="search(categoryList[i].categoryId)"
+              >{{ translateList[i] }}：</el-link
+            >
+            <el-row :gutter="20">
+              <el-col :span="6">
+                <el-card shadow="hover" v-if="childrenList"  @click.native="search(categoryList[i].categoryId)"
+                  class="bigPosterCard">
+                  <img
+                    width="200"
+                    height="280"
+                    :src="childrenList[0].poster"
+                    class="image"
+                  />
+                </el-card>
+              </el-col>
+              <el-col :span="18">
+                <el-row :gutter="40">
+                  <el-col :span="8" v-if="childrenList ? childrenList: []" v-for="(show, j) in childrenList" :key="j">
+                    <el-card
+                      class="myCard"
+                      :body-style="{ padding: '10px' }"
+                      shadow="hover"
+                      v-if="j !== 0"
+                      @click.native="BuyShow(show.showId)"
+                    >
+                      <el-col :span="10">
+                        <img
+                          width="100"
+                          height="140"
+                          :src="show.poster"
+                          class="image"
+                        />
+                      </el-col>
+                      <el-col :span="14">
+                        <div class="showName">
+                          {{ show.name }}
+                        </div>
+                        <br />
+                        <div class="showAddress">
+                          {{ show.city }}
+                        </div>
+                        <br />
+                        {{ show.dayStart.substring(0, 10) }}~{{
+                          show.dayEnd.substring(0, 10)
+                        }}
+                        <br />
+                        ¥{{ show.minPrice }}起
                                           </el-col>
                                       </el-card>
                                   </el-col>
@@ -196,6 +202,12 @@ export default {
     }, 500);
   },
   methods: {
+    BuyShow(id) {
+      this.$router.push({
+        path: "/showDetails",
+        query: { showId: id },
+      });
+    },
     search(id) {
       this.$router.push({
         path: "/search",
@@ -231,12 +243,11 @@ export default {
       this.showList.length = this.categoryList.length;
       this.translateList.length = this.categoryList.length;
       for (var i = 0; i < this.categoryList.length; i++) {
-          if(!await this.getShow(this.categoryList[i].categoryId))
-          {
-              this.showList.length=i;
-              this.translateList.length=i;
-              break;
-          }
+        if (!(await this.getShow(this.categoryList[i].categoryId))) {
+          this.showList.length = i;
+          this.translateList.length = i;
+          break;
+        }
         this.showList[i] = await this.getShow(this.categoryList[i].categoryId);
         this.translateList[i] = await this.getCategoryName(
           this.categoryList[i].categoryId - 1
@@ -338,11 +349,18 @@ export default {
 
 .categoryCol {
   cursor: pointer; /*鼠标悬停变小手*/
-  background-clip: padding-box;}
+  background-clip: padding-box;
+}
 .showName {
-    font-size: 20px;
+  font-size: 20px;
 }
 .showAddress {
-    font-size: 12px;
+  font-size: 12px;
+}
+.myCard {
+  cursor: pointer; /*鼠标悬停变小手*/
+}
+.bigPosterCard {
+  cursor: pointer; /*鼠标悬停变小手*/
 }
 </style>

@@ -37,116 +37,119 @@
         </div>
       </el-header>
       <el-main style="padding: 0">
-        <!--            走马灯-->
-        <el-carousel indicator-position="outside" height="400px">
-          <el-carousel-item>
-            <img
-              src="https://i.loli.net/2020/12/20/jI9Pqw5HUVEbSsr.jpg"
-              height="400"
-              width="1500"
-              alt=""
-            />
-          </el-carousel-item>
-          <el-carousel-item>
-            <img
-              src="https://i.loli.net/2020/12/20/phOzri862tuXZ9V.jpg"
-              height="400"
-              width="1500"
-            />
-          </el-carousel-item>
-          <el-carousel-item>
-            <img
-              src="https://i.loli.net/2020/12/20/PgD9QxLN2JtnuXS.jpg"
-              height="400"
-              width="1500"
-            />
-          </el-carousel-item>
-          <el-carousel-item>
-            <img
-              src="https://i.loli.net/2020/12/20/7AxHqzCvWItlSRj.jpg"
-              height="400"
-              width="1500"
-            />
-          </el-carousel-item>
-        </el-carousel>
-        <!--            种类分类-->
-        <el-card shadow="never">
-          <el-row>
-            <el-col
-              :span="3"
-              v-for="category in categoryList"
-              :key="category.id"
-              @click.native="search(category.categoryId)"
-            >
-              <!--                    <el-card class="myCard" :body-style="{ padding: '20px'}" shadow="hover">-->
-              <!--                        {{category}}-->
-              <!--                    </el-card>-->
-              <div style="text-align: center">
-                <div class="categoryCol">
-                  <i class="el-icon-share"></i>
-                </div>
-                <br />
-                <div class="categoryCol">{{ category.name }}</div>
+          <el-card shadow="never" style="width: 80%; margin:auto;">
+              <!--            走马灯-->
+              <el-carousel indicator-position="outside" height="320px">
+                  <el-carousel-item>
+                      <img
+                          src="https://i.loli.net/2020/12/20/jI9Pqw5HUVEbSsr.jpg"
+                          height="400*width"
+                          width="1500*width"
+                          alt=""
+                      />
+                  </el-carousel-item>
+                  <el-carousel-item>
+                      <img
+                          src="https://i.loli.net/2020/12/20/phOzri862tuXZ9V.jpg"
+                          height="400*0.8"
+                          width="1500*0.8"
+                      />
+                  </el-carousel-item>
+                  <el-carousel-item>
+                      <img
+                          src="https://i.loli.net/2020/12/20/PgD9QxLN2JtnuXS.jpg"
+                          height="400*0.8"
+                          width="1500*0.8"
+                      />
+                  </el-carousel-item>
+                  <el-carousel-item>
+                      <img
+                          src="https://i.loli.net/2020/12/20/7AxHqzCvWItlSRj.jpg"
+                          height="400*0.8"
+                          width="1500*0.8"
+                      />
+                  </el-carousel-item>
+              </el-carousel>
+              <!--            种类分类-->
+              <el-card shadow="never">
+                  <el-row>
+                      <el-col
+                          :span="3"
+                          v-for="category in categoryList"
+                          :key="category.id"
+                          @click.native="search(category.categoryId)"
+                      >
+                          <!--                    <el-card class="myCard" :body-style="{ padding: '20px'}" shadow="hover">-->
+                          <!--                        {{category}}-->
+                          <!--                    </el-card>-->
+                          <div style="text-align: center">
+                              <div class="categoryCol">
+                                  <i class="el-icon-share"></i>
+                              </div>
+                              <br />
+                              <div class="categoryCol">{{ category.name }}</div>
+                          </div>
+                      </el-col>
+                  </el-row>
+              </el-card>
+              <br />
+              <!--            每个分类-->
+              <div v-for="(childrenList, i) in showList" :key="i">
+                  <el-card shadow="never">
+                      <el-link :underline="false" @click="search(categoryList[i].categoryId)">{{ translateList[i] }}：</el-link>
+                      <el-row :gutter="20">
+                          <el-col :span="6">
+                              <el-card shadow="hover" v-if="childrenList">
+                                  <img
+                                      width="200"
+                                      height="280"
+                                      :src="childrenList[0].poster"
+                                      class="image"
+                                  />
+                              </el-card>
+                          </el-col>
+                          <el-col :span="18">
+                              <el-row :gutter="40">
+                                  <el-col :span="8" v-if="childrenList ? childrenList: []" v-for="(show, j) in childrenList" :key="j">
+                                      <el-card
+                                          class="myCard"
+                                          :body-style="{ padding: '10px' }"
+                                          shadow="hover"
+                                          v-if="j !== 0"
+                                      >
+                                          <el-col :span="10">
+                                              <img
+                                                  width="100"
+                                                  height="140"
+                                                  :src="show.poster"
+                                                  class="image"
+                                              />
+                                          </el-col>
+                                          <el-col :span="14">
+                                              <div class="showName">
+                                                  {{ show.name }}
+                                              </div>
+                                              <br />
+                                              <div class="showAddress">
+                                                  {{ show.city }}
+                                              </div>
+                                              <br />
+                                              {{ show.dayStart.substring(0, 10) }}~{{
+                                                  show.dayEnd.substring(0, 10)
+                                              }}
+                                              <br />
+                                              ¥{{ show.minPrice }}起
+                                          </el-col>
+                                      </el-card>
+                                  </el-col>
+                              </el-row>
+                          </el-col>
+                      </el-row>
+                  </el-card>
+                  <br />
               </div>
-            </el-col>
-          </el-row>
-        </el-card>
-        <br />
-        <!--            每个分类-->
-        <div v-for="(childrenList, i) in showList" :key="i">
-          <el-card shadow="never">
-            <el-link :underline="false" @click="search(categoryList[i].categoryId)">{{ translateList[i] }}：</el-link>
-            <el-row :gutter="20">
-              <el-col :span="6">
-                <el-card shadow="hover" v-if="childrenList">
-                  <img
-                    width="200"
-                    height="280"
-                    :src="childrenList[0].poster"
-                    class="image"
-                  />
-                </el-card>
-              </el-col>
-              <el-col :span="18">
-                <el-row :gutter="40">
-                  <el-col :span="8" v-if="childrenList ? childrenList: []" v-for="(show, j) in childrenList" :key="j">
-                    <el-card
-                      class="myCard"
-                      :body-style="{ padding: '10px' }"
-                      shadow="hover"
-                      v-if="j !== 0"
-                    >
-                      <el-col :span="10">
-                        <img
-                          width="100"
-                          height="140"
-                          :src="show.poster"
-                          class="image"
-                        />
-                      </el-col>
-                      <el-col :span="14">
-                        <div class="showName">
-                          {{ show.name }}
-                        </div>
-                        <br />
-                        <div class="showAddress">
-                          {{ show.city }}
-                        </div>
-                        <br />
-                        {{ show.dayStart.substring(0, 10) }}~{{
-                          show.dayEnd.substring(0, 10)
-                        }}
-                        <br />
-                        ¥{{ show.minPrice }}起
-                      </el-col>
-                    </el-card>
-                  </el-col>
-                </el-row>
-              </el-col>
-            </el-row>
           </el-card>
-          <br />
-        </div>
+
       </el-main>
     </el-container>
   </div>

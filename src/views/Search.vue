@@ -1,118 +1,121 @@
 <template>
   <div style="align-items: center">
-    <el-card style="width: 80%">
-      <div>
-        搜索：
-        <el-input
-          v-model="rsearch"
-          style="width: 20%"
-          @change="getShow()"
-        ></el-input>
-      </div>
-      <div>
-        <el-divider></el-divider>
-        城市：
-        <el-radio-group v-model="rcity" @change="getShow()">
-          <el-radio-button label="全国"></el-radio-button>
-          <el-radio-button label="上海"></el-radio-button>
-          <el-radio-button label="北京"></el-radio-button>
-          <el-radio-button label="广州"></el-radio-button>
-          <el-radio-button label="深圳"></el-radio-button>
-        </el-radio-group>
-      </div>
-      <div>
-        <el-divider></el-divider>
-        分类：
-        <el-radio-group v-model="rcategory" @change="getChildren()">
-          <el-radio-button :label="0">全部</el-radio-button>
-          <el-radio-button
-            v-for="category in categoryList"
-            :key="category.name"
-            :label="category.categoryId"
-          >
-            {{ category.name }}
-          </el-radio-button>
-        </el-radio-group>
-      </div>
-      <div v-if="childrenCategoryVisible">
-        <el-divider></el-divider>
-        子类：
-        <el-radio-group v-model="rchildrencategory" @change="getShow()">
-          <el-radio-button :label="0">全部</el-radio-button>
-          <el-radio-button
-            v-for="category in childrenCategoryList"
-            :key="category.name"
-            :label="category.categoryId"
-          >
-            {{ category.name }}
-          </el-radio-button>
-        </el-radio-group>
-      </div>
-      <div>
-        <el-divider></el-divider>
-        时间：
-        <!--                <el-radio-group v-model="rtime" type="date">-->
-        <!--                    <el-radio-button :label="0">全部</el-radio-button>-->
-        <!--                    <el-radio-button :label="1">今天</el-radio-button>-->
-        <!--                    <el-radio-button :label="2">明天</el-radio-button>-->
-        <!--                    <el-radio-button :label="3">本周末</el-radio-button>-->
-        <!--                    <el-radio-button :label="4">一个月内</el-radio-button>-->
-        <!--                </el-radio-group>-->
-        <!--                <el-radio-button v-model="rtime" :label="0">全部</el-radio-button>-->
-        <el-date-picker
-          v-model="rtime"
-          type="date"
-          placeholder="选择日期"
-          @change="getShow()"
-          value-format="yyyy-MM-dd HH:mm:ss"
-          :picker-options="pickerOptions"
-        >
-        </el-date-picker>
-      </div>
-    </el-card>
-    <br />
-    <el-card style="width: 80%">
-      <el-tabs type="card" v-model="rsort" @change="getShow()">
-        <el-tab-pane label="相关度排序" name="0"></el-tab-pane>
-        <el-tab-pane label="推荐排序" name="1"></el-tab-pane>
-        <el-tab-pane label="最近开场" name="2"></el-tab-pane>
-        <el-tab-pane label="价格升序" name="3"></el-tab-pane>
-        <el-tab-pane label="价格降序" name="4"></el-tab-pane>
-      </el-tabs>
-      <div v-for="show in showList">
-        <el-card>
-          <el-row :gutter="2">
-            <el-col :span="3">
-              <el-image
-                style="width: 90px; height: 160px"
-                :src="show.poster"
-              ></el-image>
-            </el-col>
-            <el-col :span="9">
-              {{ show.name }}
-            </el-col>
-            <el-col :span="6"
-              ><div class="grid-content bg-purple"></div
-            ></el-col>
-            <el-col :span="6"
-              ><div class="grid-content bg-purple"></div
-            ></el-col>
-          </el-row>
-        </el-card>
-        <br />
-      </div>
-      <!--            分页区域-->
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="pageNumber"
-        :page-sizes="[1, 2, 5, 10]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="totalCount"
-      >
-      </el-pagination>
-    </el-card>
+      <el-card>
+          <el-card style="width: 80%; margin:auto;">
+              <div>
+                  搜索：
+                  <el-input
+                      v-model="rsearch"
+                      style="width: 20%"
+                      @change="getShow()"
+                  ></el-input>
+              </div>
+              <div>
+                  <el-divider></el-divider>
+                  城市：
+                  <el-radio-group v-model="rcity" @change="getShow()">
+                      <el-radio-button label="全国"></el-radio-button>
+                      <el-radio-button label="上海"></el-radio-button>
+                      <el-radio-button label="北京"></el-radio-button>
+                      <el-radio-button label="广州"></el-radio-button>
+                      <el-radio-button label="深圳"></el-radio-button>
+                  </el-radio-group>
+              </div>
+              <div>
+                  <el-divider></el-divider>
+                  分类：
+                  <el-radio-group v-model="rcategory" @change="getChildren()">
+                      <el-radio-button :label="0">全部</el-radio-button>
+                      <el-radio-button
+                          v-for="category in categoryList"
+                          :key="category.name"
+                          :label="category.categoryId"
+                      >
+                          {{ category.name }}
+                      </el-radio-button>
+                  </el-radio-group>
+              </div>
+              <div v-if="childrenCategoryVisible">
+                  <el-divider></el-divider>
+                  子类：
+                  <el-radio-group v-model="rchildrencategory" @change="getShow()">
+                      <el-radio-button :label="0">全部</el-radio-button>
+                      <el-radio-button
+                          v-for="category in childrenCategoryList"
+                          :key="category.name"
+                          :label="category.categoryId"
+                      >
+                          {{ category.name }}
+                      </el-radio-button>
+                  </el-radio-group>
+              </div>
+              <div>
+                  <el-divider></el-divider>
+                  时间：
+                  <!--                <el-radio-group v-model="rtime" type="date">-->
+                  <!--                    <el-radio-button :label="0">全部</el-radio-button>-->
+                  <!--                    <el-radio-button :label="1">今天</el-radio-button>-->
+                  <!--                    <el-radio-button :label="2">明天</el-radio-button>-->
+                  <!--                    <el-radio-button :label="3">本周末</el-radio-button>-->
+                  <!--                    <el-radio-button :label="4">一个月内</el-radio-button>-->
+                  <!--                </el-radio-group>-->
+                  <!--                <el-radio-button v-model="rtime" :label="0">全部</el-radio-button>-->
+                  <el-date-picker
+                      v-model="rtime"
+                      type="date"
+                      placeholder="选择日期"
+                      @change="getShow()"
+                      value-format="yyyy-MM-dd HH:mm:ss"
+                      :picker-options="pickerOptions"
+                  >
+                  </el-date-picker>
+              </div>
+          </el-card>
+          <br />
+          <el-card style="width: 80%; margin:auto;">
+              <el-tabs type="card" v-model="rsort" @change="getShow()">
+                  <el-tab-pane label="相关度排序" name="0"></el-tab-pane>
+                  <el-tab-pane label="推荐排序" name="1"></el-tab-pane>
+                  <el-tab-pane label="最近开场" name="2"></el-tab-pane>
+                  <el-tab-pane label="价格升序" name="3"></el-tab-pane>
+                  <el-tab-pane label="价格降序" name="4"></el-tab-pane>
+              </el-tabs>
+              <div v-for="show in showList">
+                  <el-card>
+                      <el-row :gutter="2">
+                          <el-col :span="3">
+                              <el-image
+                                  style="width: 90px; height: 160px"
+                                  :src="show.poster"
+                              ></el-image>
+                          </el-col>
+                          <el-col :span="9">
+                              {{ show.name }}
+                          </el-col>
+                          <el-col :span="6"
+                          ><div class="grid-content bg-purple"></div
+                          ></el-col>
+                          <el-col :span="6"
+                          ><div class="grid-content bg-purple"></div
+                          ></el-col>
+                      </el-row>
+                  </el-card>
+                  <br />
+              </div>
+              <!--            分页区域-->
+              <el-pagination
+                  @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange"
+                  :current-page="pageNumber"
+                  :page-sizes="[1, 2, 5, 10]"
+                  :page-size="pageSize"
+                  layout="total, sizes, prev, pager, next, jumper"
+                  :total="totalCount"
+              >
+              </el-pagination>
+          </el-card>
+      </el-card>
+
   </div>
 </template>
 

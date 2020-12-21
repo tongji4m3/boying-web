@@ -7,7 +7,10 @@
           v-model="rsearch"
           style="width: 20%"
           @change="getShow()"
-        ></el-input>
+
+        >
+            <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        </el-input>
       </div>
       <div>
         <el-divider></el-divider>
@@ -84,19 +87,29 @@
           <el-row :gutter="2">
             <el-col :span="3">
               <el-image
-                style="width: 90px; height: 160px"
                 :src="show.poster"
               ></el-image>
             </el-col>
-            <el-col :span="9">
-              {{ show.name }}
+            <el-col :span="21">
+                <div class="showName">
+                    {{ "\xa0\xa0\xa0\xa0"+show.name }}
+                </div>
+
+                <br>
+                <div class="showAddress">
+                    {{ "\xa0\xa0\xa0\xa0\xa0\xa0\xa0"+show.address }}{{ "\xa0\xa0\xa0\xa0"+show.city }}
+                    <br><br>
+                    {{ "\xa0\xa0\xa0\xa0\xa0\xa0\xa0"+show.dayStart.substring(0, 10) }}~{{
+                        show.dayEnd.substring(0, 10)
+                    }}
+                    <br><br><br><br><br><br><br>
+                </div>
+
+
+                {{ "\xa0\xa0\xa0\xa0\xa0\xa0¥"+show.minPrice }}~¥{{
+                    show.maxPrice
+                }}
             </el-col>
-            <el-col :span="6"
-              ><div class="grid-content bg-purple"></div
-            ></el-col>
-            <el-col :span="6"
-              ><div class="grid-content bg-purple"></div
-            ></el-col>
           </el-row>
         </el-card>
         <br />
@@ -236,8 +249,8 @@ export default {
         this.showList = [];
         this.totalCount = 0;
       }
-      console.log("pageSize:" + this.pageSize);
-      console.log("pageNumber:" + this.pageNumber);
+      // console.log("pageSize:" + this.pageSize);
+      // console.log("pageNumber:" + this.pageNumber);
       console.log(result.data.data);
     },
     //监听pageSize改变的事件
@@ -261,5 +274,13 @@ export default {
 #set1 {
   justify-content: center;
   align-items: center;
+}
+
+.showName {
+    font-size: 18px;
+}
+
+.showAddress {
+    font-size: 12px;
 }
 </style>

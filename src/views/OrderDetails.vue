@@ -3,21 +3,33 @@
     <el-button @click="back">返回订单列表</el-button>
     <el-card shadow="never" style="margin-top: 15px">
       <div class="operate-container">
-        <i class="el-icon-error color-danger" style="margin-left: 20px" v-show="order.status ==3"></i>
-        <i class="el-icon-success color-success" style="margin-left: 20px" v-show="order.status==2"></i>
-        <i class="el-icon-warning color-warning" style="margin-left: 20px" v-show="order.status==1"></i>
-        <span class="color-danger" v-show="order.status==3"
+        <i
+          class="el-icon-error color-danger"
+          style="margin-left: 20px"
+          v-show="order.status == 3"
+        ></i>
+        <i
+          class="el-icon-success color-success"
+          style="margin-left: 20px"
+          v-show="order.status == 2"
+        ></i>
+        <i
+          class="el-icon-warning color-warning"
+          style="margin-left: 20px"
+          v-show="order.status == 1"
+        ></i>
+        <span class="color-danger" v-show="order.status == 3"
           >当前订单状态：{{ order.status | formatStatus }}</span
         >
-        <span class="color-success" v-show="order.status==2"
+        <span class="color-success" v-show="order.status == 2"
           >当前订单状态：{{ order.status | formatStatus }}</span
         >
-        <span class="color-warning" v-show="order.status==1"
+        <span class="color-warning" v-show="order.status == 1"
           >当前订单状态：{{ order.status | formatStatus }}</span
         >
         <div
           class="operate-button-container"
-          v-show="order.status === 2 || order.status=== 3"
+          v-show="order.status === 2 || order.status === 3"
         >
           <el-button size="mini" @click="Delete">删除订单</el-button>
         </div>
@@ -40,14 +52,18 @@
         <el-row>
           <el-col :span="6" class="table-cell-title">订单编号</el-col>
           <el-col :span="6" class="table-cell-title">用户账号</el-col>
-          <el-col :span="6" class="table-cell-title">观影人编号</el-col>
-          <el-col :span="6" class="table-cell-title">购买票数</el-col>
+          <el-col :span="6" class="table-cell-title">演出名称</el-col>
+          <el-col :span="6" class="table-cell-title">演出类别</el-col>
+          <!-- <el-col :span="6" class="table-cell-title">观影人编号</el-col> -->
+          <!-- <el-col :span="6" class="table-cell-title">购买票数</el-col> -->
         </el-row>
         <el-row>
           <el-col :span="6" class="table-cell">{{ order.orderId }}</el-col>
           <el-col :span="6" class="table-cell">{{ order.userId }}</el-col>
-          <el-col :span="6" class="table-cell">{{ order.frequentId }}</el-col>
-          <el-col :span="6" class="table-cell">{{ order.ticketCount }}</el-col>
+          <el-col :span="6" class="table-cell">{{ show.name }}</el-col>
+          <el-col :span="6" class="table-cell">{{ category }}</el-col>
+          <!-- <el-col :span="6" class="table-cell">{{ order.frequentId }}</el-col> -->
+          <!-- <el-col :span="6" class="table-cell">{{ order.ticketCount }}</el-col> -->
         </el-row>
         <el-row>
           <el-col :span="6" class="table-cell-title">订单提交时间</el-col>
@@ -89,30 +105,13 @@
       </div>
       <div class="table-layout">
         <el-row>
-          <el-col :span="6" class="table-cell-title">演出海报</el-col>
-          <el-col :span="6" class="table-cell-title">演出名称</el-col>
-          <el-col :span="6" class="table-cell-title">演出类别</el-col>
           <el-col :span="6" class="table-cell-title">演出城市</el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="6" class="table-cell"
-            ><el-image
-              style="width: 100px; height: 100px"
-              :src="show.poster"
-              :preview-src-list="[show.poster]"
-            >
-            </el-image
-          ></el-col>
-          <el-col :span="6" class="table-cell">{{ show.name }}</el-col>
-          <el-col :span="6" class="table-cell">{{ category }}</el-col>
-          <el-col :span="6" class="table-cell">{{ show.city }}</el-col>
-        </el-row>
-        <el-row>
           <el-col :span="6" class="table-cell-title">演出地址</el-col>
           <el-col :span="6" class="table-cell-title">单价</el-col>
           <el-col :span="6" class="table-cell-title">演出时间</el-col>
         </el-row>
         <el-row>
+          <el-col :span="6" class="table-cell">{{ show.city }}</el-col>
           <el-col :span="6" class="table-cell">{{ show.address }}</el-col>
           <el-col :span="6" class="table-cell"
             >￥{{ show.minPrice }}~￥{{ show.maxPrice }}</el-col
@@ -123,6 +122,26 @@
             }}
           </el-col>
         </el-row>
+        <el-row> </el-row>
+        <el-row> </el-row>
+      </div>
+      <div>
+        <el-row>
+          <el-col :span="6" class="table-cell-title">演出海报</el-col>
+          <el-col :span="6" class="table-cell-title">订单二维码</el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="6" class="my-table-cell"
+            ><el-image
+              style="width: 100px; height: 100px"
+              :src="show.poster"
+              :preview-src-list="[show.poster]"
+            >
+            </el-image
+          ></el-col>
+          <el-col :span="6" class="my-table-cell">
+            <qrcode-vue :value="show.poster"></qrcode-vue></el-col
+        ></el-row>
       </div>
     </el-card>
 
@@ -149,9 +168,11 @@
 <script>
 import axios from "axios";
 import { formatDate } from "@/utils/date";
+import QrcodeVue from "qrcode.vue";
 export default {
   name: "",
   props: [""],
+  components: { QrcodeVue },
   data() {
     return {
       isTicket: false, //是不是实体票,默认为电子票
@@ -173,8 +194,6 @@ export default {
     await this.getShowInfo(this.order.showId);
     await this.getCategory(this.show.categoryId);
   },
-
-  components: {},
 
   computed: {},
 
@@ -407,6 +426,17 @@ export default {
   text-align: center;
   overflow: hidden;
 }
+.my-table-cell {
+  height: 130px;
+  line-height: 40px;
+  border-right: 1px solid #dcdfe6;
+  border-bottom: 1px solid #dcdfe6;
+  padding: 10px;
+  font-size: 14px;
+  color: #606266;
+  text-align: center;
+  overflow: hidden;
+}
 .table-cell-title {
   border-right: 1px solid #dcdfe6;
   border-bottom: 1px solid #dcdfe6;
@@ -417,12 +447,12 @@ export default {
   color: #303133;
 }
 .color-danger {
-  color:#F56C6C;
+  color: #f56c6c;
 }
-.color-success{
-  color:#67C23A;
+.color-success {
+  color: #67c23a;
 }
-.color-warning{
-  color:#E6A23C;
+.color-warning {
+  color: #e6a23c;
 }
 </style>

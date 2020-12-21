@@ -121,39 +121,42 @@
                 </el-card>
               </el-col>
               <el-col :span="18">
-                <el-row :gutter="10">
-                  <el-col :span="8" v-if="childrenList ? childrenList: []" v-for="(show, j) in childrenList" :key="j">
-                    <el-card
-                      class="myCard"
-                      :body-style="{ padding: '10px' }"
-                      shadow="hover"
-                      v-if="j !== 0"
-                      @click.native="BuyShow(show.showId)"
-                    >
-                      <el-col :span="10">
-                        <img
-                          width="100"
-                          height="140"
-                          :src="show.poster"
-                          class="image"
-                        />
-                      </el-col>
-                      <el-col :span="14">
-                        <div class="showName">
-                          {{ show.name }}
-                        </div>
-                        <br />
-                        <div class="showAddress">
-                          {{ show.city }}
-                        </div>
-                        <br />
-                        {{ show.dayStart.substring(0, 10) }}~{{
-                          show.dayEnd.substring(0, 10)
-                        }}
-                        <br />
-                        ¥{{ show.minPrice }}起
-                                          </el-col>
-                                      </el-card>
+                <el-row :gutter="10" class="el-row">
+                  <el-col :span="8" v-for="(show, j) in getSix(childrenList)" :key="j">
+                      <el-tooltip class="item" effect="light" :content="show.name" placement="bottom">
+                          <el-card
+                              class="el-card"
+                              :body-style="{ padding: '10px' }"
+                              shadow="hover"
+                              @click.native="BuyShow(show.showId)"
+                          >
+                              <el-col :span="10">
+                                  <img
+                                      width="100"
+                                      height="140"
+                                      :src="show.poster"
+                                      class="image"
+                                  />
+                              </el-col>
+                              <el-col :span="14">
+                                  <div class="showName">
+                                      {{ show.name.length>=12?show.name.substring(0,12)+'...':show.name }}
+                                  </div>
+                                  <div class="showAddress">
+                                      <br>
+                                      {{ show.city }}
+                                      <br><br>
+                                      {{ show.dayStart.substring(0, 10) }}~{{
+                                          show.dayEnd.substring(0, 10)
+                                      }}
+                                      <br>
+                                      <br>
+                                  </div>
+
+                                  ¥{{ show.minPrice }}起
+                              </el-col>
+                          </el-card>
+                      </el-tooltip>
                                   </el-col>
                               </el-row>
                           </el-col>
@@ -209,6 +212,20 @@ export default {
     }, 500);
   },
   methods: {
+      getSix(list){
+          if(!list){
+              return [];
+          }
+          let result = [];
+          result.length=list.length-1;
+          for (let i=1;i<list.length;i++)
+          {
+              result[i-1]=list[i];
+          }
+          console.log(list);
+          console.log(result);
+          return result;
+      },
     BuyShow(id) {
       this.$router.push({
         path: "/showDetails",
@@ -359,7 +376,7 @@ export default {
   background-clip: padding-box;
 }
 .showName {
-  font-size: 20px;
+  font-size: 18px;
 }
 .showAddress {
   font-size: 12px;
@@ -369,5 +386,20 @@ export default {
 }
 .bigPosterCard {
   cursor: pointer; /*鼠标悬停变小手*/
+}
+
+.el-row {
+    min-height: 100%;
+    height: 100%;
+margin-bottom: 20px;
+display:flex;
+flex-wrap: wrap;
+}
+.el-row  .el-card {
+min-width: 100%;
+height: 100%;
+margin-right: 20px;
+transition: all .5s;
+    cursor: pointer;
 }
 </style>

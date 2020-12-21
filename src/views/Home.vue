@@ -103,7 +103,7 @@
               @click="search(categoryList[i].categoryId)"
               >{{ translateList[i] }}：</el-link
             >
-            <el-row :gutter="40">
+            <el-row :gutter="30">
               <el-col :span="6">
                 <el-card shadow="hover" v-if="childrenList"  @click.native="BuyShow(childrenList[0].showId)"
                   class="bigPosterCard"
@@ -121,7 +121,7 @@
                 </el-card>
               </el-col>
               <el-col :span="18">
-                <el-row :gutter="0">
+                <el-row :gutter="10">
                   <el-col :span="8" v-if="childrenList ? childrenList: []" v-for="(show, j) in childrenList" :key="j">
                     <el-card
                       class="myCard"

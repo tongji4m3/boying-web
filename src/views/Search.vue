@@ -1,6 +1,6 @@
 <template>
   <div style="align-items: center">
-    <el-card style="width: 80%">
+    <el-card style="width: 80%; margin:auto;">
       <div>
         搜索：
         <el-input
@@ -71,7 +71,7 @@
       </div>
     </el-card>
     <br />
-    <el-card style="width: 80%">
+    <el-card style="width: 80%; margin:auto;">
       <el-tabs type="card" v-model="rsort" @change="getShow()">
         <el-tab-pane label="相关度排序" name="0"></el-tab-pane>
         <el-tab-pane label="推荐排序" name="1"></el-tab-pane>

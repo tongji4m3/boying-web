@@ -2,78 +2,88 @@
   <div>
     <el-card v-loading="loading">
       <el-backtop :bottom="60" :right="60"> </el-backtop>
-      <el-card class="firstCard">
-        <img width="300" height="430" :src="show.poster" class="image" />
-        <div class="text">
-          <el-col :span="25">
-            <div class="showName">
-              <h2>{{ show.name }}</h2>
-            </div>
-            <br />
-            <div
-              class="minor-text"
-              v-if="show.dayStart != undefined && show.dayEnd != undefined"
-            >
-              <div class="showAddress">演出城市:{{ show.city }}</div>
-              <br />
-              演出时间:{{ show.dayStart.substring(0, 10) }}~{{
-                show.dayEnd.substring(0, 10)
-              }}
-            </div>
-            <div class="tip">
-              <i class="el-icon-info"></i>
-              演出时间和场次时间均为演出当地时间
-            </div>
-            <br />
-            <div>
-              场次
-              <el-radio-group
-                v-model="sessionSelected"
-                @change="sessionChange()"
-                class="sessionGroup"
-                v-for="session in sessionList"
-                :key="session.showSessionId"
-              >
-                <el-radio-button
-                  :label="session.showSessionId"
-                  class="sessionRadioButton"
-                  >{{ session.startTime | formatDateTime }}-{{
-                    session.endTime | formatDateTime
-                  }}</el-radio-button
-                >
-                <br />
-              </el-radio-group>
-            </div>
-            <div v-show="this.classList != []||this.classList.length==0">
-              票种
-              <el-radio-group
-                v-model="showClassSelected"
-                @change="classChange()"
-                class="classGroup"
-                v-for="showclass in classList"
-                :key="showclass.showClassId"
-              >
-                <el-radio-button
-                  :label="showclass.showClassId"
-                  class="classRadioButton"
-                  >{{ showclass.name }} 票价:{{ showclass.price }}
-                </el-radio-button>
-                <br />
-              </el-radio-group>
-            </div>
-            <div>
-              最终价格
-            </div>
-            <div v-show="this.priceSelected==null">
-            ¥{{ show.minPrice }}</div>
-            <div v-show="this.priceSelected!=null">
-              ¥{{ this.finalPrice }}
-            </div>
-          </el-col>
-        </div>
+      <el-card style="width: 80%; margin:auto;" :body-style="{ padding: '30px' }">
+          <el-row :gutter="20">
+              <el-col :span="8">
+                  <div>
+                      <img width="300" height="430" :src="show.poster" class="image" />
+                  </div>
+              </el-col>
+              <el-col :span="16">
+                  <div>
+                      <div class="showName">
+                          <h2>{{ show.name }}</h2>
+                      </div>
+                      <br />
+                      <div
+                          class="minor-text"
+                          v-if="show.dayStart != undefined && show.dayEnd != undefined"
+                      >
+                          <div class="showAddress">演出城市:{{ show.city }}</div>
+                          <br />
+                          演出时间:{{ show.dayStart.substring(0, 10) }}~{{
+                              show.dayEnd.substring(0, 10)
+                          }}
+                      </div>
+                      <div class="tip">
+                          <i class="el-icon-info"></i>
+                          演出时间和场次时间均为演出当地时间
+                      </div>
+                      <br />
+                      <div>
+                          场次
+                          <el-radio-group
+                              v-model="sessionSelected"
+                              @change="sessionChange()"
+                              class="sessionGroup"
+                              v-for="session in sessionList"
+                              :key="session.showSessionId"
+                          >
+                              <el-radio-button
+                                  :label="session.showSessionId"
+                                  class="sessionRadioButton"
+                              >{{ session.startTime | formatDateTime }}-{{
+                                      session.endTime | formatDateTime
+                                  }}</el-radio-button
+                              >
+                              <br />
+                          </el-radio-group>
+                      </div>
+                      <div v-show="this.classList != []||this.classList.length==0">
+                          票种
+                          <el-radio-group
+                              v-model="showClassSelected"
+                              @change="classChange()"
+                              class="classGroup"
+                              v-for="showclass in classList"
+                              :key="showclass.showClassId"
+                          >
+                              <el-radio-button
+                                  :label="showclass.showClassId"
+                                  class="classRadioButton"
+                              >{{ showclass.name }} 票价:{{ showclass.price }}
+                              </el-radio-button>
+                              <br />
+                          </el-radio-group>
+                      </div>
+                      <div>
+                          最终价格
+                      </div>
+                      <div v-show="this.priceSelected==null">
+                          ¥{{ show.minPrice }}</div>
+                      <div v-show="this.priceSelected!=null">
+                          ¥{{ this.finalPrice }}
+                      </div>
+                  </div>
+              </el-col>
+          </el-row>
+
+
       </el-card>
       <br />
-      <el-card> 演出详情 </el-card>
+      <el-card style="width: 80%; margin:auto;">
+          演出详情
+      </el-card>
     </el-card>
   </div>
 </template>

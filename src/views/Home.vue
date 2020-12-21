@@ -75,7 +75,7 @@
             <el-col
               :span="3"
               v-for="category in categoryList"
-              :key="category"
+              :key="category.id"
               @click.native="search(category.categoryId)"
             >
               <!--                    <el-card class="myCard" :body-style="{ padding: '20px'}" shadow="hover">-->
@@ -98,7 +98,7 @@
             <el-link :underline="false" @click="search(categoryList[i].categoryId)">{{ translateList[i] }}：</el-link>
             <el-row :gutter="20">
               <el-col :span="6">
-                <el-card shadow="hover">
+                <el-card shadow="hover" v-if="childrenList">
                   <img
                     width="200"
                     height="280"
@@ -109,7 +109,7 @@
               </el-col>
               <el-col :span="18">
                 <el-row :gutter="40">
-                  <el-col :span="8" v-for="(show, j) in childrenList" :key="j">
+                  <el-col :span="8" v-if="childrenList ? childrenList: []" v-for="(show, j) in childrenList" :key="j">
                     <el-card
                       class="myCard"
                       :body-style="{ padding: '10px' }"

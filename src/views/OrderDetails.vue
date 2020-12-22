@@ -1,7 +1,7 @@
 <template>
   <div class="detail-container">
     <el-button @click="back">返回订单列表</el-button>
-    <el-card shadow="never" style="margin-top: 15px">
+    <el-card shadow="never" style="margin-top: 15px" v-loading="loading">
       <div class="operate-container">
         <i
           class="el-icon-error color-danger"
@@ -45,7 +45,6 @@
         </div> -->
       </div>
       <div style="margin-top: 20px">
-        <svg-icon icon-class="marker" style="color: #606266"></svg-icon>
         <span class="font-small">基本信息</span>
       </div>
       <div class="table-layout">
@@ -83,7 +82,6 @@
         </el-row>
       </div>
       <div style="margin-top: 20px" v-show="isTicket">
-        <svg-icon icon-class="marker" style="color: #606266"></svg-icon>
         <span class="font-small">收货人信息</span>
       </div>
       <div class="table-layout" v-show="isTicket">
@@ -100,7 +98,6 @@
       </div>
 
       <div style="margin-top: 20px">
-        <svg-icon icon-class="marker" style="color: #606266"></svg-icon>
         <span class="font-small">演出信息</span>
       </div>
       <div class="table-layout">
@@ -175,6 +172,7 @@ export default {
   components: { QrcodeVue },
   data() {
     return {
+      loading:true,
       isTicket: false, //是不是实体票,默认为电子票
       orderId: "",
       address: "",
@@ -193,6 +191,9 @@ export default {
     await this.getReceiver(this.order.addressId);
     await this.getShowInfo(this.order.showId);
     await this.getCategory(this.show.categoryId);
+    setTimeout(() => {
+      this.loading = false;
+    }, 500);
   },
 
   computed: {},

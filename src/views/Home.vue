@@ -2,7 +2,6 @@
   <div>
     <el-container v-loading="loading">
       <el-backtop :bottom="60" :right="60">
-          <div>UP</div>
       </el-backtop>
       <el-header v-show="currentUser.userId !== ''">
         <div></div>

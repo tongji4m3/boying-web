@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './Index.vue'
 import router from './router'
 import store from './store'
+//引入阿里图标
+import './icons/iconfont/iconfont.css'
 
 
 // md5加密

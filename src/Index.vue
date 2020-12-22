@@ -15,9 +15,9 @@
         active-text-color="#0099FF"
         default-active="/Welcome"
       >
-        <el-menu-item index="/home">首页</el-menu-item>
-        <el-menu-item index="/login" v-if="!isLogin">登录</el-menu-item>
-        <el-menu-item index="/register" v-if="!isLogin">注册</el-menu-item>
+        <el-menu-item index="/home"><i class="el-icon-s-home"></i>首页</el-menu-item>
+        <el-menu-item index="/login" v-if="!isLogin"><i class="myicon myicondenglu-1"></i>  登录</el-menu-item>
+        <el-menu-item index="/register" v-if="!isLogin"><i class="myicon myiconzhuce"></i>  注册</el-menu-item>
       </el-menu>
       <!-- <div class="out-button" v-if="isLogin">
         <el-menu

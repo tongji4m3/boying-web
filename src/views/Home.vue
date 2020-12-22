@@ -21,17 +21,17 @@
               <el-dropdown-item
                 class="navigation-text"
                 @click.native="toSelfInformation"
-                >我的信息</el-dropdown-item
+                ><i class="myicon myiconxiangqing"></i>我的信息</el-dropdown-item
               >
               <el-dropdown-item class="navigation-text" @click.native="toOrder"
-                >我的订单</el-dropdown-item
+                ><i class="myicon myicon74wodedingdan"></i>我的订单</el-dropdown-item
               >
               <el-dropdown-item
                 class="navigation-text"
                 id="exit-div"
                 divided
                 @click.native="logout"
-                >退出</el-dropdown-item
+                ><i class="myicon myicontuichu"></i>退出</el-dropdown-item
               >
             </el-dropdown-menu>
           </el-dropdown>

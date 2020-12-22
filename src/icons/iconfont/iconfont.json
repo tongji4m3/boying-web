@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "583015",
+      "name": "我的订单",
+      "font_class": "74wodedingdan",
+      "unicode": "e64e",
+      "unicode_decimal": 58958
+    },
+    {
+      "icon_id": "16754456",
+      "name": "退出",
+      "font_class": "tuichu",
+      "unicode": "e67e",
+      "unicode_decimal": 59006
+    },
+    {
       "icon_id": "503913",
       "name": "票种",
       "font_class": "piaozhong",

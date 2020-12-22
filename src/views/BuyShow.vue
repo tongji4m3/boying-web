@@ -22,18 +22,28 @@
                 class="minor-text"
                 v-if="show.dayStart != undefined && show.dayEnd != undefined"
               >
-                <div class="showAddress">演出城市:{{ show.city }}</div>
-                <br />
+                <div class="showAddress">
+                  <i
+                    class="myicon myiconchengshi"
+                    style="padding-right: 7px"
+                  ></i
+                  >演出城市:{{ show.city }}
+                </div>
+                <br /><i
+                  class="myicon myiconshijian"
+                  style="padding-right: 3px"
+                ></i>
                 演出时间:{{ show.dayStart.substring(0, 10) }}~{{
                   show.dayEnd.substring(0, 10)
                 }}
               </div>
               <div class="tip">
-                <i class="el-icon-info"></i>
+                <i class="el-icon-info" style="padding-right: 3px"></i>
                 演出时间和场次时间均为演出当地时间
               </div>
               <br />
               <div>
+                <i class="myicon myiconchangci"></i>
                 场次
                 <el-radio-group
                   v-model="sessionSelected"
@@ -54,7 +64,13 @@
               </div>
               <!-- <div class="fundText">¥基础票价:{{ show.minPrice }}</div> -->
               <div v-show="this.classList != [] && this.classList.length != 0">
-                <div class="fundText">票种</div>
+                <div class="fundText">
+                  <i
+                    class="myicon myiconpiaozhong"
+                    style="padding-right: 3px"
+                  ></i
+                  >票种
+                </div>
                 <el-radio-group
                   v-model="showClassSelected"
                   @change="classChange()"
@@ -77,9 +93,10 @@
               <div class="Buy" v-show="this.priceSelected != null">
                 <el-button
                   type="danger"
-                  icon="el-icon-s-ticket"
+                  icon="myicon myicontubiaozhizuomoEban"
                   @click="buyTicket"
-                  >购票</el-button
+                >
+                  购票</el-button
                 >
               </div>
             </div>
@@ -88,7 +105,7 @@
       </el-card>
       <br />
       <el-card style="width: 80%; margin: auto">
-        <h1>演出详情</h1>
+        <h1><i class="myicon myiconxiangqing"></i>演出详情</h1>
         <div>{{ this.show.details }}</div>
       </el-card>
     </el-card>
@@ -313,5 +330,10 @@ export default {
 
 .Buy {
   margin: 30px;
+}
+
+.myiconxiangqing {
+  font-size: 25px;
+  padding-right: 5px;
 }
 </style>

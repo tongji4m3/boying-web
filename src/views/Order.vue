@@ -29,7 +29,7 @@
         >
           <el-table-column label="订单编号" prop="orderId"> </el-table-column>
           <el-table-column label="用户账号" prop="userId"> </el-table-column>
-          <el-table-column label="演出名称" prop="name"> </el-table-column>
+          <el-table-column label="演出名称" prop="name" align="center"> </el-table-column>
           <el-table-column label="订单状态" prop="realStatus">
           </el-table-column>
           <el-table-column label="订单提交时间" align="center">

@@ -152,7 +152,7 @@ export default {
       pageSize: 5,
       pickerOptions: {
         disabledDate(time) {
-          return time.getTime() > Date.now();
+
         },
         shortcuts: [
           {

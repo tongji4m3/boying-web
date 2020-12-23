@@ -124,7 +124,6 @@ export default {
 
   async mounted() {
     await this.reload();
-    this.page.totalRecord = this.tableData.length;
   },
 
   methods: {

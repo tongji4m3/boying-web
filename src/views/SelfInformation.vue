@@ -3,9 +3,8 @@
         <!--        个人信息相关-->
         <el-card class="el-card" style="width: 80%; margin:auto;">
             <div>
-                <br>
                 <div>
-                    个人信息：
+                    <h2>个人信息：</h2>
                 </div>
                 <br><br><br>
 

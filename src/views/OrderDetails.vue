@@ -60,7 +60,7 @@
           <el-col :span="6" class="table-cell">{{ order.orderId }}</el-col>
           <el-col :span="6" class="table-cell">{{ order.userId }}</el-col>
           <el-col :span="6" class="table-cell">{{ show.name }}</el-col>
-          <el-col :span="6" class="table-cell">{{ category }}</el-col>
+          <el-col :span="6" class="table-cell">{{ this.category }}</el-col>
           <!-- <el-col :span="6" class="table-cell">{{ order.frequentId }}</el-col> -->
           <!-- <el-col :span="6" class="table-cell">{{ order.ticketCount }}</el-col> -->
         </el-row>
@@ -113,7 +113,7 @@
           <el-col :span="6" class="table-cell"
             >￥{{ show.minPrice }}~￥{{ show.maxPrice }}</el-col
           >
-          <el-col :span="6" class="table-cell"
+          <el-col :span="6" class="table-cell" style="font-size:10px"
             >{{ show.dayStart | formatDateTime }}-{{
               show.dayEnd | formatDateTime
             }}
@@ -351,13 +351,13 @@ export default {
       try {
         console.log("演出目录详情");
         console.log(id);
-        const res = await axios.post(this.$api.getCategoryListUrl, id);
+        const res = await axios.post(this.$api.getParentCategoryUrl, id);
         console.log(res);
         if (res.data.code == 200) {
           console.log(res.data.data);
-          for (var i = 0; i < res.data.data.length; i++) {
-            this.category = this.category + res.data.data[i].name + " ";
-          }
+          // for (var i = 0; i < res.data.data.length; i++) {
+            this.category = this.category + res.data.data.name;
+          // }
           console.log(this.category);
         }
       } catch (err) {

@@ -324,6 +324,7 @@ export default {
           categoryId: categoryId,
           pageNum: 1,
           pageSize: 7,
+            sort: 2,
         })
       );
 

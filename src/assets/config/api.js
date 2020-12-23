@@ -15,7 +15,7 @@ module.exports = {
     // 分类相关
     getCategoryListUrl: APIRootUrl + 'category/categoryList',
     getCategoryMapUrl: APIRootUrl + 'category/categoryMap',
-    getCategoryNameUrl: APIRootUrl + 'category/categoryName',
+    getCategoryNameUrl: APIRootUrl + 'category/category',
     searchUrl: APIRootUrl + 'show/search',
     SearchShowUrl: APIRootUrl + 'show/search',
 

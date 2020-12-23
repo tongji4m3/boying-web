@@ -108,7 +108,7 @@
                   :class="iconList[i]"
                   style="font-size: 20px; margin-right: 10px"
                 ></i
-                >{{ translateList[i] }}：</el-link
+                >{{ translateList[i].name }}：</el-link
               >
               <el-row :gutter="30">
                 <el-col :span="6">

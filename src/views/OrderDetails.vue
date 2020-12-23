@@ -347,7 +347,29 @@ export default {
       }
     },
 
-    async getCategory(id) {
+    async getCategory(id){
+      
+      try {
+        console.log("演出目录详情");
+        console.log(id);
+        const res = await axios.post(this.$api.getCategoryNameUrl, id);
+        console.log(res);
+        if (res.data.code == 200) {
+          console.log(res.data.data);
+          // for (var i = 0; i < res.data.data.length; i++) {
+            if(res.data.data.parentId!=0){
+              await this.getParentCategory(id);
+            }
+            this.category = this.category + res.data.data.name+" ";
+          // }
+          console.log(this.category);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    async getParentCategory(id) {
       try {
         console.log("演出目录详情");
         console.log(id);
@@ -356,7 +378,7 @@ export default {
         if (res.data.code == 200) {
           console.log(res.data.data);
           // for (var i = 0; i < res.data.data.length; i++) {
-            this.category = this.category + res.data.data.name;
+            this.category = this.category + res.data.data.name+ " ";
           // }
           console.log(this.category);
         }

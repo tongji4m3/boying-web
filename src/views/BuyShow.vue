@@ -165,8 +165,13 @@ export default {
     },
     classChange() {
       console.log(this.showClassSelected);
-      this.priceSelected = this.classList[this.showClassSelected - 1].price;
-      this.finalPrice = this.show.minPrice + this.priceSelected;
+      for(var i of this.classList){
+        if(i.showClassId==this.showClassSelected){
+          this.priceSelected=i.price;
+        }
+      }
+      // this.priceSelected = this.classList[this.showClassSelected - 1].price;
+      this.finalPrice =  this.priceSelected;
     },
     async getShow() {
       try {
@@ -213,7 +218,7 @@ export default {
           this.classList = res.data.data.list;
           this.showClassSelected = this.classList[0].showClassId;
           this.priceSelected = this.classList[0].price;
-          this.finalPrice = this.show.minPrice + this.priceSelected;
+          this.finalPrice = this.priceSelected;
         } else {
           this.classList = [];
           this.showClassSelected = null;
@@ -242,7 +247,6 @@ export default {
     async buyTicket() {
       try {
         const res = await axios.post(this.$api.buyTicketUrl, {
-          frequentId: this.currentUser.defaultFrequent,
           showClassIds: [this.showClassSelected],
           showSessionId: this.sessionSelected,
         });

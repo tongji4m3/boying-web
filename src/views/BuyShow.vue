@@ -247,7 +247,6 @@ export default {
     async buyTicket() {
       try {
         const res = await axios.post(this.$api.buyTicketUrl, {
-          frequentId: this.currentUser.userId,
           showClassIds: [this.showClassSelected],
           showSessionId: this.sessionSelected,
         });

@@ -3,7 +3,6 @@
 const APIRootUrl = 'http://47.103.203.188:8000/';
 // const APIRootUrl = 'http://localhost:8000/';
 
-const Url = 'http://101.132.33.87:8000/';
 
 module.exports = {
 

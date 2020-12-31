@@ -109,6 +109,7 @@
         <div>{{ this.show.details }}</div>
       </el-card>
     </el-card>
+      <
   </div>
 </template>
 

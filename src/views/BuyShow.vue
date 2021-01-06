@@ -109,7 +109,20 @@
         <div>{{ this.show.details }}</div>
       </el-card>
     </el-card>
-      <
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose"
+    >
+      <span>请选择支付方式</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="buyTicketByAli">支付宝支付</el-button>
+        <el-button type="primary" @click="buyTicketByWechat"
+          >微信支付</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -131,6 +144,7 @@ export default {
       priceSelected: null,
       finalPrice: null,
       currentUser: {},
+      dialogVisible: false,
     };
   },
 
@@ -166,13 +180,13 @@ export default {
     },
     classChange() {
       console.log(this.showClassSelected);
-      for(var i of this.classList){
-        if(i.showClassId==this.showClassSelected){
-          this.priceSelected=i.price;
+      for (var i of this.classList) {
+        if (i.showClassId == this.showClassSelected) {
+          this.priceSelected = i.price;
         }
       }
       // this.priceSelected = this.classList[this.showClassSelected - 1].price;
-      this.finalPrice =  this.priceSelected;
+      this.finalPrice = this.priceSelected;
     },
     async getShow() {
       try {
@@ -246,20 +260,65 @@ export default {
     },
 
     async buyTicket() {
+      this.dialogVisible = true;
+      //   try {
+      //     const res = await axios.post(this.$api.buyTicketUrl, {
+      //       showClassIds: [this.showClassSelected],
+      //       showSessionId: this.sessionSelected,
+      //     });
+      //     console.log(res);
+      //     if (res.data.code === 200) {
+      //       this.$message.success("购票成功!可以前往订单界面查看订单");
+      //     } else {
+      //       this.$message.warning("已经购买过该场次的票了，不允许多次抢票");
+      //     }
+      //   } catch (err) {
+      //     console.log(err);
+      //     this.$message.error("因未知错误购票失败");
+      //   }
+    },
+    async buyTicketByAli() {
       try {
         const res = await axios.post(this.$api.buyTicketUrl, {
           showClassIds: [this.showClassSelected],
           showSessionId: this.sessionSelected,
+          payment: "支付宝",
         });
         console.log(res);
         if (res.data.code === 200) {
           this.$message.success("购票成功!可以前往订单界面查看订单");
+          this.dialogVisible = false;
+          return true;
         } else {
           this.$message.warning("已经购买过该场次的票了，不允许多次抢票");
+          return false;
         }
       } catch (err) {
         console.log(err);
         this.$message.error("因未知错误购票失败");
+        return false;
+      }
+    },
+    async buyTicketByWechat() {
+      try {
+        const res = await axios.post(this.$api.buyTicketUrl, {
+          showClassIds: [this.showClassSelected],
+          showSessionId: this.sessionSelected,
+          payment: "微信",
+        });
+        console.log(res);
+        if (res.data.code === 200) {
+          this.$message.success("购票成功!可以前往订单界面查看订单");
+          this.dialogVisible = false;
+          return true;
+        } else {
+          this.$message.warning("已经购买过该场次的票了，不允许多次抢票");
+          return false;
+        }
+      } catch (err) {
+        console.log(err);
+        this.$message.error("因未知错误购票失败");
+        return false;
       }
     },
   },

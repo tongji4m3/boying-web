@@ -1,13 +1,13 @@
 
 
-const APIRootUrl = 'http://47.103.203.188:8000/';
-// const APIRootUrl = 'http://localhost:8000/';
+// const APIRootUrl = 'http://47.103.203.188:8000/';
+const APIRootUrl = 'http://localhost:8000/';
 
 
 module.exports = {
 
     // 测试
-    TestUrl: Url + 'movie/actors',
+    // TestUrl: Url + 'movie/actors',
 
 
     // 登录注册

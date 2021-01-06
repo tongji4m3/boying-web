@@ -1,15 +1,10 @@
 <template>
   <div style="align-items: center">
-    <el-card style="width: 80%; margin:auto;">
+    <el-card style="width: 80%; margin: auto">
       <div>
         搜索：
-        <el-input
-          v-model="rsearch"
-          style="width: 20%"
-          @change="getShow()"
-
-        >
-            <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        <el-input v-model="rsearch" style="width: 20%" @change="getShow()">
+          <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
       </div>
       <div>
@@ -74,8 +69,8 @@
       </div>
     </el-card>
     <br />
-    <el-card style="width: 80%; margin:auto;">
-      <el-tabs type="card" v-model="rsort" @change="getShow()">
+    <el-card style="width: 80%; margin: auto">
+      <el-tabs type="card" v-model="rsort" @tab-click="getShow()">
         <el-tab-pane label="相关度排序" name="0"></el-tab-pane>
         <el-tab-pane label="推荐排序" name="1"></el-tab-pane>
         <el-tab-pane label="最近开场" name="2"></el-tab-pane>
@@ -86,29 +81,27 @@
         <el-card @click.native="BuyShow(show.showId)">
           <el-row :gutter="2">
             <el-col :span="3">
-              <el-image
-                :src="show.poster"
-              ></el-image>
+              <el-image :src="show.poster"></el-image>
             </el-col>
             <el-col :span="21">
-                <div class="showName">
-                    {{ "\xa0\xa0\xa0\xa0"+show.name }}
-                </div>
+              <div class="showName">
+                {{ "\xa0\xa0\xa0\xa0" + show.name }}
+              </div>
 
-                <br>
-                <div class="showAddress">
-                    {{ "\xa0\xa0\xa0\xa0\xa0\xa0\xa0"+show.address }}{{ "\xa0\xa0\xa0\xa0"+show.city }}
-                    <br><br>
-                    {{ "\xa0\xa0\xa0\xa0\xa0\xa0\xa0"+show.dayStart.substring(0, 10) }}~{{
-                        show.dayEnd.substring(0, 10)
-                    }}
-                    <br><br><br><br><br><br><br>
-                </div>
+              <br />
+              <div class="showAddress">
+                {{ "\xa0\xa0\xa0\xa0\xa0\xa0\xa0" + show.address
+                }}{{ "\xa0\xa0\xa0\xa0" + show.city }} <br /><br />
+                {{
+                  "\xa0\xa0\xa0\xa0\xa0\xa0\xa0" +
+                  show.dayStart.substring(0, 10)
+                }}~{{ show.dayEnd.substring(0, 10) }}
+                <br /><br /><br /><br /><br /><br /><br />
+              </div>
 
-
-                {{ "\xa0\xa0\xa0\xa0\xa0\xa0¥"+show.minPrice }}~¥{{
-                    show.maxPrice
-                }}
+              {{ "\xa0\xa0\xa0\xa0\xa0\xa0¥" + show.minPrice }}~¥{{
+                show.maxPrice
+              }}
             </el-col>
           </el-row>
         </el-card>
@@ -151,9 +144,7 @@ export default {
       pageNumber: 1,
       pageSize: 5,
       pickerOptions: {
-        disabledDate(time) {
-
-        },
+        disabledDate(time) {},
         shortcuts: [
           {
             text: "今天",
@@ -188,12 +179,12 @@ export default {
     this.getShow();
   },
   methods: {
-      BuyShow(id) {
-          this.$router.push({
-              path: "/showDetails",
-              query: { showId: id },
-          });
-      },
+    BuyShow(id) {
+      this.$router.push({
+        path: "/showDetails",
+        query: { showId: id },
+      });
+    },
     // 获取主分类
     async getCategoryList() {
       let result = await this.$http.post(
@@ -227,6 +218,7 @@ export default {
     },
     // 展示搜索结果
     async getShow() {
+      console.log(this.rsort);
       var id, city;
       // 设置category
       if (this.rcategory === 0) id = 0;
@@ -246,6 +238,7 @@ export default {
           pageSize: this.pageSize,
           city: city,
           keyword: this.rsearch,
+          sort: this.rsort,
         })
       );
       if (result.data.code === 200) {
@@ -283,10 +276,10 @@ export default {
 }
 
 .showName {
-    font-size: 18px;
+  font-size: 18px;
 }
 
 .showAddress {
-    font-size: 12px;
+  font-size: 12px;
 }
 </style>

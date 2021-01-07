@@ -81,7 +81,10 @@
                   <el-radio-button
                     :label="showclass.showClassId"
                     class="classRadioButton"
-                    >{{ showclass.name }} 票价:{{ showclass.price }}
+                    >{{ showclass.name }} 票价:{{ showclass.price }} 票量：{{
+                      showclass.stock
+                    }}
+                    / {{ showclass.capacity }}
                   </el-radio-button>
                   <br />
                 </el-radio-group>
@@ -287,6 +290,10 @@ export default {
         console.log(res);
         if (res.data.code === 200) {
           this.$message.success("购票成功!可以前往订单界面查看订单");
+          await this.getShow();
+          await this.getShowSession();
+          await this.getShowClass();
+          await this.getUser();
           this.dialogVisible = false;
           return true;
         } else {

@@ -242,12 +242,12 @@ export default {
     },
     created() {
         this.getUserInfo();
-
-        this.getFrequentList();
-        this.getDefaultFrequentList();
-
-        this.getAddressList();
-        this.getDefaultAddressList();
+        //
+        // this.getFrequentList();
+        // this.getDefaultFrequentList();
+        //
+        // this.getAddressList();
+        // this.getDefaultAddressList();
     },
     methods: {
 
@@ -266,7 +266,7 @@ export default {
         },
 
         onSubmit() {
-            console.log('submit!');
+            // console.log('submit!');
         },
 
         // 初始化
@@ -332,7 +332,7 @@ export default {
         },
         async updateUserInfo(){
             // console.log("修改后"+this.form.icon);
-            console.log(this.form.gender);
+            // console.log(this.form.gender);
             let gender;
             if(this.form.gender==='man')
                 gender=true;
@@ -349,259 +349,259 @@ export default {
             // console.log(result);
             await this.getUserInfo();
         },
-
-        // 联系人相关
-        //监听pageSize改变的事件
-        async handleSizeChange2(newSize)
-        {
-            this.pageSize2 = newSize;
-            this.pageNumber2 = 1;
-            // console.log("pageSize:"+this.pageSize);
-            await this.getFrequentList();
-            await this.getDefaultFrequentList();
-        },
-        //监听pageNum改变的事件
-        async handleCurrentChange2(newPage)
-        {
-            this.pageNumber2 = newPage;
-            // console.log("pageNumber:"+this.pageNumber);
-            await this.getFrequentList();
-            await this.getDefaultFrequentList();
-        },
-        async getFrequentList(){
-            let result = await this.$http.post(this.$api.getFrequentListUrl,{
-                pageNum: this.pageNumber2,
-                pageSize: this.pageSize2,
-            });
-            // console.log(result.data.data.list);
-            if(result.data.code===200){
-                this.frequentList=result.data.data.list;
-            }
-            else{
-                this.frequentList=[];
-            }
-            this.totalCount2=result.data.data.total;
-        },
-        async getDefaultFrequentList(){
-            let result = await this.$http.post(this.$api.getDefaultFrequentUrl);
-            // console.log(result);
-            if(result.data.code===200){
-                this.defaultFrequentList=result.data.data;
-            }
-            else{
-                this.defaultFrequentList=[];
-            }
-        },
-        async setDefaultFrequentList(id){
-            await this.$http.post(this.$api.setDefaultFrequentUrl + "/" + id);
-            await this.getFrequentList();
-            await this.getDefaultFrequentList();
-        },
-        async showAddFrequent(){
-            this.addDialogVisible2=true;
-        },
-        async addFrequent(){
-            this.$refs.addFormRef2.validate(
-                async valid =>
-                {
-                    if (!valid) return;
-                    await this.$http.post(this.$api.addFrequentUrl,{
-                        identityNumber: this.addForm2.identityNumber,
-                        name: this.addForm2.name,
-                        phone: this.addForm2.phone,
-                    });
-                    await this.getFrequentList();
-                    await this.getDefaultFrequentList();
-                    this.addDialogVisible2=false;
-                    this.addForm2.identityNumber='';
-                    this.addForm2.name='';
-                    this.addForm2.phone='';
-                    this.$message.info("添加联系人成功!");
-                }
-            );
-        },
-        async cancelAdd2(){
-            this.addDialogVisible2=false;
-            this.addForm2.identityNumber='';
-            this.addForm2.name='';
-            this.addForm2.phone='';
-            // console.log(this.addForm);
-            this.$message.info("取消添加联系人!");
-        },
-        async deleteFrequent(id)
-        {
-            // console.log(id);
-            let result = await this.$http.post(this.$api.deleteFrequentUrl + "/" + id);
-            // console.log(result);
-            await this.getFrequentList();
-            await this.getDefaultFrequentList();
-            this.$message.info("删除联系人成功!");
-        },
-        async showEditFrequent(id){
-            let result = await this.$http.post(this.$api.getFrequentUrl + "/" + id);
-            // console.log(result);
-            this.editForm2=result.data.data;
-            this.editDialogVisible2=true;
-        },
-        async cancelEdit2(){
-            this.editDialogVisible2=false;
-            this.$message.info("取消编辑联系人!");
-        },
-        async editFrequent(){
-            this.$refs.editFormRef2.validate(
-                async valid =>
-                {
-                    if (!valid) return;
-                    // console.log(this.editForm.addressId);
-                    await this.$http.post(this.$api.updateFrequentUrl + "/" + this.editForm2.frequentId, this.editForm2);
-                    await this.getFrequentList();
-                    await this.getDefaultFrequentList();
-                    this.editDialogVisible2=false;
-                    this.$message.info("编辑联系人成功!");
-                }
-            );
-        },
-
-        // 收货地址相关
-        // 获取收货地址
-        async getAddressList(){
-
-            var result = await this.$http.post(this.$api.getAddressListUrl,
-                {
-                    pageNum: this.pageNumber,
-                    pageSize: this.pageSize,
-                });
-
-            if(result.data.code===200){
-                this.addressList=result.data.data.list;
-            }
-            else{
-                this.addressList=[];
-            }
-            this.totalCount=result.data.data.total;
-            // console.log(this.addressList);
-        },
-        // 获取默认收货地址
-        async getDefaultAddressList(){
-            var result = await this.$http.post(this.$api.getDefaultAddressUrl);
-            // console.log(result.data.data);
-            if(result.data.code===200){
-                this.defaultAddressList=result.data.data;
-            }
-            else{
-                this.defaultAddressList=[];
-            }
-            // console.log(this.defaultAddressList);
-        },
-        //监听pageSize改变的事件
-        async handleSizeChange(newSize)
-        {
-            this.pageSize = newSize;
-            this.pageNumber = 1;
-            // console.log("pageSize:"+this.pageSize);
-            await this.getAddressList();
-            this.getDefaultAddressList();
-        },
-        //监听pageNum改变的事件
-        async handleCurrentChange(newPage)
-        {
-            this.pageNumber = newPage;
-            // console.log("pageNumber:"+this.pageNumber);
-            await this.getAddressList();
-            this.getDefaultAddressList();
-        },
-        async deleteAddress(id)
-        {
-            // console.log(id);
-            await this.$http.post(this.$api.deleteAddressUrl + "/" + id);
-            this.getAddressList();
-            this.getDefaultAddressList();
-            this.$message.info("删除收货地点成功!");
-        },
-        async showAddAddress(){
-            this.addDialogVisible=true;
-        },
-        async addAddress(){
-            this.$refs.addFormRef.validate(
-                async valid =>
-                {
-                    if (!valid) return;
-                    await this.$http.post(this.$api.addAddressUrl,{
-                        receiver: this.addForm.receiver,
-                        phone: this.addForm.phone,
-                        province: this.addForm.province,
-                        city: this.addForm.city,
-                        region: this.addForm.region,
-                        street: this.addForm.street,
-                        details: this.addForm.details,
-                    });
-                    this.getAddressList();
-                    this.getDefaultAddressList();
-                    this.addDialogVisible=false;
-
-                    this.addForm.receiver='';
-                    this.addForm.phone='';
-                    this.addForm.province='';
-                    this.addForm.city='';
-                    this.addForm.region='';
-                    this.addForm.street='';
-                    this.addForm.details='';
-
-                    // console.log(this.addForm);
-                    this.$message.info("添加收货地点成功!");
-                }
-            );
-        },
-        async cancelAdd(){
-            this.addDialogVisible=false;
-
-            this.addForm.receiver='';
-            this.addForm.phone='';
-            this.addForm.province='';
-            this.addForm.city='';
-            this.addForm.region='';
-            this.addForm.street='';
-            this.addForm.details='';
-
-            // console.log(this.addForm);
-            this.$message.info("取消添加收货地点!");
-        },
-        async setDefaultAddress(id){
-            await this.$http.post(this.$api.setDefaultAddressUrl + "/" + id);
-            await this.getAddressList();
-            await this.getDefaultAddressList();
-        },
-        async showAddress(id){
-            let result = await this.$http.post(this.$api.getAddressUrl + "/" + id);
-            this.showForm=result.data.data;
-            // console.log(this.showForm);
-            this.showDialogVisible=true;
-        },
-        async showEditAddress(id){
-            let result = await this.$http.post(this.$api.getAddressUrl + "/" + id);
-            this.editForm=result.data.data;
-            this.editForm.addressId=id;
-            this.editDialogVisible=true;
-        },
-        async editAddress(){
-            this.$refs.editFormRef.validate(
-                async valid =>
-                {
-                    if (!valid) return;
-                    // console.log(this.editForm.addressId);
-                    await this.$http.post(this.$api.updateAddressUrl + "/" + this.editForm.addressId, this.editForm);
-                    this.getAddressList();
-                    this.getDefaultAddressList();
-                    this.editDialogVisible=false;
-                    this.$message.info("编辑收货地点成功!");
-                }
-            );
-
-        },
-        async cancelEdit(){
-            this.editDialogVisible=false;
-            this.$message.info("取消编辑收货地点!");
-        },
+        //
+        // // 联系人相关
+        // //监听pageSize改变的事件
+        // async handleSizeChange2(newSize)
+        // {
+        //     this.pageSize2 = newSize;
+        //     this.pageNumber2 = 1;
+        //     // console.log("pageSize:"+this.pageSize);
+        //     await this.getFrequentList();
+        //     await this.getDefaultFrequentList();
+        // },
+        // //监听pageNum改变的事件
+        // async handleCurrentChange2(newPage)
+        // {
+        //     this.pageNumber2 = newPage;
+        //     // console.log("pageNumber:"+this.pageNumber);
+        //     await this.getFrequentList();
+        //     await this.getDefaultFrequentList();
+        // },
+        // async getFrequentList(){
+        //     let result = await this.$http.post(this.$api.getFrequentListUrl,{
+        //         pageNum: this.pageNumber2,
+        //         pageSize: this.pageSize2,
+        //     });
+        //     // console.log(result.data.data.list);
+        //     if(result.data.code===200){
+        //         this.frequentList=result.data.data.list;
+        //     }
+        //     else{
+        //         this.frequentList=[];
+        //     }
+        //     this.totalCount2=result.data.data.total;
+        // },
+        // async getDefaultFrequentList(){
+        //     let result = await this.$http.post(this.$api.getDefaultFrequentUrl);
+        //     // console.log(result);
+        //     if(result.data.code===200){
+        //         this.defaultFrequentList=result.data.data;
+        //     }
+        //     else{
+        //         this.defaultFrequentList=[];
+        //     }
+        // },
+        // async setDefaultFrequentList(id){
+        //     await this.$http.post(this.$api.setDefaultFrequentUrl + "/" + id);
+        //     await this.getFrequentList();
+        //     await this.getDefaultFrequentList();
+        // },
+        // async showAddFrequent(){
+        //     this.addDialogVisible2=true;
+        // },
+        // async addFrequent(){
+        //     this.$refs.addFormRef2.validate(
+        //         async valid =>
+        //         {
+        //             if (!valid) return;
+        //             await this.$http.post(this.$api.addFrequentUrl,{
+        //                 identityNumber: this.addForm2.identityNumber,
+        //                 name: this.addForm2.name,
+        //                 phone: this.addForm2.phone,
+        //             });
+        //             await this.getFrequentList();
+        //             await this.getDefaultFrequentList();
+        //             this.addDialogVisible2=false;
+        //             this.addForm2.identityNumber='';
+        //             this.addForm2.name='';
+        //             this.addForm2.phone='';
+        //             this.$message.info("添加联系人成功!");
+        //         }
+        //     );
+        // },
+        // async cancelAdd2(){
+        //     this.addDialogVisible2=false;
+        //     this.addForm2.identityNumber='';
+        //     this.addForm2.name='';
+        //     this.addForm2.phone='';
+        //     // console.log(this.addForm);
+        //     this.$message.info("取消添加联系人!");
+        // },
+        // async deleteFrequent(id)
+        // {
+        //     // console.log(id);
+        //     let result = await this.$http.post(this.$api.deleteFrequentUrl + "/" + id);
+        //     // console.log(result);
+        //     await this.getFrequentList();
+        //     await this.getDefaultFrequentList();
+        //     this.$message.info("删除联系人成功!");
+        // },
+        // async showEditFrequent(id){
+        //     let result = await this.$http.post(this.$api.getFrequentUrl + "/" + id);
+        //     // console.log(result);
+        //     this.editForm2=result.data.data;
+        //     this.editDialogVisible2=true;
+        // },
+        // async cancelEdit2(){
+        //     this.editDialogVisible2=false;
+        //     this.$message.info("取消编辑联系人!");
+        // },
+        // async editFrequent(){
+        //     this.$refs.editFormRef2.validate(
+        //         async valid =>
+        //         {
+        //             if (!valid) return;
+        //             // console.log(this.editForm.addressId);
+        //             await this.$http.post(this.$api.updateFrequentUrl + "/" + this.editForm2.frequentId, this.editForm2);
+        //             await this.getFrequentList();
+        //             await this.getDefaultFrequentList();
+        //             this.editDialogVisible2=false;
+        //             this.$message.info("编辑联系人成功!");
+        //         }
+        //     );
+        // },
+        //
+        // // 收货地址相关
+        // // 获取收货地址
+        // async getAddressList(){
+        //
+        //     var result = await this.$http.post(this.$api.getAddressListUrl,
+        //         {
+        //             pageNum: this.pageNumber,
+        //             pageSize: this.pageSize,
+        //         });
+        //
+        //     if(result.data.code===200){
+        //         this.addressList=result.data.data.list;
+        //     }
+        //     else{
+        //         this.addressList=[];
+        //     }
+        //     this.totalCount=result.data.data.total;
+        //     // console.log(this.addressList);
+        // },
+        // // 获取默认收货地址
+        // async getDefaultAddressList(){
+        //     var result = await this.$http.post(this.$api.getDefaultAddressUrl);
+        //     // console.log(result.data.data);
+        //     if(result.data.code===200){
+        //         this.defaultAddressList=result.data.data;
+        //     }
+        //     else{
+        //         this.defaultAddressList=[];
+        //     }
+        //     // console.log(this.defaultAddressList);
+        // },
+        // //监听pageSize改变的事件
+        // async handleSizeChange(newSize)
+        // {
+        //     this.pageSize = newSize;
+        //     this.pageNumber = 1;
+        //     // console.log("pageSize:"+this.pageSize);
+        //     await this.getAddressList();
+        //     this.getDefaultAddressList();
+        // },
+        // //监听pageNum改变的事件
+        // async handleCurrentChange(newPage)
+        // {
+        //     this.pageNumber = newPage;
+        //     // console.log("pageNumber:"+this.pageNumber);
+        //     await this.getAddressList();
+        //     this.getDefaultAddressList();
+        // },
+        // async deleteAddress(id)
+        // {
+        //     // console.log(id);
+        //     await this.$http.post(this.$api.deleteAddressUrl + "/" + id);
+        //     this.getAddressList();
+        //     this.getDefaultAddressList();
+        //     this.$message.info("删除收货地点成功!");
+        // },
+        // async showAddAddress(){
+        //     this.addDialogVisible=true;
+        // },
+        // async addAddress(){
+        //     this.$refs.addFormRef.validate(
+        //         async valid =>
+        //         {
+        //             if (!valid) return;
+        //             await this.$http.post(this.$api.addAddressUrl,{
+        //                 receiver: this.addForm.receiver,
+        //                 phone: this.addForm.phone,
+        //                 province: this.addForm.province,
+        //                 city: this.addForm.city,
+        //                 region: this.addForm.region,
+        //                 street: this.addForm.street,
+        //                 details: this.addForm.details,
+        //             });
+        //             this.getAddressList();
+        //             this.getDefaultAddressList();
+        //             this.addDialogVisible=false;
+        //
+        //             this.addForm.receiver='';
+        //             this.addForm.phone='';
+        //             this.addForm.province='';
+        //             this.addForm.city='';
+        //             this.addForm.region='';
+        //             this.addForm.street='';
+        //             this.addForm.details='';
+        //
+        //             // console.log(this.addForm);
+        //             this.$message.info("添加收货地点成功!");
+        //         }
+        //     );
+        // },
+        // async cancelAdd(){
+        //     this.addDialogVisible=false;
+        //
+        //     this.addForm.receiver='';
+        //     this.addForm.phone='';
+        //     this.addForm.province='';
+        //     this.addForm.city='';
+        //     this.addForm.region='';
+        //     this.addForm.street='';
+        //     this.addForm.details='';
+        //
+        //     // console.log(this.addForm);
+        //     this.$message.info("取消添加收货地点!");
+        // },
+        // async setDefaultAddress(id){
+        //     await this.$http.post(this.$api.setDefaultAddressUrl + "/" + id);
+        //     await this.getAddressList();
+        //     await this.getDefaultAddressList();
+        // },
+        // async showAddress(id){
+        //     let result = await this.$http.post(this.$api.getAddressUrl + "/" + id);
+        //     this.showForm=result.data.data;
+        //     // console.log(this.showForm);
+        //     this.showDialogVisible=true;
+        // },
+        // async showEditAddress(id){
+        //     let result = await this.$http.post(this.$api.getAddressUrl + "/" + id);
+        //     this.editForm=result.data.data;
+        //     this.editForm.addressId=id;
+        //     this.editDialogVisible=true;
+        // },
+        // async editAddress(){
+        //     this.$refs.editFormRef.validate(
+        //         async valid =>
+        //         {
+        //             if (!valid) return;
+        //             // console.log(this.editForm.addressId);
+        //             await this.$http.post(this.$api.updateAddressUrl + "/" + this.editForm.addressId, this.editForm);
+        //             this.getAddressList();
+        //             this.getDefaultAddressList();
+        //             this.editDialogVisible=false;
+        //             this.$message.info("编辑收货地点成功!");
+        //         }
+        //     );
+        //
+        // },
+        // async cancelEdit(){
+        //     this.editDialogVisible=false;
+        //     this.$message.info("取消编辑收货地点!");
+        // },
     },
 
 };

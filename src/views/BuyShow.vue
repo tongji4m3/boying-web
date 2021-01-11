@@ -61,7 +61,7 @@
                                     <el-radio-button
                                         :label="showclass.id"
                                         class="classRadioButton"
-                                    >{{ showclass.name }} 票价:{{ showclass.price }} 票量：{{
+                                    >{{ showclass.name }} 票价:￥{{ showclass.price }} 票量：{{
                                             showclass.stock
                                         }}
                                         / {{ showclass.capacity }}
@@ -234,6 +234,7 @@ export default {
                 const res = await axios.post(this.$api.buyTicketUrl, {
                     showId: this.showId,
                     showSeatIds: [this.showClassSelected],
+                    payment: "支付宝",
                 });
                 console.log(res);
                 if (res.data.code === 200) {
@@ -259,6 +260,7 @@ export default {
                 const res = await axios.post(this.$api.buyTicketUrl, {
                     showId: this.showId,
                     showSeatIds: [this.showClassSelected],
+                    payment: "微信支付",
                 });
                 console.log(res);
                 if (res.data.code === 200) {

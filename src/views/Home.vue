@@ -181,7 +181,7 @@
                                                             <br />
                                                         </div>
 
-<!--                                                        ¥{{ show.minPrice }}起-->
+                                                        ¥{{ show.minPrice }}~¥{{ show.maxPrice }}
                                                     </el-col>
                                                 </el-card>
                                             </el-tooltip>
@@ -322,7 +322,7 @@ export default {
                 //     result.data.data.list.length[i].dayEnd=result.data.data.list.length[i].dayEnd.substring(0,10);
                 //     result.data.data.list.length[i].dayStart=result.data.data.list.length[i].dayStart.substring(0,10);
                 // }
-                // console.log(result);
+                console.log(result);
                 return result.data.data.list;
             } else return [];
         },

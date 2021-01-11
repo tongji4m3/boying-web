@@ -347,7 +347,13 @@ export default {
                 email: this.form.email,
             });
             // console.log(result);
-            await this.getUserInfo();
+            if (result.data.code === 200) {
+                this.$message.success("更新成功");
+                await this.getUserInfo();
+            } else {
+                this.$message.warning("更新失败");
+                await this.getUserInfo();
+            }
         },
         //
         // // 联系人相关

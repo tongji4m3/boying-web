@@ -36,4 +36,5 @@ module.exports = {
 
     //演出座次相关
     getShowSeatUrl: APIRootUrl + 'seat/detail',
+    getOrderSeatUrl: APIRootUrl + 'order/tickets',
 }

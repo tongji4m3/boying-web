@@ -68,7 +68,7 @@
                     <el-col :span="6" class="table-cell-title">订单提交时间</el-col>
                     <el-col :span="6" class="table-cell-title">票种</el-col>
                     <el-col :span="6" class="table-cell-title">支付方式</el-col>
-                    <el-col :span="6" class="table-cell-title">订单总金额</el-col>
+                    <el-col :span="6" class="table-cell-title">订单总金额/￥</el-col>
                 </el-row>
                 <el-row>
                     <el-col :span="6" class="table-cell">{{
@@ -78,7 +78,7 @@
                             isTicket | formatTicket
                         }}</el-col>
                     <el-col :span="6" class="table-cell">
-<!--                        {{ order.payment }}-->
+                        {{ order.payment }}
                     </el-col>
                     <el-col :span="6" class="table-cell">{{ order.money }}</el-col>
                 </el-row>
@@ -106,7 +106,7 @@
                 <el-row>
                     <el-col :span="6" class="table-cell-title">演出城市</el-col>
                     <el-col :span="6" class="table-cell-title">演出地址</el-col>
-                    <el-col :span="6" class="table-cell-title">单价</el-col>
+                    <el-col :span="6" class="table-cell-title">单价/￥</el-col>
                     <el-col :span="6" class="table-cell-title">演出时间</el-col>
                 </el-row>
                 <el-row>
@@ -131,17 +131,44 @@
                     <el-col :span="6" class="table-cell-title">订单二维码</el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span="6" class="my-table-cell"
-                    ><el-image
+                    <el-col :span="6" class="my-table-cell">
+                        <el-image
                         style="width: 71px; height: 100px"
                         :src="show.poster"
                         :preview-src-list="[show.poster]"
                     >
-                    </el-image
-                    ></el-col>
+                    </el-image>
+                    </el-col>
                     <el-col :span="6" class="my-table-cell">
-                        <qrcode-vue :value="show.poster"></qrcode-vue></el-col
-                    ></el-row>
+                        <qrcode-vue :value="show.poster"></qrcode-vue>
+                    </el-col>
+                </el-row>
+            </div>
+
+            <div style="margin-top: 20px">
+                <span class="font-small">票务信息</span>
+            </div>
+            <el-row>
+                <el-col :span="6" class="table-cell-title">序号</el-col>
+                <el-col :span="6" class="table-cell-title">座位容量</el-col>
+                <el-col :span="6" class="table-cell-title">座位名称</el-col>
+                <el-col :span="6" class="table-cell-title">二维码</el-col>
+            </el-row>
+            <div v-for="(s,index) in seat">
+                <el-row>
+                    <el-col :span="6" class="my-table-cell">
+                        {{index+1}}
+                    </el-col>
+                    <el-col :span="6" class="my-table-cell">
+                        {{s.capacity}}
+                    </el-col>
+                    <el-col :span="6" class="my-table-cell">
+                        {{s.name}}
+                    </el-col>
+                    <el-col :span="6" class="my-table-cell">
+                        <qrcode-vue :value="s.qrCodeUrl"></qrcode-vue>
+                    </el-col>
+                </el-row>
             </div>
         </el-card>
 
@@ -180,6 +207,7 @@ export default {
             orderId: "",
             address: "",
             category: "",
+            seat: [],
             order: {},
             receiver: {},
             show: {},
@@ -191,6 +219,7 @@ export default {
     async created() {
         this.orderId = this.$route.query.orderId;
         await this.getOrderDetails(this.orderId);
+        await this.getOrderSeat(this.orderId);
         await this.getReceiver(this.order.addressId);
         await this.getShowInfo(this.order.showId);
         await this.getCategory(this.show.categoryId);
@@ -290,6 +319,21 @@ export default {
             }
         },
 
+        async getOrderSeat(id){
+            try {
+                console.log("座位详情");
+                const res = await axios.post(this.$api.getOrderSeatUrl + "/" + id);
+                console.log(res);
+                if (res.data.code === 200) {
+                    console.log(res.data.data);
+                    this.seat = res.data.data;
+                    console.log(this.seat);
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        },
+
         async getOrderDetails(id) {
             try {
                 console.log("订单详情");
@@ -364,6 +408,7 @@ export default {
                 console.log(err);
             }
         },
+
     },
 
     watch: {},

@@ -241,6 +241,7 @@ export default {
         },
 
         async reload(status = 0) {
+            console.log(status)
             try {
                 console.log("mounted");
                 const res = await axios.post(this.$api.getOrderListUrl, {
@@ -263,8 +264,8 @@ export default {
                         this.getShowName(this.tableData[i].showId, i);
                     }
                 }
-                if (res.data.message === "当前用户无此类型的订单!") {
-                    this.tableData = null;
+                else {
+                    this.tableData = [];
                     this.page.totalRecord = 0;
                     this.$forceUpdate();
                 }

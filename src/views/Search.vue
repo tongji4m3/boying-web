@@ -76,6 +76,10 @@
                                 }}~{{ show.endTime.substring(0, 10) }}
                                 <br /><br /><br /><br /><br /><br /><br />
                             </div>
+                            <div class="showName">
+                                {{ "\xa0\xa0\xa0\xa0\xa0\xa0¥" + show.minPrice }}~¥{{ show.maxPrice }}
+                            </div>
+
                         </el-col>
                     </el-row>
                 </el-card>

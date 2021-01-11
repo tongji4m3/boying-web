@@ -48,13 +48,13 @@
         </el-card>
         <br />
         <el-card style="width: 80%; margin: auto">
-            <el-tabs type="card" v-model="rsort" @tab-click="getShow()">
-                <el-tab-pane label="相关度排序" name="0"></el-tab-pane>
-                <el-tab-pane label="推荐排序" name="1"></el-tab-pane>
-                <el-tab-pane label="最近开场" name="2"></el-tab-pane>
-                <el-tab-pane label="价格升序" name="3"></el-tab-pane>
-                <el-tab-pane label="价格降序" name="4"></el-tab-pane>
-            </el-tabs>
+<!--            <el-tabs type="card" v-model="rsort" @tab-click="getShow()">-->
+<!--                <el-tab-pane label="相关度排序" name="0"></el-tab-pane>-->
+<!--                <el-tab-pane label="推荐排序" name="1"></el-tab-pane>-->
+<!--                <el-tab-pane label="最近开场" name="2"></el-tab-pane>-->
+<!--                <el-tab-pane label="价格升序" name="3"></el-tab-pane>-->
+<!--                <el-tab-pane label="价格降序" name="4"></el-tab-pane>-->
+<!--            </el-tabs>-->
             <div v-for="show in showList">
                 <el-card @click.native="BuyShow(show.id)">
                     <el-row :gutter="2">

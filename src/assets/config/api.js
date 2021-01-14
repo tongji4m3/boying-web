@@ -15,7 +15,7 @@ module.exports = {
     // 个人信息
     getUserInfoUrl: APIRootUrl + 'user/info',
     getUserUrl: APIRootUrl + 'user/info',
-    updateUserInfoUrl: APIRootUrl + 'user/update',
+    updateUserInformationUrl: APIRootUrl + 'user/update',
     updatePasswordInfoUrl: APIRootUrl + 'user/updatePassword',
 
     // 分类相关

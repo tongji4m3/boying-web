@@ -32,6 +32,7 @@
                     </el-radio-button>
                 </el-radio-group>
             </div>
+
 <!--            <div>-->
 <!--                <el-divider></el-divider>-->
 <!--                时间：-->
@@ -45,16 +46,32 @@
 <!--                >-->
 <!--                </el-date-picker>-->
 <!--            </div>-->
+            <div>
+                <el-divider></el-divider>
+                时间：
+                <el-date-picker
+                    v-model="rtime"
+                    type="datetimerange"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    value-format="yyyy-MM-dd"
+                    @change="getShow()"
+                    align="right">
+                </el-date-picker>
+            </div>
+
         </el-card>
         <br />
         <el-card style="width: 80%; margin: auto">
-<!--            <el-tabs type="card" v-model="rsort" @tab-click="getShow()">-->
-<!--                <el-tab-pane label="相关度排序" name="0"></el-tab-pane>-->
-<!--                <el-tab-pane label="推荐排序" name="1"></el-tab-pane>-->
-<!--                <el-tab-pane label="最近开场" name="2"></el-tab-pane>-->
-<!--                <el-tab-pane label="价格升序" name="3"></el-tab-pane>-->
-<!--                <el-tab-pane label="价格降序" name="4"></el-tab-pane>-->
-<!--            </el-tabs>-->
+            <el-tabs type="card" v-model="rsort" @tab-click="getShow()">
+                <el-tab-pane label="时间升序" name="1"></el-tab-pane>
+                <el-tab-pane label="时间降序" name="2"></el-tab-pane>
+                <el-tab-pane label="最低价升序" name="3"></el-tab-pane>
+                <el-tab-pane label="最低价降序" name="4"></el-tab-pane>
+                <el-tab-pane label="最高价升序" name="5"></el-tab-pane>
+                <el-tab-pane label="最高价降序" name="6"></el-tab-pane>
+            </el-tabs>
             <div v-for="show in showList">
                 <el-card @click.native="BuyShow(show.id)">
                     <el-row :gutter="2">
@@ -170,7 +187,7 @@ export default {
         },
         // 展示搜索结果
         async getShow() {
-            // console.log(this.rcategory);
+            console.log(this.rtime);
             var city;
             // 设置城市
             if (this.rcity === "全国") city = "";
@@ -186,6 +203,8 @@ export default {
                     pageSize: this.pageSize,
                     city: city,
                     keyword: this.rsearch,
+                    startDay: this.rtime[0],
+                    endDay: this.rtime[1],
                 })
             );
             if (result.data.code === 200) {

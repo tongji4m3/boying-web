@@ -338,7 +338,7 @@ export default {
                 gender=true;
             else if(this.form.gender==='woman')
                 gender=false;
-            let result = await this.$http.post(this.$api.updateUserInfoUrl,{
+            let result = await this.$http.post(this.$api.updateUserInformationUrl,{
                 realName: this.form.realName,
                 icon: this.form.icon,
                 gender: gender,
@@ -346,7 +346,7 @@ export default {
                 identityNumber: this.form.identityNumber,
                 email: this.form.email,
             });
-            // console.log(result);
+            console.log(result);
             if (result.data.code === 200) {
                 this.$message.success("更新成功");
                 await this.getUserInfo();

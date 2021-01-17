@@ -33,8 +33,8 @@
                                 class="myicon myiconshijian"
                                 style="padding-right: 3px"
                             ></i>
-                                演出时间:{{ show.startTime.substring(0, 10) }}~{{
-                                    show.endTime.substring(0, 10)
+                                演出时间:{{ show.startTime }}~{{
+                                    show.endTime
                                 }}
                             </div>
                             <div class="tip">
@@ -88,7 +88,7 @@
             </el-card>
             <br />
             <el-card style="width: 80%; margin: auto">
-                <h1><i class="myicon myiconxiangqing"></i>演出详情</h1>
+                <h1><i class="myicon myiconxiangqing"></i>观影须知</h1>
                 <div>{{ this.show.details }}</div>
             </el-card>
         </el-card>
@@ -168,6 +168,13 @@ export default {
                 // console.log(res);
                 if (res.data.code === 200) {
                     this.show = res.data.data;
+
+                    this.show.startTime =  this.show.startTime.substring(0, 19)
+                    this.show.startTime =  this.show.startTime.replace('T',' ')
+
+                    this.show.endTime =  this.show.endTime.substring(0, 19)
+                    this.show.endTime =  this.show.endTime.replace('T',' ')
+
                 }
             } catch (err) {
                 // console.log(err);

@@ -50,7 +50,7 @@
             <div class="table-layout">
                 <el-row>
                     <el-col :span="6" class="table-cell-title">订单编号</el-col>
-                    <el-col :span="6" class="table-cell-title">用户账号</el-col>
+                    <el-col :span="6" class="table-cell-title">用户名称</el-col>
                     <el-col :span="6" class="table-cell-title">演出名称</el-col>
                     <el-col :span="6" class="table-cell-title">演出类别</el-col>
                     <!-- <el-col :span="6" class="table-cell-title">观影人编号</el-col> -->
@@ -58,7 +58,7 @@
                 </el-row>
                 <el-row>
                     <el-col :span="6" class="table-cell">{{ orderId }}</el-col>
-                    <el-col :span="6" class="table-cell">{{ order.userId }}</el-col>
+                    <el-col :span="6" class="table-cell">{{ order.username }}</el-col>
                     <el-col :span="6" class="table-cell">{{ show.name }}</el-col>
                     <el-col :span="6" class="table-cell">{{ category }}</el-col>
                     <!-- <el-col :span="6" class="table-cell">{{ order.frequentId }}</el-col> -->
@@ -113,8 +113,8 @@
                     <el-col :span="6" class="table-cell">{{ show.city }}</el-col>
                     <el-col :span="6" class="table-cell">{{ show.address }}</el-col>
                     <el-col :span="6" class="table-cell">
-                        {{ order.money }}
-<!--                        ￥{{ show.minPrice }}~￥{{ show.maxPrice }}-->
+<!--                        {{ show.minPrice }}-->
+                        ￥{{ show.minPrice }}~￥{{ show.maxPrice }}
                     </el-col>
                     <el-col :span="6" class="table-cell" style="font-size:10px"
                     >{{ show.startTime | formatDateTime }}-{{
@@ -150,7 +150,8 @@
             </div>
             <el-row>
                 <el-col :span="6" class="table-cell-title">序号</el-col>
-                <el-col :span="6" class="table-cell-title">座位容量</el-col>
+                <el-col :span="6" class="table-cell-title">单价</el-col>
+<!--                <el-col :span="6" class="table-cell-title">座位容量</el-col>-->
                 <el-col :span="6" class="table-cell-title">座位名称</el-col>
                 <el-col :span="6" class="table-cell-title">二维码</el-col>
             </el-row>
@@ -160,8 +161,11 @@
                         {{index+1}}
                     </el-col>
                     <el-col :span="6" class="my-table-cell">
-                        {{s.capacity}}
+                        {{s.price}}
                     </el-col>
+<!--                    <el-col :span="6" class="my-table-cell">-->
+<!--                        {{s.capacity}}-->
+<!--                    </el-col>-->
                     <el-col :span="6" class="my-table-cell">
                         {{s.name}}
                     </el-col>
@@ -344,6 +348,10 @@ export default {
                     this.order = res.data.data;
                     console.log(this.order);
                 }
+
+
+                var result = await this.$http.post(this.$api.getUserInfoUrl);
+                this.order.username=result.data.data.username;
             } catch (err) {
                 console.log(err);
             }

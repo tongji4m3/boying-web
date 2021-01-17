@@ -322,7 +322,7 @@ export default {
             this.form.name=result.data.data.username;
             this.form.realName=result.data.data.realName;
             this.form.icon=result.data.data.icon;
-            this.form.gender=result.data.data.gender===true?'男':'女';
+            this.form.gender=result.data.data.gender===1?'男':'女';
             this.form.age=result.data.data.age;
             this.form.identityNumber=result.data.data.identityNumber;
             this.form.email=result.data.data.email;

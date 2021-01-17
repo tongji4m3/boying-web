@@ -65,6 +65,7 @@
         <br />
         <el-card style="width: 80%; margin: auto">
             <el-tabs type="card" v-model="rsort" @tab-click="getShow()">
+                <el-tab-pane label="推荐序" name="0"></el-tab-pane>
                 <el-tab-pane label="时间升序" name="1"></el-tab-pane>
                 <el-tab-pane label="时间降序" name="2"></el-tab-pane>
                 <el-tab-pane label="最低价升序" name="3"></el-tab-pane>
@@ -89,8 +90,8 @@
                                 }}{{ "\xa0\xa0\xa0\xa0" + show.city }} <br /><br />
                                 {{
                                     "\xa0\xa0\xa0\xa0\xa0\xa0\xa0" +
-                                    show.startTime.substring(0, 10)
-                                }}~{{ show.endTime.substring(0, 10) }}
+                                    show.startTime
+                                }}~{{ show.endTime }}
                                 <br /><br /><br /><br /><br /><br /><br />
                             </div>
                             <div class="showName">
@@ -210,6 +211,17 @@ export default {
             if (result.data.code === 200) {
                 this.showList = result.data.data.list;
                 this.totalCount = result.data.data.total;
+
+                for (let i = 0; i <  this.showList.length; i++)
+                {
+
+                    this.showList[i].startTime =  this.showList[i].startTime.substring(0, 19)
+                    this.showList[i].startTime =  this.showList[i].startTime.replace('T',' ')
+
+                    this.showList[i].endTime =  this.showList[i].endTime.substring(0, 19)
+                    this.showList[i].endTime =  this.showList[i].endTime.replace('T',' ')
+                }
+
             } else {
                 this.showList = [];
                 this.totalCount = 0;

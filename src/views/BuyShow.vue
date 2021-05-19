@@ -7,12 +7,12 @@
                 :body-style="{ padding: '30px' }"
             >
                 <el-row :gutter="20">
-                    <el-col :span="7">
+                    <el-col :span="8">
                         <div>
                             <img width="300" height="430" :src="show.poster" class="image" />
                         </div>
                     </el-col>
-                    <el-col :span="17">
+                    <el-col :span="16">
                         <div class="text">
                             <div class="showName">
                                 <h2>{{ show.name }}</h2>
@@ -43,12 +43,6 @@
                             </div>
                             <br />
                             <!-- <div class="fundText">¥基础票价:{{ show.minPrice }}</div> -->
-                            <!-- <div v-show="this.classList != [] && this.classList.length != 0">
-                                <div v-for="showclass in classList" :key="showclass.id">
-                                    {{showclass}}
-                                </div>
-                            </div> -->
-
                             <div v-show="this.classList != [] && this.classList.length != 0">
                                 <div class="fundText">
                                     <i
@@ -57,59 +51,41 @@
                                     ></i
                                     >票种
                                 </div>
-                                <br>
-                                <div
+                                <el-radio-group
+                                    v-model="showClassSelected"
+                                    @change="classChange()"
                                     class="classGroup"
                                     v-for="showclass in classList"
                                     :key="showclass.id"
                                 >
-                                    <!-- <el-radio
-                                        v-model="showClassSelected"
+                                    <el-radio-button
                                         :label="showclass.id"
                                         class="classRadioButton"
-                                        border
                                     >{{ showclass.name }} 票价:￥{{ showclass.price }} 票量：{{
                                             showclass.stock
                                         }}
                                         / {{ showclass.capacity }}
-                                    </el-radio> -->
-                                    <div
-                                        :label="showclass.id"
-                                        class="classRadioButton"
-                                        border
-                                    >{{ showclass.name }} 票价:￥{{ showclass.price }} 票量：{{
-                                            showclass.stock
-                                        }}
-                                        / {{ showclass.capacity }}
-                                        <el-input-number v-model="num" @change="classChange()" :min="1" :max="10" label="描述文字"></el-input-number>
-                                    </div>
-                                    <!-- <el-input-number v-model="num" @change="classChange()" :min="1" :max="10" label="描述文字"></el-input-number> -->
+                                    </el-radio-button>
                                     <br />
+                                </el-radio-group>
+                                <div v-show="this.priceSelected != null" class="finalPrice">
+                                    最终价格: ¥{{ this.priceSelected }}
                                 </div>
                             </div>
 
-                            
+                            <div class="Buy" v-show="this.priceSelected != null">
+                                <el-button
+                                    type="danger"
+                                    icon="myicon myicontubiaozhizuomoEban"
+                                    @click="buyTicket"
+                                >
+                                    购票</el-button
+                                >
+                            </div>
                         </div>
                     </el-col>
                 </el-row>
             </el-card>
-            <div v-show="this.priceSelected != null">
-                <br />
-                <el-card style="width: 80%; margin: auto">
-                    <div class="finalPrice">
-                        最终价格: ¥{{ this.priceSelected }}
-                    </div>
-                    <div class="Buy">
-                        <el-button
-                            type="danger"
-                            icon="myicon myicontubiaozhizuomoEban"
-                            @click="buyTicket"
-                        >
-                            购票
-                        </el-button>
-                    </div>
-                </el-card>
-            </div>
             <br />
             <el-card style="width: 80%; margin: auto">
                 <h1><i class="myicon myiconxiangqing"></i>观影须知</h1>
@@ -121,7 +97,6 @@
             :visible.sync="dialogVisible"
             width="30%"
         >
-
             <span>请选择支付方式</span>
             <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="buyTicketByAli">支付宝支付</el-button>
@@ -158,9 +133,11 @@ export default {
         this.getShow();
         this.getShowClass();
         this.getUser();
+        // console.log(this.showId);
         setTimeout(() => {
             this.loading = false;
         }, 500);
+        // console.log(this.classList);
     },
 
     components: {},
@@ -173,18 +150,22 @@ export default {
 
     methods: {
         classChange() {
+            // console.log(this.showClassSelected);
             for (var i of this.classList) {
                 if (i.id === this.showClassSelected) {
                     this.priceSelected = i.price;
                 }
             }
+            // this.priceSelected = this.classList[this.showClassSelected - 1].price;
             this.finalPrice = this.priceSelected;
         },
         async getShow() {
+            console.log(this.showId)
             try {
                 const res = await axios.post(
                     this.$api.getShowDetails + "/" + this.showId
                 );
+                // console.log(res);
                 if (res.data.code === 200) {
                     this.show = res.data.data;
 
@@ -196,23 +177,27 @@ export default {
 
                 }
             } catch (err) {
+                // console.log(err);
                 this.$message.error("获取演出信息失败");
             }
         },
 
         async getShowClass() {
+            console.log(this.showId)
             try {
-                let res = await axios.post(this.$api.getShowSeatListUrl + '/' + this.showId);
+                let res = await axios.post(this.$api.getShowSeatUrl + '/' + this.showId);
+                console.log(res);
                 if (res.data.code === 200) {
                     this.classList = res.data.data;
-                    // this.showClassSelected = this.classList[0].id;
-                    // this.priceSelected = this.classList[0].price;
-                    // this.finalPrice = this.priceSelected;
+                    this.showClassSelected = this.classList[0].id;
+                    this.priceSelected = this.classList[0].price;
+                    this.finalPrice = this.priceSelected;
                 } else {
                     this.classList = [];
                     this.showClassSelected = null;
                 }
             } catch (err) {
+                // console.log(err);
                 this.$message.error("获取演出票种失败");
             }
         },
@@ -220,12 +205,14 @@ export default {
         async getUser() {
             try {
                 const res = await axios.post(this.$api.getUserUrl);
+                // console.log(res);
                 if (res.data.code === 200) {
                     this.currentUser = res.data.data;
                 } else {
                     this.currentUser.userId = "";
                 }
             } catch (err) {
+                // console.log(err);
                 this.$message.error("获取用户信息失败");
             }
         },
@@ -237,12 +224,14 @@ export default {
             //         showId: this.showId,
             //         showSeatIds: [this.showClassSelected],
             //     });
+            //     console.log(res);
             //     if (res.data.code === 200) {
             //         this.$message.success("购票成功!可以前往订单界面查看订单");
             //     } else {
             //         this.$message.warning("已经购买过该场次的票了，不允许多次抢票");
             //     }
             // } catch (err) {
+            //     console.log(err);
             //     this.$message.error("因未知错误购票失败");
             // }
             // this.$forceUpdate();
@@ -267,6 +256,7 @@ export default {
                     this.dialogVisible = false;
                 }
             } catch (err) {
+                console.log(err);
                 this.$message.error("因未知错误购票失败");
                 this.dialogVisible = false;
             }
@@ -279,6 +269,7 @@ export default {
                     showSeatIds: [this.showClassSelected],
                     payment: "微信支付",
                 });
+                console.log(res);
                 if (res.data.code === 200) {
                     this.$message.success("购票成功!可以前往订单界面查看订单");
                     await this.getShow();
@@ -291,6 +282,7 @@ export default {
                     this.dialogVisible = false;
                 }
             } catch (err) {
+                console.log(err);
                 this.$message.error("因未知错误购票失败");
                 this.dialogVisible = false;
             }

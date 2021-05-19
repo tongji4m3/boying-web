@@ -1,7 +1,7 @@
 
 
-const APIRootUrl = 'http://47.100.88.187:8000/';
-// const APIRootUrl = 'http://localhost:8000/';
+// const APIRootUrl = 'http://47.100.88.187:8000/';
+const APIRootUrl = 'http://localhost:8000/';
 
 
 module.exports = {

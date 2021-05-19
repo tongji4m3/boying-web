@@ -1,6 +1,6 @@
 
 
-const APIRootUrl = 'http://47.100.88.187:8000/';
+const APIRootUrl = 'http://47.103.203.188:8000/';
 // const APIRootUrl = 'http://localhost:8000/';
 
 
@@ -36,6 +36,5 @@ module.exports = {
 
     //演出座次相关
     getShowSeatUrl: APIRootUrl + 'seat/detail',
-    getShowSeatListUrl: APIRootUrl + 'seat/seatList',
     getOrderSeatUrl: APIRootUrl + 'order/tickets',
 }

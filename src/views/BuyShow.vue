@@ -17,7 +17,6 @@
                             <div class="showName">
                                 <h2>{{ show.name }}</h2>
                             </div>
-                            <br />
                             <div
                                 class="minor-text"
                                 v-if="show.startTime != undefined && show.endTime != undefined"
@@ -41,7 +40,6 @@
                                 <i class="el-icon-info" style="padding-right: 3px"></i>
                                 演出时间和场次时间均为演出当地时间
                             </div>
-                            <br />
                             <!-- <div class="fundText">¥基础票价:{{ show.minPrice }}</div> -->
                             <!-- <div v-show="this.classList != [] && this.classList.length != 0">
                                 <div v-for="showclass in classList" :key="showclass.id">
@@ -63,16 +61,6 @@
                                     v-for="showclass in classList"
                                     :key="showclass.id"
                                 >
-                                    <!-- <el-radio
-                                        v-model="showClassSelected"
-                                        :label="showclass.id"
-                                        class="classRadioButton"
-                                        border
-                                    >{{ showclass.name }} 票价:￥{{ showclass.price }} 票量：{{
-                                            showclass.stock
-                                        }}
-                                        / {{ showclass.capacity }}
-                                    </el-radio> -->
                                     <div
                                         :label="showclass.id"
                                         class="classRadioButton"
@@ -81,9 +69,8 @@
                                             showclass.stock
                                         }}
                                         / {{ showclass.capacity }}
-                                        <el-input-number v-model="num" @change="classChange()" :min="1" :max="10" label="描述文字"></el-input-number>
+                                        <el-input-number v-model="num" @change="classChange()" :min="1" :max="10" :key="showclass.counts"></el-input-number>
                                     </div>
-                                    <!-- <el-input-number v-model="num" @change="classChange()" :min="1" :max="10" label="描述文字"></el-input-number> -->
                                     <br />
                                 </div>
                             </div>

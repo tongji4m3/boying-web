@@ -68,42 +68,41 @@
                                     </el-radio-button>
                                     <br />
                                 </el-radio-group>
-                                <div v-show="this.priceSelected != null" class="finalPrice">
-                                    最终价格: ¥{{ this.priceSelected }}
-                                </div>
-                            </div>
 
-                            <div class="Buy" v-show="this.priceSelected != null">
-                                <el-button
-                                    type="danger"
-                                    icon="myicon myicontubiaozhizuomoEban"
-                                    @click="buyTicket"
-                                >
-                                    购票</el-button
-                                >
                             </div>
                         </div>
                     </el-col>
                 </el-row>
             </el-card>
+            <div v-show="this.priceSelected != null">
+                <br>
+                <el-card style="width: 80%; margin: auto" class="Buy" >
+                    <div v-show="this.priceSelected != null" class="finalPrice">
+                        票数:
+                        <el-input-number v-model="count" :min="1" :max="10" @change="changeCount"></el-input-number>
+                        最终价格: ¥{{ this.finalPrice }}
+                        <el-button
+                            type="danger"
+                            icon="myicon myicontubiaozhizuomoEban"
+                            @click="buyTicket">
+                            购票
+                        </el-button>
+                    </div>
+
+                </el-card>
+            </div>
             <br />
             <el-card style="width: 80%; margin: auto">
                 <h1><i class="myicon myiconxiangqing"></i>观影须知</h1>
                 <div>{{ this.show.details }}</div>
             </el-card>
         </el-card>
-        <el-dialog
-            title="提示"
-            :visible.sync="dialogVisible"
-            width="30%"
-        >
+        <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
             <span>请选择支付方式</span>
             <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="buyTicketByAli">支付宝支付</el-button>
-        <el-button type="primary" @click="buyTicketByWechat"
-        >微信支付</el-button
-        >
-      </span>
+                <el-button type="primary" @click="buyTicketByAli">支付宝支付</el-button>
+                <el-button type="primary" @click="buyTicketByWechat">微信支付</el-button>
+            </span>
         </el-dialog>
     </div>
 </template>
@@ -122,22 +121,23 @@ export default {
             classList: [],
             showClassSelected: "",
             priceSelected: null,
+            priceFinal: null,
             finalPrice: null,
             currentUser: {},
             dialogVisible: false,
+            count: 1,
         };
     },
 
     created() {
         this.showId = this.$route.query.showId;
+        this.count = 1;
         this.getShow();
         this.getShowClass();
         this.getUser();
-        // console.log(this.showId);
         setTimeout(() => {
             this.loading = false;
         }, 500);
-        // console.log(this.classList);
     },
 
     components: {},
@@ -149,23 +149,32 @@ export default {
     mounted() {},
 
     methods: {
-        classChange() {
-            // console.log(this.showClassSelected);
+        changeCount() {
             for (var i of this.classList) {
                 if (i.id === this.showClassSelected) {
                     this.priceSelected = i.price;
+                    this.priceFinal = this.priceSelected * this.count;
+                }
+            }
+            console.log(this.count);
+            this.finalPrice = this.priceFinal;
+        },
+        classChange() {
+            for (var i of this.classList) {
+                if (i.id === this.showClassSelected) {
+                    this.priceSelected = i.price;
+                    this.priceFinal = this.priceSelected * this.count;
                 }
             }
             // this.priceSelected = this.classList[this.showClassSelected - 1].price;
-            this.finalPrice = this.priceSelected;
+            this.finalPrice = this.priceFinal;
         },
         async getShow() {
-            console.log(this.showId)
             try {
                 const res = await axios.post(
                     this.$api.getShowDetails + "/" + this.showId
                 );
-                // console.log(res);
+                // 
                 if (res.data.code === 200) {
                     this.show = res.data.data;
 
@@ -177,27 +186,25 @@ export default {
 
                 }
             } catch (err) {
-                // console.log(err);
                 this.$message.error("获取演出信息失败");
             }
         },
 
         async getShowClass() {
-            console.log(this.showId)
             try {
-                let res = await axios.post(this.$api.getShowSeatUrl + '/' + this.showId);
+                let res = await axios.post(this.$api.getShowSeatListUrl + '/' + this.showId);
                 console.log(res);
                 if (res.data.code === 200) {
                     this.classList = res.data.data;
                     this.showClassSelected = this.classList[0].id;
                     this.priceSelected = this.classList[0].price;
-                    this.finalPrice = this.priceSelected;
+                    this.priceFinal = this.priceSelected * this.count;
+                    this.finalPrice = this.priceFinal;
                 } else {
                     this.classList = [];
                     this.showClassSelected = null;
                 }
             } catch (err) {
-                // console.log(err);
                 this.$message.error("获取演出票种失败");
             }
         },
@@ -205,14 +212,13 @@ export default {
         async getUser() {
             try {
                 const res = await axios.post(this.$api.getUserUrl);
-                // console.log(res);
+                // 
                 if (res.data.code === 200) {
                     this.currentUser = res.data.data;
                 } else {
                     this.currentUser.userId = "";
                 }
             } catch (err) {
-                // console.log(err);
                 this.$message.error("获取用户信息失败");
             }
         },
@@ -224,7 +230,7 @@ export default {
             //         showId: this.showId,
             //         showSeatIds: [this.showClassSelected],
             //     });
-            //     console.log(res);
+            //     
             //     if (res.data.code === 200) {
             //         this.$message.success("购票成功!可以前往订单界面查看订单");
             //     } else {
@@ -240,10 +246,12 @@ export default {
             try {
                 const res = await axios.post(this.$api.buyTicketUrl, {
                     showId: this.showId,
-                    showSeatIds: [this.showClassSelected],
+                    seatId: this.showClassSelected,
+                    count: this.count,
                     payment: "支付宝",
+                    promoId: 0,
                 });
-                console.log(res);
+                
                 if (res.data.code === 200) {
                     this.$message.success("购票成功!可以前往订单界面查看订单");
                     await this.getShow();
@@ -256,7 +264,6 @@ export default {
                     this.dialogVisible = false;
                 }
             } catch (err) {
-                console.log(err);
                 this.$message.error("因未知错误购票失败");
                 this.dialogVisible = false;
             }
@@ -266,10 +273,12 @@ export default {
             try {
                 const res = await axios.post(this.$api.buyTicketUrl, {
                     showId: this.showId,
-                    showSeatIds: [this.showClassSelected],
+                    seatId: this.showClassSelected,
+                    count: this.count,
                     payment: "微信支付",
+                    promoId: 0,
                 });
-                console.log(res);
+                
                 if (res.data.code === 200) {
                     this.$message.success("购票成功!可以前往订单界面查看订单");
                     await this.getShow();
@@ -282,7 +291,6 @@ export default {
                     this.dialogVisible = false;
                 }
             } catch (err) {
-                console.log(err);
                 this.$message.error("因未知错误购票失败");
                 this.dialogVisible = false;
             }

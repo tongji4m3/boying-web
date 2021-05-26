@@ -61,10 +61,14 @@
                                     <el-radio-button
                                         :label="showclass.id"
                                         class="classRadioButton"
-                                    >{{ showclass.name }} 票价:￥{{ showclass.price }} 票量：{{
-                                            showclass.stock
-                                        }}
-                                        / {{ showclass.capacity }}
+                                        v-if="showclass.promoStatus != 2"
+                                    >{{ showclass.name }} 票价:￥{{ showclass.price }} 票量：{{showclass.stock}} / {{ showclass.capacity }}
+                                    </el-radio-button>
+                                    <el-radio-button
+                                        :label="showclass.id"
+                                        class="classRadioButton"
+                                        v-if="showclass.promoStatus == 2"
+                                    >{{ showclass.name }} 票价:￥{{ showclass.price }} 活动价:￥{{ showclass.promoPrice }} 票量：{{showclass.stock}} / {{ showclass.capacity }}
                                     </el-radio-button>
                                     <br />
                                 </el-radio-group>
@@ -126,6 +130,7 @@ export default {
             currentUser: {},
             dialogVisible: false,
             count: 1,
+            promoId: 0,
         };
     },
 
@@ -174,7 +179,7 @@ export default {
                 const res = await axios.post(
                     this.$api.getShowDetails + "/" + this.showId
                 );
-                // 
+                console.log(res);
                 if (res.data.code === 200) {
                     this.show = res.data.data;
 
@@ -193,7 +198,7 @@ export default {
         async getShowClass() {
             try {
                 let res = await axios.post(this.$api.getShowSeatListUrl + '/' + this.showId);
-                console.log(res);
+                // console.log(res);
                 if (res.data.code === 200) {
                     this.classList = res.data.data;
                     this.showClassSelected = this.classList[0].id;
@@ -225,22 +230,6 @@ export default {
 
         async buyTicket() {
             this.dialogVisible = true;
-            // try {
-            //     const res = await axios.post(this.$api.buyTicketUrl, {
-            //         showId: this.showId,
-            //         showSeatIds: [this.showClassSelected],
-            //     });
-            //     
-            //     if (res.data.code === 200) {
-            //         this.$message.success("购票成功!可以前往订单界面查看订单");
-            //     } else {
-            //         this.$message.warning("已经购买过该场次的票了，不允许多次抢票");
-            //     }
-            // } catch (err) {
-            //     console.log(err);
-            //     this.$message.error("因未知错误购票失败");
-            // }
-            // this.$forceUpdate();
         },
         async buyTicketByAli() {
             try {

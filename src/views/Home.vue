@@ -79,7 +79,7 @@
                         <el-row>
                             <el-col
                                     :span="3"
-                                    v-for="category in categoryList"
+                                    v-for="(category,i) in categoryList"
                                     :key="category.id"
                                     @click.native="search(category.id)"
                             >
@@ -88,12 +88,17 @@
                                 <!--                    </el-card>-->
                                 <div style="text-align: center">
                                     <div class="categoryCol">
-                                        <i
-                                                :class="iconList[category.id - 1]"
-                                                style="font-size: 25px"
-                                        ></i>
+                                        <!-- <i
+                                            :class="iconList[i]"
+                                            style="font-size: 25px"
+                                        ></i> -->
+                                        <img
+                                            :src="category.icon"
+                                            height="25px"
+                                            width="25px"
+                                        />
                                     </div>
-                                    <br/>
+                                    <!-- <br/> -->
                                     <div class="categoryCol">{{ category.name }}</div>
                                 </div>
                             </el-col>
@@ -107,11 +112,18 @@
                                     :underline="false"
                                     @click="search(categoryList[i].id)"
                                     style="font-size:20px"
-                            ><i
+                            >
+                            <!-- <i
                                     :class="iconList[i]"
                                     style="font-size: 20px; margin-right: 10px"
-                            ></i
-                            >{{ categoryList[i].name }}：
+                            ></i> -->
+                            <img
+                                :src="categoryList[i].icon"
+                                height="20px"
+                                width="20px"
+                            />
+                            
+                            {{ categoryList[i].name }}：
                             </el-link
                             >
                             <el-row :gutter="30">
@@ -303,7 +315,7 @@
             async getCategoryList()
             {
                 let result = await this.$http.post(this.$api.getCategoryListUrl);
-                // console.log(result)
+                console.log(result)
                 this.categoryList = result.data.data;
                 // console.log(this.categoryList)
                 this.showList.length = this.categoryList.length;

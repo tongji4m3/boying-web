@@ -12,14 +12,14 @@
                     <el-row :gutter="40">
                         <el-col :span="12">
                             <el-form-item label="头像">
-                                <img
+                                <!-- <img
                                     width="100"
                                     height="100"
                                     :src="form.icon"
                                     class="image"
                                     style="border-radius: 50%"
-                                />
-                                <el-upload
+                                /> -->
+                                <!-- <el-upload
                                     class="upload"
                                     action
                                     :drag="true"
@@ -30,12 +30,28 @@
                                     :on-remove="handleRemove">
                                     <i class="el-icon-upload"></i>
                                     <div class="el-upload__text">将文件拖到此处，或<em>点击上传个人头像</em></div>
-<!--                                    <i class="el-icon-plus avatar-uploader-icon"></i>-->
-<!--                                    <p id="img-context">上传个人头像</p>-->
                                     <div class="el-upload__tip" slot="tip">
                                         只能上传jpg/jpeg/png文件，且不超过5MB
                                     </div>
-                                </el-upload>
+
+                                </el-upload> -->
+                                <el-upload
+                                  class="upload"
+                                  action=""
+                                  :show-file-list="false"
+                                  :http-request="uploadHttp"
+                                  :before-upload="beforeAvatarUpload"
+                                >
+                                    <img
+                                        v-if="form.icon"
+                                        width="400"
+                                        height="400"
+                                        :src="form.icon"
+                                        class="image"
+                                        style="border-radius: 50%"
+                                    />
+                                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                </el-upload>
                             </el-form-item>
                             <el-form-item>
                                 <el-button type="primary" @click="updateUserInfo()">更 新</el-button>
@@ -74,6 +90,47 @@
                 </el-form>
             </div>
         </el-card>
+        <br>
+        <!-- 密码 -->
+        <el-card class="el-card" style="width: 80%; margin:auto;">
+            <h2>修改密码：</h2>
+            <el-form style="width: 40%;" :rules="passwordFormRules">
+
+
+                <el-form-item prop="telephone">
+                <el-input
+                    v-model="passwordForm.telephone"
+                    placeholder="手机号"
+                ></el-input>
+                </el-form-item>
+                
+                <el-form-item prop="authCode">
+                <el-input
+                    v-model="passwordForm.authCode"
+                    placeholder="验证码"
+                    class="authInput"
+                ></el-input>
+                <el-button class="authButton" v-on:click="getAuthCode"
+                    >获取验证码</el-button
+                >
+                </el-form-item>
+                <el-form-item prop="password">
+                <el-input
+                    type="password"
+                    v-model="passwordForm.password"
+                    placeholder="密码"
+                ></el-input>
+                </el-form-item>
+
+                <el-form-item prop="confirmPassword">
+                <el-input
+                    type="password"
+                    v-model="passwordForm.confirmPassword"
+                    placeholder="确认密码"
+                ></el-input>
+                </el-form-item>
+            </el-form>
+        </el-card>
     </div>
 </template>
 
@@ -84,6 +141,30 @@ import ossClient from "@/assets/config/aliyun.oss.client";
 export default {
     name: "SelfInformation",
     data() {
+        let checkPassword = (rule, value, cb) => {
+            const regPassword = /^\w{6,50}$/;
+            if (regPassword.test(value)) {
+                //合法密码
+                return cb();
+            }
+            cb(new Error("密码必须在6-15个字符之间,只能由大小写字母数字下划线组成"));
+        };
+        let checkConfirmPassword = (rule, value, cb) => {
+            const regPassword = this.passwordForm.password;
+            if (regPassword === value) {
+                //合法密码
+                return cb();
+            }
+            cb(new Error("前后两次输入的密码必须一致!"));
+        };
+        let checktelephone = (rule, value, cb) => {
+            const regNumber = /^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/;
+            if (regNumber.test(value)) {
+                //合法手机号
+                return cb();
+            }
+            cb(new Error("输入的手机号不合法!"));
+        };
         return {
             loading: true,
             //上传图片相关
@@ -105,6 +186,30 @@ export default {
                 phone: '',
             },
 
+            passwordForm: {
+                password: '',
+                confirmPassword: '',
+                telephone: '',
+                authCode: '',
+            },
+            registerFormRules: {
+                //    验证密码是否合法
+                password: [
+                { required: true, message: "请输入密码", trigger: "blur" },
+                { validator: checkPassword, trigger: "blur" },
+                ],
+                confirmPassword: [
+                { required: true, message: "请再次确认密码", trigger: "blur" },
+                { validator: checkConfirmPassword, trigger: "blur" },
+                ],
+                //    验证手机号是否合法
+                telephone: [
+                { required: true, message: "请输入手机号", trigger: "blur" },
+                { validator: checktelephone, trigger: "blur" },
+                ],
+                //    验证验证码是否合法
+                authCode: [{ required: true, message: "请验证码", trigger: "blur" }],
+            },
 
             totalCount: 0,
             pageNumber: 1,
@@ -319,10 +424,11 @@ export default {
         // 获取用户信息
         async getUserInfo(){
             var result = await this.$http.post(this.$api.getUserInfoUrl);
+            console.log(result);
             this.form.name=result.data.data.username;
             this.form.realName=result.data.data.realName;
             this.form.icon=result.data.data.icon;
-            this.form.gender=result.data.data.gender===1?'男':'女';
+            this.form.gender=result.data.data.gender===true?'man':'woman';
             this.form.age=result.data.data.age;
             this.form.identityNumber=result.data.data.identityNumber;
             this.form.email=result.data.data.email;
@@ -332,12 +438,13 @@ export default {
         },
         async updateUserInfo(){
             // console.log("修改后"+this.form.icon);
-            // console.log(this.form.gender);
+            console.log(this.form.gender);
             let gender;
             if(this.form.gender==='man')
-                gender=true;
+                gender=1;
             else if(this.form.gender==='woman')
-                gender=false;
+                gender=0;
+            // console.log()
             let result = await this.$http.post(this.$api.updateUserInformationUrl,{
                 realName: this.form.realName,
                 icon: this.form.icon,
@@ -671,5 +778,8 @@ body {
 
 .el-table .success-row {
     background: #f0f9eb;
+}
+.authInput {
+  width: 55%;
 }
 </style>

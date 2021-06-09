@@ -259,6 +259,7 @@ export default {
           this.showClassSelected = this.classList[0].id;
           if (this.classList[0].promoStatus == 2) {
             this.priceSelected = this.classList[0].promoPrice;
+            this.promoId = this.classList[0].promoId;
           } else {
             this.priceSelected = this.classList[0].price;
           }
@@ -299,7 +300,7 @@ export default {
           seatId: this.showClassSelected,
           count: this.count,
           payment: "支付宝",
-          promoId: 0,
+          promoId: this.promoId,
         });
 
         if (res.data.code === 200) {
@@ -307,6 +308,7 @@ export default {
           await this.getShow();
           await this.getShowClass();
           await this.getUser();
+          await this.getOrderJudge();
           this.$forceUpdate();
           this.dialogVisible = false;
         } else {
@@ -334,6 +336,7 @@ export default {
           await this.getShow();
           await this.getShowClass();
           await this.getUser();
+          await this.getOrderJudge();
           this.$forceUpdate();
           this.dialogVisible = false;
         } else {

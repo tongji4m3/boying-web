@@ -91,9 +91,12 @@
                 {{ "\xa0\xa0\xa0\xa0\xa0\xa0\xa0" + show.startTime }}~{{
                   show.endTime
                 }}
-                <br /><br /><br /><br /><br /><br /><br />
+                <br /><br /><br /><br /><br />
+                
               </div>
               <div class="showName">
+                {{ "\xa0\xa0\xa0\xa0\xa0\xa0"}}还剩{{ show.totalStock }}张！
+                <br />
                 {{ "\xa0\xa0\xa0\xa0\xa0\xa0¥" + show.minPrice }}~¥{{
                   show.maxPrice
                 }}

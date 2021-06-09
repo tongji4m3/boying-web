@@ -209,11 +209,11 @@ export default {
           this.$router.push("/home");
           this.$message.success("登录成功");
         } else {
-          this.$message.error("登录失败");
+          this.$message.error(res.data.message);
         }
       } catch (err) {
         console.log(err);
-        this.$message.error("登录失败");
+        this.$message.error(res.data.message);
       }
     },
     async loginTel1() {
@@ -229,13 +229,13 @@ export default {
         if (res.data.code == 200) {
           window.sessionStorage.setItem("token", res.data.data["token"]);
           this.$router.push("/home");
-          this.$message.success("登录成功");
+          this.$message.success(res.data.message);
         } else {
-          this.$message.error("登录失败");
+          this.$message.error(res.data.message);
         }
       } catch (err) {
         console.log(err);
-        this.$message.error("登录失败");
+        this.$message.error(res.data.message);
       }
     },
     async loginTel2() {
@@ -252,11 +252,11 @@ export default {
           this.$router.push("/home");
           this.$message.success("登录成功");
         } else {
-          this.$message.error("登录失败");
+          this.$message.error(res.data.message);
         }
       } catch (err) {
         console.log(err);
-        this.$message.error("登录失败");
+        this.$message.error(res.data.message);
       }
     },
     async goToRegister() {

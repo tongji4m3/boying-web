@@ -203,11 +203,11 @@ export default {
 
           this.$router.push("/login");
         } else {
-          this.$message.error("注册失败");
+          this.$message.error(res.data.message);
         }
       } catch (err) {
         console.log(err);
-        this.$message.error("注册失败");
+        this.$message.error(res.data.message);
       }
     },
 
@@ -226,7 +226,7 @@ export default {
         }
       } catch (err) {
         console.log(err);
-        this.$message.error("验证码发送失败");
+        this.$message.error(res.data.message);
       }
     },
 

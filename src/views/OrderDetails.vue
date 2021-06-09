@@ -80,7 +80,7 @@
           <el-col :span="6" class="table-cell">
             {{ order.payment }}
           </el-col>
-          <el-col :span="6" class="table-cell">{{ order.money }}</el-col>
+          <el-col :span="6" class="table-cell">{{ order.ticketCount*order.ticketPrice }}</el-col>
         </el-row>
       </div>
       <div style="margin-top: 20px" v-show="isTicket">
@@ -141,36 +141,6 @@
           </el-col>
           <el-col :span="6" class="my-table-cell">
             <qrcode-vue :value="show.poster"></qrcode-vue>
-          </el-col>
-        </el-row>
-      </div>
-
-      <div style="margin-top: 20px">
-        <span class="font-small">票务信息</span>
-      </div>
-      <el-row>
-        <el-col :span="6" class="table-cell-title">序号</el-col>
-        <el-col :span="6" class="table-cell-title">单价</el-col>
-        <!--                <el-col :span="6" class="table-cell-title">座位容量</el-col>-->
-        <el-col :span="6" class="table-cell-title">座位名称</el-col>
-        <el-col :span="6" class="table-cell-title">二维码</el-col>
-      </el-row>
-      <div v-for="(s, index) in seat">
-        <el-row>
-          <el-col :span="6" class="my-table-cell">
-            {{ index + 1 }}
-          </el-col>
-          <el-col :span="6" class="my-table-cell">
-            {{ s.price }}
-          </el-col>
-          <!--                    <el-col :span="6" class="my-table-cell">-->
-          <!--                        {{s.capacity}}-->
-          <!--                    </el-col>-->
-          <el-col :span="6" class="my-table-cell">
-            {{ s.name }}
-          </el-col>
-          <el-col :span="6" class="my-table-cell">
-            <qrcode-vue :value="s.qrCodeUrl"></qrcode-vue>
           </el-col>
         </el-row>
       </div>

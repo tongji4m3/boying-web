@@ -100,7 +100,7 @@
               type="danger"
               icon="myicon myicontubiaozhizuomoEban"
               @click="buyTicket"
-              v-if="this.judge == false"
+              v-if="this.judge == true"
               disabled
             >
               已购票，不得重复购票
@@ -109,7 +109,7 @@
               type="danger"
               icon="myicon myicontubiaozhizuomoEban"
               @click="buyTicket"
-              v-if="this.judge == true"
+              v-if="this.judge == false"
             >
               购票
             </el-button>

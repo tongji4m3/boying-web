@@ -117,17 +117,21 @@
           <el-input
             v-model="passwordForm.telephone"
             placeholder="手机号"
-            style="width: 40%;"
+            style="width: 40%"
           ></el-input
         ></el-form-item>
         <el-form-item
-          ><el-input prop="authCode"
+          ><el-input
+            prop="authCode"
             v-model="passwordForm.authCode"
             placeholder="验证码"
             class="authInput"
-            style="width: 26%;"
+            style="width: 26%"
           ></el-input>
-          <el-button class="authButton" v-on:click="getAuthCode" style="margin-left: 45px;"
+          <el-button
+            class="authButton"
+            v-on:click="getAuthCode"
+            style="margin-left: 45px"
             >获取验证码</el-button
           ></el-form-item
         >
@@ -136,7 +140,7 @@
             v-model="passwordForm.password"
             type="password"
             placeholder="新密码"
-            style="width: 40%;"
+            style="width: 40%"
           ></el-input>
         </el-form-item>
 
@@ -145,7 +149,7 @@
             v-model="passwordForm.confirmPassword"
             type="password"
             placeholder="确认密码"
-            style="width: 40%;"
+            style="width: 40%"
           ></el-input>
         </el-form-item>
       </el-form>
@@ -211,7 +215,8 @@ export default {
       cb(new Error("前后两次输入的密码必须一致!"));
     };
     let checktelephone = (rule, value, cb) => {
-      const regNumber = /^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/;
+      const regNumber =
+        /^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/;
       if (regNumber.test(value)) {
         //合法手机号
         return cb();
@@ -490,7 +495,7 @@ export default {
         this.$message.success("更新成功");
         await this.getUserInfo();
       } else {
-        this.$message.warning("更新失败");
+        this.$message.error(res.data.code + res.data.message);
         await this.getUserInfo();
       }
     },

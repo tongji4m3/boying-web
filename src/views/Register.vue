@@ -104,7 +104,8 @@ export default {
       cb(new Error("前后两次输入的密码必须一致!"));
     };
     let checktelephone = (rule, value, cb) => {
-      const regNumber = /^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/;
+      const regNumber =
+        /^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/;
       if (regNumber.test(value)) {
         //合法手机号
         return cb();
@@ -203,11 +204,11 @@ export default {
 
           this.$router.push("/login");
         } else {
-          this.$message.error(res.data.message);
+          this.$message.error(res.data.code + res.data.message);
         }
       } catch (err) {
         console.log(err);
-        this.$message.error(res.data.message);
+        this.$message.error(err);
       }
     },
 
@@ -223,6 +224,8 @@ export default {
         console.log(res);
         if (res.data.code == 200) {
           this.$message.success("验证码已成功发送至手机，请注意查收");
+        } else {
+          this.$message.error(res.data.code + res.data.message);
         }
       } catch (err) {
         console.log(err);

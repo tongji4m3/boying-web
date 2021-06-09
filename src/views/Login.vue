@@ -156,26 +156,26 @@ export default {
       //表单的验证规则
       //因为切换登录方式不会切换预验证，暂时不要预验证
       loginFormRules: {
-      //   //    验证用户名是否合法
-      //   username: [
-      //     { required: true, message: "请输入用户名", trigger: "blur" },
-      //     {
-      //       min: 3,
-      //       max: 10,
-      //       message: "用户名必须在3-10个字符之间",
-      //       trigger: "blur",
-      //     },
-      //   ],
-      //   //    验证密码是否合法
-      //   password: [
-      //     { required: true, message: "请输入密码", trigger: "blur" },
-      //     {
-      //       min: 6,
-      //       max: 50,
-      //       message: "密码必须在6-15个字符之间",
-      //       trigger: "blur",
-      //     },
-      //   ],
+        //   //    验证用户名是否合法
+        //   username: [
+        //     { required: true, message: "请输入用户名", trigger: "blur" },
+        //     {
+        //       min: 3,
+        //       max: 10,
+        //       message: "用户名必须在3-10个字符之间",
+        //       trigger: "blur",
+        //     },
+        //   ],
+        //   //    验证密码是否合法
+        //   password: [
+        //     { required: true, message: "请输入密码", trigger: "blur" },
+        //     {
+        //       min: 6,
+        //       max: 50,
+        //       message: "密码必须在6-15个字符之间",
+        //       trigger: "blur",
+        //     },
+        //   ],
       },
     };
   },
@@ -209,7 +209,7 @@ export default {
           this.$router.push("/home");
           this.$message.success("登录成功");
         } else {
-          this.$message.error(res.data.message);
+          this.$message.error(res.data.code + res.data.message);
         }
       } catch (err) {
         console.log(err);
@@ -231,7 +231,7 @@ export default {
           this.$router.push("/home");
           this.$message.success(res.data.message);
         } else {
-          this.$message.error(res.data.message);
+          this.$message.error(res.data.code + res.data.message);
         }
       } catch (err) {
         console.log(err);
@@ -252,7 +252,7 @@ export default {
           this.$router.push("/home");
           this.$message.success("登录成功");
         } else {
-          this.$message.error(res.data.message);
+          this.$message.error(res.data.code + res.data.message);
         }
       } catch (err) {
         console.log(err);
@@ -275,6 +275,8 @@ export default {
         console.log(res);
         if (res.data.code == 200) {
           this.$message.success("验证码已成功发送至手机，请注意查收");
+        } else {
+          this.$message.error(res.data.code + res.data.message);
         }
       } catch (err) {
         console.log(err);

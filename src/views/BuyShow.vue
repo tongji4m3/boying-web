@@ -9,72 +9,74 @@
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <div>
-                            <img width="300" height="430" :src="show.poster" class="image" />
+ 
+                                <img width="300" height="430" :src="show.poster" class="image" />
+
                         </div>
                     </el-col>
                     <el-col :span="16">
-                        <div class="text">
-                            <div class="showName">
-                                <h2>{{ show.name }}</h2>
-                            </div>
-                            <br />
-                            <div
-                                class="minor-text"
-                                v-if="show.startTime != undefined && show.endTime != undefined"
-                            >
-                                <div class="showAddress">
-                                    <i
-                                        class="myicon myiconchengshi"
-                                        style="padding-right: 7px"
-                                    ></i
-                                    >演出城市:{{ show.city }}
+                            <div class="text">
+                                <div class="showName">
+                                    <h2>{{ show.name }}</h2>
                                 </div>
-                                <br /><i
-                                class="myicon myiconshijian"
-                                style="padding-right: 3px"
-                            ></i>
-                                演出时间:{{ show.startTime }}~{{
-                                    show.endTime
-                                }}
-                            </div>
-                            <div class="tip">
-                                <i class="el-icon-info" style="padding-right: 3px"></i>
-                                演出时间和场次时间均为演出当地时间
-                            </div>
-                            <br />
-                            <!-- <div class="fundText">¥基础票价:{{ show.minPrice }}</div> -->
-                            <div v-show="this.classList != [] && this.classList.length != 0">
-                                <div class="fundText">
-                                    <i
-                                        class="myicon myiconpiaozhong"
-                                        style="padding-right: 3px"
-                                    ></i
-                                    >票种
-                                </div>
-                                <el-radio-group
-                                    v-model="showClassSelected"
-                                    @change="classChange()"
-                                    class="classGroup"
-                                    v-for="showclass in classList"
-                                    :key="showclass.id"
+                                <br />
+                                <div
+                                    class="minor-text"
+                                    v-if="show.startTime != undefined && show.endTime != undefined"
                                 >
-                                    <el-radio-button
-                                        :label="showclass.id"
-                                        class="classRadioButton"
-                                        v-if="showclass.promoStatus != 2"
-                                    >{{ showclass.name }} 票价:￥{{ showclass.price }} 票量：{{showclass.stock}} / {{ showclass.capacity }}
-                                    </el-radio-button>
-                                    <el-radio-button
-                                        :label="showclass.id"
-                                        class="classRadioButton"
-                                        v-if="showclass.promoStatus == 2"
-                                    >{{ showclass.name }} 票价:￥{{ showclass.price }} 活动价:￥{{ showclass.promoPrice }} 票量：{{showclass.stock}} / {{ showclass.capacity }}
-                                    </el-radio-button>
-                                    <br />
-                                </el-radio-group>
+                                    <div class="showAddress">
+                                        <i
+                                            class="myicon myiconchengshi"
+                                            style="padding-right: 7px"
+                                        ></i
+                                        >演出城市:{{ show.city }}
+                                    </div>
+                                    <br /><i
+                                    class="myicon myiconshijian"
+                                    style="padding-right: 3px"
+                                ></i>
+                                    演出时间:{{ show.startTime }}~{{
+                                        show.endTime
+                                    }}
+                                </div>
+                                <div class="tip">
+                                    <i class="el-icon-info" style="padding-right: 3px"></i>
+                                    演出时间和场次时间均为演出当地时间
+                                </div>
+                                <br />
+                                <!-- <div class="fundText">¥基础票价:{{ show.minPrice }}</div> -->
+                                <div v-show="this.classList != [] && this.classList.length != 0">
+                                    <div class="fundText">
+                                        <i
+                                            class="myicon myiconpiaozhong"
+                                            style="padding-right: 3px"
+                                        ></i
+                                        >票种
+                                    </div>
+                                    <el-radio-group
+                                        v-model="showClassSelected"
+                                        @change="classChange()"
+                                        class="classGroup"
+                                        v-for="showclass in classList"
+                                        :key="showclass.id"
+                                    >
+                                        <el-radio-button
+                                            :label="showclass.id"
+                                            class="classRadioButton"
+                                            v-if="showclass.promoStatus != 2"
+                                        >{{ showclass.name }} 票价:￥{{ showclass.price }} 票量：{{showclass.stock}} / {{ showclass.capacity }}
+                                        </el-radio-button>
+                                        <el-radio-button
+                                            :label="showclass.id"
+                                            class="classRadioButton"
+                                            v-if="showclass.promoStatus == 2"
+                                        >{{ showclass.name }} 原票价:￥{{ showclass.price }} 活动价:￥{{ showclass.promoPrice }} 票量：{{showclass.stock}} / {{ showclass.capacity }}
+                                        </el-radio-button>
+                                        <!-- <br /> -->
+                                    </el-radio-group>
 
+                                </div>
                             </div>
-                        </div>
                     </el-col>
                 </el-row>
             </el-card>
@@ -83,12 +85,21 @@
                 <el-card style="width: 80%; margin: auto" class="Buy" >
                     <div v-show="this.priceSelected != null" class="finalPrice">
                         票数:
-                        <el-input-number v-model="count" :min="1" :max="10" @change="changeCount"></el-input-number>
+                        <el-input-number v-model="count" :min="1" :max="3" @change="changeCount"></el-input-number>
                         最终价格: ¥{{ this.finalPrice }}
                         <el-button
                             type="danger"
                             icon="myicon myicontubiaozhizuomoEban"
-                            @click="buyTicket">
+                            @click="buyTicket"
+                            v-if="this.judge == false"
+                            disabled>
+                            已购票，不得重复购票
+                        </el-button>
+                        <el-button
+                            type="danger"
+                            icon="myicon myicontubiaozhizuomoEban"
+                            @click="buyTicket"
+                            v-if="this.judge == true">
                             购票
                         </el-button>
                     </div>
@@ -131,6 +142,7 @@ export default {
             dialogVisible: false,
             count: 1,
             promoId: 0,
+            judge: true,
         };
     },
 
@@ -140,6 +152,7 @@ export default {
         this.getShow();
         this.getShowClass();
         this.getUser();
+        this.getOrderJudge();
         setTimeout(() => {
             this.loading = false;
         }, 500);
@@ -154,20 +167,53 @@ export default {
     mounted() {},
 
     methods: {
+        async getOrderJudge() {
+            try{
+                const res = await axios.post(
+                        this.$api.checkOrderUrl + "/" + this.showId
+                );
+                console.log(res);
+                if (res.data.code === 200) {
+                    if (res.data.data === false)
+                    {
+                        this.judge = false;
+                    }
+                    else{
+                        this.judge = true;
+                    }
+                }
+            }
+            catch (err) {
+                this.$message.error("获取演出信息失败");
+            }
+        },
         changeCount() {
             for (var i of this.classList) {
                 if (i.id === this.showClassSelected) {
-                    this.priceSelected = i.price;
+                    if (i.promoStatus == 2) {
+                        this.priceSelected = i.promoPrice;
+                    }
+                    else
+                    {
+                        this.priceSelected = i.price;
+                    }
+                    // this.priceSelected = i.price;
                     this.priceFinal = this.priceSelected * this.count;
                 }
             }
-            console.log(this.count);
             this.finalPrice = this.priceFinal;
         },
         classChange() {
             for (var i of this.classList) {
                 if (i.id === this.showClassSelected) {
-                    this.priceSelected = i.price;
+                    if (i.promoStatus == 2) {
+                        this.priceSelected = i.promoPrice;
+                    }
+                    else
+                    {
+                        this.priceSelected = i.price;
+                    }
+                    // this.priceSelected = i.price;
                     this.priceFinal = this.priceSelected * this.count;
                 }
             }
@@ -179,7 +225,6 @@ export default {
                 const res = await axios.post(
                     this.$api.getShowDetails + "/" + this.showId
                 );
-                console.log(res);
                 if (res.data.code === 200) {
                     this.show = res.data.data;
 
@@ -198,11 +243,17 @@ export default {
         async getShowClass() {
             try {
                 let res = await axios.post(this.$api.getShowSeatListUrl + '/' + this.showId);
-                // console.log(res);
+                console.log(res);
                 if (res.data.code === 200) {
                     this.classList = res.data.data;
                     this.showClassSelected = this.classList[0].id;
-                    this.priceSelected = this.classList[0].price;
+                    if (this.classList[0].promoStatus == 2) {
+                        this.priceSelected = this.classList[0].promoPrice;
+                    }
+                    else
+                    {
+                        this.priceSelected = this.classList[0].price;
+                    }
                     this.priceFinal = this.priceSelected * this.count;
                     this.finalPrice = this.priceFinal;
                 } else {
@@ -310,8 +361,7 @@ export default {
 }
 
 .text {
-    float: right;
-    padding-right: 200px;
+
 }
 
 .minor-text {

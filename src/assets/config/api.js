@@ -33,6 +33,7 @@ module.exports = {
     deleteUserOrder: APIRootUrl +'order/delete',
     refundUserOrder: APIRootUrl +'order/cancel',
     buyTicketUrl: APIRootUrl + 'order/add',
+    checkOrderUrl: APIRootUrl + 'order/checkOrder',
 
     //演出座次相关
     // getShowSeatUrl: APIRootUrl + 'seat/seatList',

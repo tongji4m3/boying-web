@@ -229,7 +229,7 @@ export default {
         }
       } catch (err) {
         console.log(err);
-        this.$message.error(res.data.message);
+        this.$message.error("获取验证码失败");
       }
     },
 

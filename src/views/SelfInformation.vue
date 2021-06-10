@@ -44,8 +44,8 @@
                 >
                   <img
                     v-if="form.icon"
-                    width="200"
-                    height="200"
+                    width="300"
+                    height="300"
                     :src="form.icon"
                     class="image"
                     style="border-radius: 50%"
@@ -56,11 +56,6 @@
                   ></i>
                           
                 </el-upload>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" @click="updateUserInfo()"
-                  >更 新</el-button
-                >
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -106,21 +101,25 @@
             </el-col>
           </el-row>
         </el-form>
+        <el-button type="primary" @click="updateUserInfo()" style="margin-left:550px"
+                  >更 新</el-button
+                >
       </div>
     </el-card>
     <br />
     <!-- 密码 -->
     <el-card class="el-card" style="width: 80%; margin: auto">
       <h2>修改密码：</h2>
-      <el-form ref="passwordForm" :model="passwordForm">
-        <el-form-item prop="telephone">
+      <el-card style="margin:auto">
+      <el-form ref="passwordFormRef" :model="passwordForm" :rules="registerFormRules" style="margin-left:400px">
+        <el-form-item label="手机号" prop="telephone">
           <el-input
             v-model="passwordForm.telephone"
             placeholder="手机号"
             style="width: 40%"
           ></el-input
         ></el-form-item>
-        <el-form-item
+        <el-form-item label="验证码"
           ><el-input
             prop="authCode"
             v-model="passwordForm.authCode"
@@ -135,7 +134,7 @@
             >获取验证码</el-button
           ></el-form-item
         >
-        <el-form-item prop="newPassword">
+        <el-form-item prop="newPassword" label="新密码">
           <el-input
             v-model="passwordForm.password"
             type="password"
@@ -144,7 +143,7 @@
           ></el-input>
         </el-form-item>
 
-        <el-form-item prop="confirmPassword">
+        <el-form-item prop="confirmPassword" label="确认密码">
           <el-input
             v-model="passwordForm.confirmPassword"
             type="password"
@@ -152,7 +151,13 @@
             style="width: 40%"
           ></el-input>
         </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="updatePassword()" style="margin-left:200px"
+            >确认修改</el-button
+          >
+        </el-form-item>
       </el-form>
+      </el-card>
       <!-- <div style="width: 40%" :rules="passwordFormRules">
         <el-form-item prop="telephone">
           <el-input
@@ -475,6 +480,48 @@ export default {
 
       // console.log("修改前"+this.form.icon);
     },
+
+    async getAuthCode() {
+      // console.log(this.registerForm.telephone);
+      // console.log(this.$api.getAuthCodeUrl);
+      try {
+        const res = await this.$http.post(
+          this.$api.getAuthCodeUrl,
+          this.passwordForm.telephone
+        );
+
+        console.log(res);
+        if (res.data.code == 200) {
+          this.$message.success("验证码已成功发送至手机，请注意查收");
+        } else {
+          this.$message.error(res.data.code + res.data.message);
+        }
+      } catch (err) {
+        console.log(err);
+        this.$message.error("获取验证码失败");
+      }
+    },
+
+    async updatePassword() {
+      console.log(this.passwordForm);
+       this.$refs.passwordFormRef.validate((valid) => {
+        if (!valid) return;
+      });
+      var res = await this.$http.post(
+        this.$api.updatePasswordInfoUrl,
+        this.passwordForm
+      );
+      console.log(res);
+      if (res.data.code == 200) {
+        this.$message.success("密码修改成功");
+        this.passwordForm = {
+          password: "",
+          confirmPassword: "",
+          telephone: "",
+          authCode: "",
+        };
+      }
+    },
     async updateUserInfo() {
       // console.log("修改后"+this.form.icon);
       console.log(this.form.gender);
@@ -506,6 +553,12 @@ export default {
 
 
 <style scoped>
+label{  
+    display:inline-block;  
+    width:100px;
+
+    text-align:right;
+    }
 .el-row {
   margin-bottom: 20px;
   display: flex;

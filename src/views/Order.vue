@@ -39,7 +39,6 @@
             }}</template>
           </el-table-column>
 
-          <el-table-column label="订单总金额" prop="money" align="center">
           </el-table-column>
           <el-table-column align="center" label="操作">
             <template slot-scope="scope">
